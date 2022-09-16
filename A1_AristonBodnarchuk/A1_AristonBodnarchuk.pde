@@ -1,101 +1,76 @@
-float shapeSize, shapeMod;
+// shape size and shape modifier
+float shapeSize = 100, shapeMod = 1;
+// convex or concave cube
+boolean incDecTog = true;
 
-float xmag, ymag = 0;
-float newXmag, newYmag = 0; 
+// camera rotation things 
+float xRot, yRot = 0;
+// new camera rotation things from update
+float xRot_, yRot_ = 0;
 
 void setup() {
- size(1280,720,P3D); 
- //colorMode(RGB, 1); 
- 
- shapeSize = 100;
- shapeMod = 100;
+  size(1280, 720, P3D);
 }
 
 void draw() {
-  background(69);
+  background(69); // nice
 
-  fill(51);
-  //stroke(255);
-  noStroke();
-  
+  // push matrix to not effect other drawings after
   pushMatrix(); 
-  translate(width/2, height/2, -30); 
-  
-  newXmag = mouseX/float(width) * TWO_PI;
-  newYmag = mouseY/float(height) * TWO_PI;
-  
-  float diff = xmag-newXmag;
+  // translate to screen center and push back 
+  translate(width/2, height/2, -50); 
+ 
+  // grab new screen angles
+  xRot_ = mouseX/float(width) * TWO_PI;
+  yRot_ = mouseY/float(height) * TWO_PI;
+
+  // check new mouse angles and update 
+  float diff = xRot - xRot_;
   if (abs(diff) >  0.01) { 
-    xmag -= diff/4.0; 
+    xRot -= diff / 4.0;
   }
-  
-  diff = ymag-newYmag;
+
+  diff = yRot - yRot_;
   if (abs(diff) >  0.01) { 
-    ymag -= diff/4.0; 
+    yRot -= diff / 4.0;
   }
+
+  rotateX(-yRot); 
+  rotateY(-xRot); 
+
+  // make shape correct size 
+  scale(shapeSize);
+  // make lines not massive
+  strokeWeight(1/ shapeSize);
+  stroke(255); // white line color
+  fill(30); // dark shape color
+  beginShape(); // start drawing custom shape that can be warped
   
-  rotateX(-ymag); 
-  rotateY(-xmag); 
+  // top face of cube (4 polygons total)
+  vertex(0, -1 * shapeMod, 0);
+  vertex(-1, -1, -1);
+  vertex(-1, -1, 1);
   
-  //scale(90);
-  //beginShape(QUADS);
-
-  //fill(0, 1, 1); vertex(-1,  1,  1);
-  //fill(1, 1, 1); vertex( 1,  1,  1);
-  //fill(1, 0, 1); vertex( 1, -1,  1);
-  //fill(0, 0, 1); vertex(-1, -1,  1);
-
-  //fill(1, 1, 1); vertex( 1,  1,  1);
-  //fill(1, 1, 0); vertex( 1,  1, -1);
-  //fill(1, 0, 0); vertex( 1, -1, -1);
-  //fill(1, 0, 1); vertex( 1, -1,  1);
-
-  //fill(1, 1, 0); vertex( 1,  1, -1);
-  //fill(0, 1, 0); vertex(-1,  1, -1);
-  //fill(0, 0, 0); vertex(-1, -1, -1);
-  //fill(1, 0, 0); vertex( 1, -1, -1);
-
-  //fill(0, 1, 0); vertex(-1,  1, -1);
-  //fill(0, 1, 1); vertex(-1,  1,  1);
-  //fill(0, 0, 1); vertex(-1, -1,  1);
-  //fill(0, 0, 0); vertex(-1, -1, -1);
-
-  //fill(0, 1, 0); vertex(-1,  1, -1);
-  //fill(1, 1, 0); vertex( 1,  1, -1);
-  //fill(1, 1, 1); vertex( 1,  1,  1);
-  //fill(0, 1, 1); vertex(-1,  1,  1);
-
-  //fill(0, 0, 0); vertex(-1, -1, -1);
-  //fill(1, 0, 0); vertex( 1, -1, -1);
-  //fill(1, 0, 1); vertex( 1, -1,  1);
-  //fill(0, 0, 1); vertex(-1, -1,  1);
-
-  //endShape();
-
-  fill(0);
-  stroke(255);
-
-  beginShape();
-  vertex(-shapeSize, -shapeSize, -shapeSize);
-  vertex( shapeSize, -shapeSize, -shapeSize);
-  vertex(   0,    0,  shapeMod);
+  vertex(0, -1 * shapeMod, 0);
+  vertex(-1, -1, -1);
+  vertex(1, -1, -1);
   
-  vertex( shapeSize, -shapeSize, -shapeSize);
-  vertex( shapeSize,  shapeSize, -shapeSize);
-  vertex(   0,    0,  shapeMod);
+  vertex(0, -1 * shapeMod, 0);
+  vertex(-1, -1, 1);
+  vertex(1, -1, 1);
   
-  vertex( shapeSize, shapeSize, -shapeSize);
-  vertex(-shapeSize, shapeSize, -shapeSize);
-  vertex(   0,   0,  shapeMod);
+  vertex(0, -1 * shapeMod, 0);
+  vertex(1, -1, 1);
+  vertex(1, -1, -1);
   
-  vertex(-shapeSize,  shapeSize, -shapeSize);
-  vertex(-shapeSize, -shapeSize, -shapeSize);
-  vertex(   0,    0,  shapeMod);
   endShape(CLOSE);
-  
-  popMatrix(); 
+
+  popMatrix();
 }
 
+// clicking mouse modifies shape for testing 
 void mousePressed() {
-  shapeMod = shapeMod > 0 ? -200 : 100;
+  shapeMod = shapeMod != 1 ? 1 : (incDecTog ? 0.5 : 1.5);
+  if(shapeMod == 0.5) incDecTog = false;
+  if(shapeMod == 1.5) incDecTog = true;
 }
