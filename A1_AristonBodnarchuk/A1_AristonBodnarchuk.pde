@@ -1,20 +1,101 @@
-float test = 0;
+float shapeSize, shapeMod;
+
+float xmag, ymag = 0;
+float newXmag, newYmag = 0; 
 
 void setup() {
  size(1280,720,P3D); 
+ //colorMode(RGB, 1); 
+ 
+ shapeSize = 100;
+ shapeMod = 100;
 }
 
 void draw() {
   background(69);
-  
-  rectMode(CENTER);
+
   fill(51);
+  //stroke(255);
+  noStroke();
+  
+  pushMatrix(); 
+  translate(width/2, height/2, -30); 
+  
+  newXmag = mouseX/float(width) * TWO_PI;
+  newYmag = mouseY/float(height) * TWO_PI;
+  
+  float diff = xmag-newXmag;
+  if (abs(diff) >  0.01) { 
+    xmag -= diff/4.0; 
+  }
+  
+  diff = ymag-newYmag;
+  if (abs(diff) >  0.01) { 
+    ymag -= diff/4.0; 
+  }
+  
+  rotateX(-ymag); 
+  rotateY(-xmag); 
+  
+  //scale(90);
+  //beginShape(QUADS);
+
+  //fill(0, 1, 1); vertex(-1,  1,  1);
+  //fill(1, 1, 1); vertex( 1,  1,  1);
+  //fill(1, 0, 1); vertex( 1, -1,  1);
+  //fill(0, 0, 1); vertex(-1, -1,  1);
+
+  //fill(1, 1, 1); vertex( 1,  1,  1);
+  //fill(1, 1, 0); vertex( 1,  1, -1);
+  //fill(1, 0, 0); vertex( 1, -1, -1);
+  //fill(1, 0, 1); vertex( 1, -1,  1);
+
+  //fill(1, 1, 0); vertex( 1,  1, -1);
+  //fill(0, 1, 0); vertex(-1,  1, -1);
+  //fill(0, 0, 0); vertex(-1, -1, -1);
+  //fill(1, 0, 0); vertex( 1, -1, -1);
+
+  //fill(0, 1, 0); vertex(-1,  1, -1);
+  //fill(0, 1, 1); vertex(-1,  1,  1);
+  //fill(0, 0, 1); vertex(-1, -1,  1);
+  //fill(0, 0, 0); vertex(-1, -1, -1);
+
+  //fill(0, 1, 0); vertex(-1,  1, -1);
+  //fill(1, 1, 0); vertex( 1,  1, -1);
+  //fill(1, 1, 1); vertex( 1,  1,  1);
+  //fill(0, 1, 1); vertex(-1,  1,  1);
+
+  //fill(0, 0, 0); vertex(-1, -1, -1);
+  //fill(1, 0, 0); vertex( 1, -1, -1);
+  //fill(1, 0, 1); vertex( 1, -1,  1);
+  //fill(0, 0, 1); vertex(-1, -1,  1);
+
+  //endShape();
+
+  fill(0);
   stroke(255);
+
+  beginShape();
+  vertex(-shapeSize, -shapeSize, -shapeSize);
+  vertex( shapeSize, -shapeSize, -shapeSize);
+  vertex(   0,    0,  shapeMod);
   
-  test += 0.01;
+  vertex( shapeSize, -shapeSize, -shapeSize);
+  vertex( shapeSize,  shapeSize, -shapeSize);
+  vertex(   0,    0,  shapeMod);
   
-  translate(mouseX, mouseY, sin(test)*100);
-  rotateZ(PI/8*sin(test));
-  rotateY(PI/12*cos(test));
-  rect(0, 0, 100, 100);
+  vertex( shapeSize, shapeSize, -shapeSize);
+  vertex(-shapeSize, shapeSize, -shapeSize);
+  vertex(   0,   0,  shapeMod);
+  
+  vertex(-shapeSize,  shapeSize, -shapeSize);
+  vertex(-shapeSize, -shapeSize, -shapeSize);
+  vertex(   0,    0,  shapeMod);
+  endShape(CLOSE);
+  
+  popMatrix(); 
+}
+
+void mousePressed() {
+  shapeMod = shapeMod > 0 ? -200 : 100;
 }
