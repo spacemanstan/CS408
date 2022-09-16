@@ -4,4 +4,6 @@
 
 ## Asignment One - Projectile System 
 
-Words will go here to describe the final product once I finish 
+- [ ] Dynamically create objects from 3d vertices (to change shape)
+- [ ] Projectile class using dynamic object creation
+- [ ] ProjectileSystem class that uses an array list to track and remove dead particles
