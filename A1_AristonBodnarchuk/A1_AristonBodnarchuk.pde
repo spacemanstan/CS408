@@ -3,6 +3,8 @@ float shapeSize = 100, shapeMod = 1;
 // convex or concave cube
 boolean incDecTog = true;
 
+PShape pCube;
+
 // camera rotation things 
 float xRot, yRot = 0;
 // new camera rotation things from update
@@ -10,6 +12,29 @@ float xRot_, yRot_ = 0;
 
 void setup() {
   size(1280, 720, P3D);
+  
+  pCube = createShape();
+  
+  pCube.beginShape(); // start drawing custom shape that can be warped
+  
+  // top face of cube (4 polygons total)
+  pCube.vertex(0, -1 * shapeMod, 0);
+  pCube.vertex(-1, -1, -1);
+  pCube.vertex(-1, -1, 1);
+  
+  pCube.vertex(0, -1 * shapeMod, 0);
+  pCube.vertex(-1, -1, -1);
+  pCube.vertex(1, -1, -1);
+  
+  pCube.vertex(0, -1 * shapeMod, 0);
+  pCube.vertex(-1, -1, 1);
+  pCube.vertex(1, -1, 1);
+  
+  pCube.vertex(0, -1 * shapeMod, 0);
+  pCube.vertex(1, -1, 1);
+  pCube.vertex(1, -1, -1);
+
+  pCube.endShape();
 }
 
 void draw() {
@@ -44,6 +69,23 @@ void draw() {
   strokeWeight(1/ shapeSize);
   stroke(255); // white line color
   fill(30); // dark shape color
+  
+  renderTest();
+  rotateZ(PI/2);
+  renderTest();
+  rotateZ(PI/2);
+  renderTest();
+  rotateZ(PI/2);
+  renderTest();
+  rotateX(PI/2);
+  renderTest();
+  rotateX(PI);
+  renderTest();
+
+  popMatrix();
+}
+
+void renderTest() {
   beginShape(); // start drawing custom shape that can be warped
   
   // top face of cube (4 polygons total)
@@ -62,10 +104,8 @@ void draw() {
   vertex(0, -1 * shapeMod, 0);
   vertex(1, -1, 1);
   vertex(1, -1, -1);
-  
-  endShape(CLOSE);
 
-  popMatrix();
+  endShape();  
 }
 
 // clicking mouse modifies shape for testing 
