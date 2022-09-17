@@ -12,3 +12,4 @@ Based on the description we essentially have 4 pyramids forming a cube where the
 - [ ] Dynamically create objects from 3d vertices (to change shape)
 - [ ] Projectile class using dynamic object creation
 - [ ] ProjectileSystem class that uses an array list to track and remove dead particles
+- [ ] Tweak click and drag mouse rotation to feel more natural *(not so jumpy)*
