@@ -1,8 +1,0 @@
-class Projectile {
-  
-  Projectile() {
-    
-  }
-  
-  
-}
