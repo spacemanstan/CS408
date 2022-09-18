@@ -25,6 +25,7 @@ Based on the description we essentially have 4 pyramids forming a cube where the
 * Particle Emit Angle +/- y rotation | +left (arrow) -right (arrow)
 * Shape (array choice) +/- | +H -h; 0.5 - 3.0
 * Toggle Help | ? or / key 
-- [ ] Projectile class using dynamic object creation
-- [ ] ProjectileSystem class that uses an array list to track and remove dead particles
+- [x] Projectile class using dynamic object creation
+- [x] ProjectileSystem class that uses an array list to track and remove dead particles
 - [ ] Tweak click and drag mouse rotation to feel more natural *(not so jumpy)*
+- [ ] Button class for on screen clickable companions to mouse features
