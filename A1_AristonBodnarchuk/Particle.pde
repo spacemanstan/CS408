@@ -1,7 +1,7 @@
 class Particle {
   PShape cubeThing;
   PVector pos, vel, spin, gravity;
-  int cubeSize;
+  int cubeSize, deathTimer;
   color rgb;
   boolean deceased;
 
@@ -14,6 +14,8 @@ class Particle {
     cubeSize = (int)random(10, 100);
     gravity = new PVector(0, map(cubeSize, 10, 100, 0.05, .6), 0);
     deceased = false; // it's alive!
+    
+    deathTimer = 5*FPS;
   }
 
   void display() {
@@ -37,6 +39,21 @@ class Particle {
   }
 
   void update() {
+    --deathTimer;
+    
+    if(deathTimer < 0) {
+      deceased = true;
+      return;
+    }
+    
+    int factor = 2;
+
+    // dead?
+    if (pos.x > factor*width || pos.x < -factor*width || pos.y > factor*height || pos.y < -factor*height || pos.z > factor*(width + height) || pos.x < -factor*(width + height)) {
+      deceased = true;
+      return;
+    }
+    
     pos.add(vel);
     vel.add(gravity);
     // add some friction to make better arcs than just using gravity 
@@ -48,13 +65,5 @@ class Particle {
     spin.x = spin.x < 0 ? spin.x - spinSpeed : spin.x + spinSpeed;
     spin.y = spin.y < 0 ? spin.y - spinSpeed : spin.y + spinSpeed;
     spin.z = spin.z < 0 ? spin.z - spinSpeed : spin.z + spinSpeed;
-
-    int factor = 2;
-
-    // dead?
-    if (pos.x > factor*width || pos.x < -factor*width || pos.y > factor*height || pos.y < -factor*height || pos.z > factor*(width + height) || pos.x < -factor*(width + height)) {
-      deceased = true;
-      return;
-    }
   }
 }
