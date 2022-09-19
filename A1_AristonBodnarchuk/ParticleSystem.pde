@@ -186,27 +186,27 @@ class ParticleSystem {
 
   void innitBtmRowBtns() {
     int current = 0;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Red", red, "r", "R");
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Red", red, 'r', 'R');
     current = 1;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Green", green, "g", "G");
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Green", green, 'g', 'G');
     current = 2;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Blue", blue, "b", "B");
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Blue", blue, 'b', 'B');
     current = 3;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Transparency", opacity, "t", "T");
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Transparency", opacity, 't', 'T');
     current = 4;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Size", shapeSize, "-", "+");
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Size", shapeSize, '-', '+');
     current = 5;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Shape", shapeParam, "h", "H");
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Shape", shapeParam, 'h', 'H');
     current = 6;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Speed", shapeParam, "↓", "↑");
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Speed", shapeParam, '↓', '↑');
     current = 7;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Degrees", angDeg, "←", "→");
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Degrees", angDeg, '←', '→');
     current = 8;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "X Pos", -1, "A", "D");
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "X Pos", -1, 'A', 'D');
     current = 9;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Y Pos", -1, "Q", "E");
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Y Pos", -1, 'Q', 'E');
     current = 10;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Z Pos", -1, "S", "W");
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Z Pos", -1, 'S', 'W');
   }
 
   void buttonFunctions(char input) {

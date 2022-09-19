@@ -32,41 +32,39 @@ void mousePressed() {
   // left click
   if (mouseButton == LEFT)
     if (mouseY > height - emitter.btmRow_height && mouseY < height) {
-      //right click a button
-      
       // increase or decrease buttons with left click
-      for (int i = 0; i <= emitter.btmRow.length; ++i) {
+      for (int i = 0; i < emitter.btmRow.length; ++i) {
         if (mouseX > emitter.btmRow[i].pos.x - emitter.btmRow_width/2 && mouseX < emitter.btmRow[i].pos.x + emitter.btmRow_width/2) {
-          emitter.btmRow[i].rdm = !emitter.btmRow[i].rdm;
+          if (mouseX > emitter.btmRow[i].pos.x) {
+            key = emitter.btmRow[i].upper;
+            emitter.buttonFunctions( emitter.btmRow[i].upper );
+          }
+          if(mouseX < emitter.btmRow[i].pos.x) {
+            key = emitter.btmRow[i].lower;
+            emitter.buttonFunctions( emitter.btmRow[i].lower );
+          }
         }
       }
-      
-      // positional buttons
-      if (mouseX > emitter.btmRow[8].pos.x - emitter.btmRow_width/2 && mouseX < emitter.btmRow[10].pos.x + emitter.btmRow_width/2) {
-          emitter.btmRow[8].rdm = !emitter.btmRow[8].rdm;
-          emitter.btmRow[9].rdm = !emitter.btmRow[9].rdm;
-          emitter.btmRow[10].rdm = !emitter.btmRow[10].rdm;
-        }
     }
-  
+
   // right click
   if (mouseButton == RIGHT)
     if (mouseY > height - emitter.btmRow_height && mouseY < height) {
       //right click a button
-      
+
       // non positional buttons
       for (int i = 0; i <= 7; ++i) {
         if (mouseX > emitter.btmRow[i].pos.x - emitter.btmRow_width/2 && mouseX < emitter.btmRow[i].pos.x + emitter.btmRow_width/2) {
           emitter.btmRow[i].rdm = !emitter.btmRow[i].rdm;
         }
       }
-      
+
       // positional buttons
       if (mouseX > emitter.btmRow[8].pos.x - emitter.btmRow_width/2 && mouseX < emitter.btmRow[10].pos.x + emitter.btmRow_width/2) {
-          emitter.btmRow[8].rdm = !emitter.btmRow[8].rdm;
-          emitter.btmRow[9].rdm = !emitter.btmRow[9].rdm;
-          emitter.btmRow[10].rdm = !emitter.btmRow[10].rdm;
-        }
+        emitter.btmRow[8].rdm = !emitter.btmRow[8].rdm;
+        emitter.btmRow[9].rdm = !emitter.btmRow[9].rdm;
+        emitter.btmRow[10].rdm = !emitter.btmRow[10].rdm;
+      }
     } else {
       // camera rotation stuff
     }

@@ -1,11 +1,12 @@
 class ButtonData {
   final PVector pos, dim; // position and dimensions 
-  final String title, upper, lower;
+  final String title;
+  final char upper, lower;
   int value;
   boolean rdm = false;
   color color_optional = -1;
   
-  ButtonData(float x, float y, float wid, float hgt, String ttl, int val, String low, String up) {
+  ButtonData(float x, float y, float wid, float hgt, String ttl, int val, char low, char up) {
     pos = new PVector(x, y);
     dim = new PVector(wid, hgt);
     title = ttl;
