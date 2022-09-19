@@ -17,22 +17,22 @@ My conclusion and assumption from this test is that older systems won't support 
 
 ###### Checklist 
 - [x] ~~Dynamic 3D object creation of all possible shapes on program load~~
-- [ ] Mouse Functions
-* Left click - Interact with menu items
-* Right click - rotate perspective
-* Scroll - zoom in / zoom out
-- [ ] Keyboards Functions
-* Red amount +/- | +R -R
-* Green Colour +/- | +g -g
-* Blu colour +/- | +B -b
-* Opacity +/- | +T -t or +O -o
-* Size +/- | ++ --
-* Emiter Pos (origin) +/- x/y/z | x/y axis wasd; z axis q/e; screen edges
-* Particle Speed +/- | +up (arrow) -down (arrow); 0px/frame - 10px/frame
-* Particle Emit Angle +/- y rotation | +left (arrow) -right (arrow)
-* Shape (array choice) +/- | +H -h; 0.5 - 3.0
-* Toggle Help | ? or / key 
-- [x] Projectile class using dynamic object creation
-- [x] ProjectileSystem class that uses an array list to track and remove dead particles
-- [ ] Tweak click and drag mouse rotation to feel more natural *(not so jumpy)*
-- [ ] Button class for on screen clickable companions to mouse features
+- [x] ~~Mouse Functions~~
+* ~~Left click - Interact with menu items~~
+* ~~Right click - rotate perspective~~
+* ~~Scroll - zoom in / zoom out~~
+- [x] ~~Keyboards Functions~~
+* ~~Red amount +/- | +R -R~~
+* ~~Green Colour +/- | +g -g~~
+* ~~Blu colour +/- | +B -b~~
+* ~~Opacity +/- | +T -t or +O -o~~
+* ~~Size +/- | ++ --~~
+* ~~Emiter Pos (origin) +/- x/y/z | x/y axis wasd; z axis q/e; screen edges~~
+* ~~Particle Speed +/- | +up (arrow) -down (arrow); 0px/frame - 10px/frame~~
+* ~~Particle Emit Angle +/- y rotation | +left (arrow) -right (arrow)~~
+* ~~Shape (array choice) +/- | +H -h; 0.5 - 3.0~~
+* ~~Toggle Help | ? or / key ~~
+- [x] ~~Projectile class using dynamic object creation~~
+- [x] ~~ProjectileSystem class that uses an array list to track and remove dead particles~~
+- [x] ~~Tweak click and drag mouse rotation to feel more natural *(not so jumpy)*~~
+- [x] ~~Button class for on screen clickable companions to mouse features~~
