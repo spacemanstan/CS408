@@ -1,8 +1,6 @@
 final int FPS = 60;
 ParticleSystem emitter;
 
-int farts = 0;
-
 void setup() {
   surface.setTitle("Particle System");
   size(1280, 720, P3D);
@@ -15,19 +13,12 @@ void setup() {
 void draw() {
   background(30); // nice
 
-  // keyboard check, limit update so it doesn't update at full framerate
-  //if (keyPressed && frameCount % (FPS/4) == 0) {
-  //  if (key == 'A' || key == 'a') {
-  //    farts = key == 'A' ? farts + 1 : farts - 1;
-  //    println(farts);
-  //  }
-  //}
-
   emitter.display();
 
   //println("Performance: fps[" + round(frameRate) + "] | particles[" + emitter.particles.size() + "]" );
 }
 
+// mouse functions that happen with a single click 
 void mousePressed() {
   // left click
   if (mouseButton == LEFT)
@@ -66,26 +57,17 @@ void mousePressed() {
         emitter.btmRow[10].rdm = !emitter.btmRow[10].rdm;
       }
     } else {
-      // camera rotation stuff
+      emitter.mX = mouseX;
     }
 }
 
-//// clicking mouse modifies shape for testing 
-//void mousePressed() {
-//  if (mouseButton == LEFT) {
-//    //shapeMod = shapeMod != 1 ? 1 : (incDecTog ? 0.5 : 1.5);
-//    //if(shapeMod == 0.5) incDecTog = false;
-//    //if(shapeMod == 1.5) incDecTog = true;
-//    choice = incDecTog ? choice + 1 : choice - 1;
+// scroll mouse to increase / decrease zoom;
+void mouseWheel(MouseEvent event) {
+  emitter.pos.z -= event.getCount()*10;
+}
 
-//    if(choice == 0) incDecTog = true;
-//    if(choice == cubeRange_e - cubeRange_s) incDecTog = false;
-
-//    println(choice);
-//  }
-//}
-
-//// scroll mouse to increase / decrease zoom;
-//void mouseWheel(MouseEvent event) {
-//  zoom -= event.getCount()*10;
-//}
+void keyPressed() {
+    if(key ==  '/' || key == '?') {
+      emitter.helpScreen = !emitter.helpScreen;
+    }
+}

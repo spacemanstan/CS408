@@ -1,17 +1,21 @@
 class ParticleSystem {
   final int cubeRange_s = 5, cubeRange_e = 30, minSpeed, maxSpeed;
-  int red, green, blue, opacity, shapeSize, shapeParam, angDeg, speed;
+  int red, green, blue, opacity, shapeSize, shapeParam, speed, angDeg, spawnRate;
+  float rotX, mX;
   PVector pos, startVel;
   PShape PCube[];
   final int btmRow_count;
   final float btmRow_width, btmRow_height;
-  boolean helpScreen = true, drawStroke = true;
+  boolean helpScreen = false, drawStroke = true;
   ButtonData btmRow[];
+  PImage helpScreenImage;
 
   ArrayList<Particle> particles = new ArrayList<Particle>();
 
   ParticleSystem() {
-    pos = new PVector(width/2, height/2, -500);
+    helpScreenImage = loadImage("./helpScreen.png");
+
+    pos = new PVector(width/2, height/2, -width/2);
 
     // default values
     red = 50;
@@ -19,19 +23,16 @@ class ParticleSystem {
     blue = 50;
     opacity = 50;
     shapeSize = 50;
-    shapeParam = 9;
-    angDeg = 0;
+    shapeParam = 5;
+    angDeg = 270;
     speed = 5;
     minSpeed = 0; 
-    maxSpeed = 10;
+    maxSpeed = 50;
 
     // allocate pshape array
     PCube = new PShape[cubeRange_e - cubeRange_s + 1];
     // fill array with all possible shapes
     renderPCubeShapes();
-
-    // starting particle
-    addParticle();
 
     // setup some buttons
     btmRow_count = 11;
@@ -39,11 +40,33 @@ class ParticleSystem {
     btmRow_width = (width / btmRow_count) + 0.4;
     btmRow = new ButtonData[btmRow_count];
     innitBtmRowBtns();
+
+    rotX = mX = 0;
+
+    spawnRate = FPS;
   }
 
   void display() {
+    if (helpScreen) {
+      image(helpScreenImage, 0, 0);
+      
+      if (keyPressed) {
+        buttonFunctions(key);
+      }
+      
+      return;
+    }
+
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
+    update_camera();
+    rotateY(rotX);
+
+    pushStyle();
+    noStroke();
+    sphereDetail(5);
+    sphere(10);
+    popStyle();
 
     for (int i = particles.size()-1; i >= 0; i--) {
       Particle p = particles.get(i);
@@ -66,20 +89,68 @@ class ParticleSystem {
     this.update();
   }
 
+  void update_camera() {
+    if (mouseButton == RIGHT)
+      // not right clicking a button
+      if ( !(mouseY > height - emitter.btmRow_height && mouseY < height) ) {
+        rotX = map(mouseX - mX, 0, width, -PI, PI);
+      }
+  }
+
   void update() {
-    if (keyPressed && frameCount % (FPS/10) == 0) {
+    if (keyPressed) {
       buttonFunctions(key);
     }
 
     btmRow[0].color_optional = btmRow[1].color_optional = btmRow[2].color_optional = color(red, green, blue);
 
     if (round(frameRate) >= 30)
-      if (!helpScreen && frameCount % FPS == 0) addParticle();
+      if (!helpScreen && frameCount % spawnRate == 0) addParticle();
   }
 
   void addParticle() {
-    //particles.add(new Particle(red, green, blue, opacity, size, shapeParam, startVel));
-    particles.add(new Particle( PCube[ (int)random(0, PCube.length) ] ) );
+    // if all parameters are random except pos, use random constructor
+    boolean allRandom = true;
+    for (int i = 0; i < btmRow.length - 3; ++i)
+      if (!btmRow[i].rdm) {
+        allRandom = false;
+        break;
+      }
+
+    // if all random, call randomized constructor
+    if (allRandom) {
+      particles.add(new Particle( PCube[ (int)random(0, PCube.length) ] ) );
+      return;
+    }
+
+    // calc parameters 
+    int red_, green_, blue_, opacity_, shapeSize_, shapeParam_, speed_, angDeg_;
+    float x_, y_, z_;
+
+    red_        = btmRow[0].rdm ? (int)random(0, 101) : red;
+    green_      = btmRow[1].rdm ? (int)random(0, 101) : green;
+    blue_       = btmRow[2].rdm ? (int)random(0, 101) : blue;
+    opacity_    = btmRow[3].rdm ? (int)random(0, 101) : opacity;
+    shapeSize_  = btmRow[4].rdm ? (int)random(12, 101) : shapeSize;
+    shapeParam_ = btmRow[5].rdm ? (int)random(0, PCube.length) : shapeParam;
+
+    speed_      = btmRow[6].rdm ? (int)random(minSpeed, maxSpeed + 1) : speed;
+    angDeg_     = btmRow[7].rdm ? (int)random(0, 101) : angDeg;
+
+    x_ = speed_ * cos( radians(angDeg_) );
+    y_ = speed_ * sin( radians(angDeg_) );
+    z_ = 0;
+
+    if (btmRow[8].rdm || btmRow[9].rdm || btmRow[10].rdm) {
+      pos.x = random(width/4, width/4*3);
+      pos.y = random(height/4, height/4*3);
+      pos.z = random(-5000, 50);
+    }
+
+    color rgba_ = color(red_, green_, blue_, opacity_);
+    PVector vel_ = new PVector(x_, y_, z_);
+
+    particles.add( new Particle(PCube[shapeParam_], rgba_, shapeSize_, vel_) );
   }
 
   /*
@@ -211,6 +282,7 @@ class ParticleSystem {
 
   void buttonFunctions(char input) {
     switch(input) {
+      // help screen handled in main
       // red
     case 'r':
     case 'R':
@@ -264,7 +336,7 @@ class ParticleSystem {
     case 'h':
     case 'H':
       if (btmRow[5].rdm == false) {
-        if (key == 'H' && shapeParam < 100) shapeParam++; // inc
+        if (key == 'H' && shapeParam < PCube.length) shapeParam++; // inc
         if (key == 'h' && shapeParam > 0) shapeParam--;   // dec
         btmRow[5].value = shapeParam;
       }
@@ -275,9 +347,8 @@ class ParticleSystem {
     case 'd':
     case 'D':
       if (btmRow[8].rdm == false) {
-        if ((key == 'a' || key == 'A') && pos.x < width) pos.x++; // inc
-        if ((key == 'D' || key == 'D') && pos.x > 0) pos.x--;   // dec
-        //btmRow[8].value = shapeSize;
+        if ((key == 'd' || key == 'D') && pos.x < width) pos.x++; // inc
+        if ((key == 'a' || key == 'A') && pos.x > 0) pos.x--;   // dec
       }
       break;
       // y pos
@@ -288,7 +359,6 @@ class ParticleSystem {
       if (btmRow[9].rdm == false) {
         if ((key == 'q' || key == 'Q') && pos.z < height) pos.z++; // inc
         if ((key == 'E' || key == 'e') && pos.z > 0) pos.z--;   // dec
-        //btmRow[9].value = shapeSize;
       }
       break;
       // z pos
@@ -297,10 +367,17 @@ class ParticleSystem {
     case 'w':
     case 'W':
       if (btmRow[10].rdm == false) {
-        if ((key == 'w' || key == 'W') && pos.y < height) pos.y++; // inc
-        if ((key == 's' || key == 'S') && pos.y > 0) pos.y--;   // dec
-        //btmRow[10].value = shapeSize;
+        if ((key == 's' || key == 'S') && pos.y < width) pos.y++; // inc
+        if ((key == 'w' || key == 'W') && pos.y > 0) pos.y--;   // dec
       }
+      break;
+      // degrees + speed
+    case '.':
+    case '>':
+    case ',':
+    case '<':
+      if ((key == '.' || key == '>') && spawnRate < FPS) spawnRate++; // inc
+      if ((key == ',' || key == '<') && spawnRate > 1) spawnRate--;   // dec
       break;
       // degrees + speed
     default:

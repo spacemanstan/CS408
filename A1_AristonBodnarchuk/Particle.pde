@@ -17,6 +17,19 @@ class Particle {
     
     deathTimer = 5*FPS;
   }
+  
+  Particle(PShape shapeChoice, color rgba, int shpSize, PVector initVel) {
+      cubeThing = shapeChoice;
+      pos = new PVector (0, 0, 0);
+      vel = initVel.copy();
+      spin = new PVector(random(-PI, PI), random(-PI, PI), random(-PI, PI));
+      rgb = rgba;
+      cubeSize = shpSize;
+      gravity = new PVector(0, map(cubeSize, 10, 100, 0.05, .6), 0);
+      deceased = false; // it's alive!
+      
+      deathTimer = 5*FPS;
+    }
 
   void display() {
     pushMatrix();
@@ -46,10 +59,10 @@ class Particle {
       return;
     }
     
-    int factor = 2;
+    int factor = 5;
 
     // dead?
-    if (pos.x > factor*width || pos.x < -factor*width || pos.y > factor*height || pos.y < -factor*height || pos.z > factor*(width + height) || pos.x < -factor*(width + height)) {
+    if (pos.x > factor*width || pos.x < -factor*width || pos.y > factor*height || pos.y < -factor*height || pos.z > factor*width || pos.z < -factor*width) {
       deceased = true;
       return;
     }
