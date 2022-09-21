@@ -418,7 +418,7 @@ class ParticleSystem {
     case 'h':
     case 'H':
       if (btmRow[5].rdm == false) {
-        if (key == 'H' && shapeParam < PCube.length) shapeParam++; // inc
+        if (key == 'H' && shapeParam < PCube.length - 1) shapeParam++; // inc
         if (key == 'h' && shapeParam > 0) shapeParam--;   // dec
         btmRow[5].value = shapeParam;
       }
