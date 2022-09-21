@@ -1,4 +1,4 @@
-# CS408 - Alain Maubert Crotte
+# CS408 - Prof. Alain Maubert Crotte
 
 ###### **Ariston Bodnarchuk**
 
