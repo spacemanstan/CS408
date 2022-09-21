@@ -22,6 +22,7 @@ My conclusion and assumption from this test is that older systems won't support 
 * ~~Right click - rotate perspective~~
 * ~~Scroll - zoom in / zoom out~~
 - [x] ~~Keyboards Functions~~
+* ~~emit speed +/- | +< ->~~
 * ~~Red amount +/- | +R -R~~
 * ~~Green Colour +/- | +g -g~~
 * ~~Blu colour +/- | +B -b~~
@@ -31,7 +32,7 @@ My conclusion and assumption from this test is that older systems won't support 
 * ~~Particle Speed +/- | +up (arrow) -down (arrow); 0px/frame - 10px/frame~~
 * ~~Particle Emit Angle +/- y rotation | +left (arrow) -right (arrow)~~
 * ~~Shape (array choice) +/- | +H -h; 0.5 - 3.0~~
-* Toggle Help | ? or / key 
+* ~~Toggle Help | ? or / key ~~
 - [x] ~~Projectile class using dynamic object creation~~
 - [x] ~~ProjectileSystem class that uses an array list to track and remove dead particles~~
 - [x] ~~Tweak click and drag mouse rotation to feel more natural *(not so jumpy)*~~
