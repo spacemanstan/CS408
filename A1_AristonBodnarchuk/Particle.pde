@@ -1,11 +1,11 @@
 /*
-  Particle Class
+  Particle Class (immutable)
  ============================
  Class used to create particle objects for the particle system
  
  The shape is passed by reference from the particle system as every shape is pre calculated
  */
-class Particle {
+final class Particle {
   PShape cubeThing;
   // CREATIVE FEATURE - spin and gravity are creative features
   PVector pos, vel, spin, gravity;
@@ -33,9 +33,11 @@ class Particle {
     cubeThing = shapeChoice;
     pos = new PVector (0, 0, 0);
     vel = initVel.copy();
+    // CREATIVE FEATURE
     spin = new PVector(random(-PI, PI), random(-PI, PI), random(-PI, PI));
     rgb = rgba;
     cubeSize = shpSize;
+    // CREATIVE FEATURE
     gravity = new PVector(0, map(cubeSize, 10, 100, 0.05, .6), 0);
     deceased = false; // it's alive!
 
@@ -52,7 +54,10 @@ class Particle {
 
     pushStyle(); // push style to prevent unintended  styling of different elements
     scale(cubeSize); // make shape correct size
-    strokeWeight(1/cubeSize); // make black lines around shape correct size
+    if(cubeSize == 0)
+      strokeWeight(1); // prevent zero division
+    else
+      strokeWeight(1/cubeSize); // make black lines around shape correct size
     stroke(0); // make black lines black 
     cubeThing.setFill(rgb); // color cube appropriately 
     shape(cubeThing); // display the shape (passed from projectile system)
@@ -85,12 +90,14 @@ class Particle {
     // CREATIVE FEATURE
     // my code incorporates, gravity, air friction, and a random spin to each object
     pos.add(vel);
+    // CREATIVE FEATUREs
     vel.add(gravity);
     // add some friction to make better arcs than just using gravity 
     float fric = -100; // just a value to play with the friction tolerance 
     PVector tion = new PVector(vel.x/fric, vel.y/fric, vel.z/fric);
     vel.add(tion);
-
+    
+    // CREATIVE FEATURE
     float spinSpeed = 0.01;
     // sping slowly in the direction that is randomly generated
     spin.x = spin.x < 0 ? spin.x - spinSpeed : spin.x + spinSpeed;

@@ -192,6 +192,7 @@ class ParticleSystem {
     float x_, y_, z_;
 
     // ternary operators to handle conditional assingments
+    // check if random or not
     red_        = btmRow[0].rdm ? (int)random(0, 101) : red;
     green_      = btmRow[1].rdm ? (int)random(0, 101) : green;
     blue_       = btmRow[2].rdm ? (int)random(0, 101) : blue;
@@ -216,7 +217,11 @@ class ParticleSystem {
 
     // create a temporary color and velocity vector to pass to particle constructor 
     color rgba_ = color(red_, green_, blue_, opacity_);
-    PVector vel_ = new PVector(x_, y_, z_);
+    
+    // ternary operator to better randomize angle + speed if both are random
+    // basically adds two other dimensions to angle calculations 
+    PVector vel_ = (btmRow[6].rdm && btmRow[7].rdm) ? new PVector (random(-25, 25), random(-45, -15), random(-10, 10))
+                      : new PVector (x_, y_, z_);
 
     particles.add( new Particle(PCube[shapeParam_], rgba_, shapeSize_, vel_) );
   }
@@ -356,13 +361,15 @@ class ParticleSystem {
     current = 8;
     btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "X Pos", -1, 'A', 'D');
     current = 9;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Y Pos", -1, 'Q', 'E');
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Y Pos", -1, 'S', 'W');
     current = 10;
-    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Z Pos", -1, 'S', 'W');
+    btmRow[current] = new ButtonData(btmRow_width/2 + btmRow_width*current, height - btmRow_height/2, btmRow_width, btmRow_height, "Z Pos", -1, 'E', 'Q');
   }
 
   // a large switch statement that takes an input char (usually a key) and performs the appropriate action
-  void buttonFunctions(char input) {
+  // each button checks whether random mode is enabled before changing anything 
+  // arrow keys have to be handled twice as coming from the keyboard they are coded values and handle differently  
+  void buttonFunctions(char input) {    
     switch(input) {
       // help screen handled in main
       // red
@@ -410,7 +417,7 @@ class ParticleSystem {
     case '+':
       if (btmRow[4].rdm == false) {
         if ((key == '+' || key == '=') && shapeSize < 100) shapeSize++; // inc
-        if ((key == '_' || key == '-') && shapeSize > 0) shapeSize--;   // dec
+        if ((key == '_' || key == '-') && shapeSize > 1) shapeSize--;   // dec
         btmRow[4].value = shapeSize;
       }
       break;
@@ -429,8 +436,8 @@ class ParticleSystem {
     case 'd':
     case 'D':
       if (btmRow[8].rdm == false) {
-        if ((key == 'd' || key == 'D') && pos.x < width) pos.x++; // inc
-        if ((key == 'a' || key == 'A') && pos.x > 0) pos.x--;   // dec
+        if ((key == 'd' || key == 'D') && pos.x < width) pos.x += 5; // inc
+        if ((key == 'a' || key == 'A') && pos.x > 0) pos.x -= 5;   // dec
       }
       break;
       // y pos
@@ -439,8 +446,8 @@ class ParticleSystem {
     case 'e':
     case 'E':
       if (btmRow[9].rdm == false) {
-        if ((key == 'q' || key == 'Q') && pos.z < height) pos.z++; // inc
-        if ((key == 'E' || key == 'e') && pos.z > 0) pos.z--;   // dec
+        if ((key == 'q' || key == 'Q') && pos.z < height) pos.z += 5; // inc
+        if ((key == 'E' || key == 'e') && pos.z > -width/2) pos.z -= 5;   // dec
       }
       break;
       // z pos
@@ -449,8 +456,8 @@ class ParticleSystem {
     case 'w':
     case 'W':
       if (btmRow[10].rdm == false) {
-        if ((key == 's' || key == 'S') && pos.y < width) pos.y++; // inc
-        if ((key == 'w' || key == 'W') && pos.y > 0) pos.y--;   // dec
+        if ((key == 's' || key == 'S') && pos.y < width) pos.y += 5; // inc
+        if ((key == 'w' || key == 'W') && pos.y > 0) pos.y -= 5;   // dec
       }
       break;
       // degrees + speed
@@ -461,14 +468,37 @@ class ParticleSystem {
       if ((key == '.' || key == '>') && spawnRate < FPS) spawnRate++; // inc
       if ((key == ',' || key == '<') && spawnRate > 1) spawnRate--;   // dec
       break;
-      // degrees + speed
+      // degrees + speed (char input)
+    case '↑':
+      if (speed < maxSpeed) {
+        ++speed;
+        btmRow[6].value = speed;
+      }
+      break;
+    case '↓':
+      if (speed > minSpeed) {
+        --speed;
+        btmRow[6].value = speed;
+      }
+      break;
+    case '←':
+      --angDeg;
+      if (angDeg < 0) angDeg = 359;
+      btmRow[7].value = angDeg;
+      break;
+    case '→':
+      ++angDeg;
+      if (angDeg >= 360) angDeg = 0;
+      btmRow[7].value = angDeg;
+      break;
+      // degrees + speed (arrow keys)
     default:
       if (key == CODED) {
         if (keyCode == UP && speed < maxSpeed) {
           ++speed;
           btmRow[6].value = speed;
         }
-        if (keyCode == DOWN  && speed > minSpeed) {
+        if (keyCode == DOWN && speed > minSpeed) {
           --speed;
           btmRow[6].value = speed;
         }

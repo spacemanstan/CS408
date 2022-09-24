@@ -55,16 +55,20 @@ void setup() {
   surface.setTitle("Particle System"); // name the window better
   size(1280, 720, P3D); // 1280 x 720 resolution or 720p; low enough resolution to work on most systems
   frameRate(FPS); // set frameRate to 60fps
+  // color mode set to RGB values with ranges for values from 0 - 100 including opacity 
   colorMode(RGB, 100, 100, 100, 100);
 
+  // initialize the actual particle system
   emitter = new ParticleSystem();
 }
 
 void draw() {
+  // comment this out for a cool effect
   background(30); // refresh screen (prevents trailing)
 
   emitter.display(); // display particles + update particle system
 
+  // CREATIVE FEATURE
   // display performance in console
   println("Performance: fps[" + round(frameRate) + "] | particles[" + emitter.particles.size() + "]" );
 }
@@ -131,6 +135,8 @@ void mousePressed() {
       }
     } else {
       // if not clicking buttons then using camera rotation, set initial camera value
+      // this works the same as mouseDragged() but I only learnt about that function 
+      // after I finished and din't see the point in rewriting the system I made
       emitter.mX = mouseX;
     }
 }
