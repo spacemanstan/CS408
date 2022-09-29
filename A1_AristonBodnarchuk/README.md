@@ -4,6 +4,9 @@
 
 ## Asignment One - Projectile System 
 
+###### Video Demonstration 
+https://www.youtube.com/watch?v=wS6po6nx-jE
+
 ###### Program Overview
 My main function (Draw) acts as a driver for the particle system calling the display function for it, which nested inside is the particle sytem update function. Particles are immutable and are tracked by an array list, the list is itterated through in reverse to prevent logical errors and simplify programming. Particles track all relevant information to their specific instance of a particle where the particle system tracks the information for what the next added particle should have for intial parameters. 
 
