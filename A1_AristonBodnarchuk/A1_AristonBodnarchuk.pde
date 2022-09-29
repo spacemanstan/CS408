@@ -64,7 +64,7 @@ void setup() {
 
 void draw() {
   // comment this out for a cool effect
-  background(30); // refresh screen (prevents trailing)
+  background(10); // refresh screen (prevents trailing)
 
   emitter.display(); // display particles + update particle system
 
