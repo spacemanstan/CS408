@@ -3,29 +3,40 @@
 // I want to use xml and a better object based structure to create animations on an object level which would make animation much more human readable
 
 // just a test to load an obj
-PShape test;
+PShape marvin, payer, payerTexture;
 
-PVector angs = new PVector(0, 0, 0);
+PVector angs = new PVector(PI, 0, PI);
   
 public void setup() {
   size(1280, 720, P3D);
     
-  test = loadShape("untitled.obj");
+  marvin = loadShape("marvin.obj");
+  marvin.scale(100);
+  
+  payerTexture = loadShape("payerTexture.obj");
+  payerTexture.scale(100);
+  
+  payer = loadShape("payer.obj");
+  payer.scale(100);
 }
 
 public void draw() {
-  background(0);
+  background(69);
   lights();
   
-  translate(mouseX, mouseY, 0);
+  pushMatrix();
+  translate(width/3, height/2 + marvin.getHeight()/2, 100);
+  rotateY(angs.y += 0.05);
+  rotateZ(angs.z);
+
+  shape(marvin);
+  popMatrix();
   
-  //rotateX(angs.x);
-  //rotateZ(angs.y);
-  //rotateY(angs.z);
-  //box(1);
-  shape(test);
-  //scale(100);
-  
-  
-  angs.x += 0.02;
+  pushMatrix();
+  translate(width*2/3, height/2 + payerTexture.getHeight()/2, 100);
+  rotateY(angs.x -= 0.05);
+  rotateZ(angs.z);
+
+  shape(payerTexture);
+  popMatrix();
 }
