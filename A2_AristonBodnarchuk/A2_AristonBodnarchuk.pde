@@ -3,7 +3,7 @@
 // I want to use xml and a better object based structure to create animations on an object level which would make animation much more human readable
 
 // just a test to load an obj
-PShape marvin, payer, payerTexture;
+PShape marvin, payer, textureTest;
 
 PVector angs = new PVector(PI, 0, PI);
   
@@ -13,8 +13,8 @@ public void setup() {
   marvin = loadShape("marvin.obj");
   marvin.scale(100);
   
-  payerTexture = loadShape("payerTexture.obj");
-  payerTexture.scale(100);
+  textureTest = loadShape("C:/Users/arist/Documents/Blender/newscene/newscene.obj");
+  textureTest.scale(1);
   
   payer = loadShape("payer.obj");
   payer.scale(100);
@@ -33,10 +33,10 @@ public void draw() {
   popMatrix();
   
   pushMatrix();
-  translate(width*2/3, height/2 + payerTexture.getHeight()/2, 100);
+  translate(width*2/3, height/2 + textureTest.getHeight()/2, 100);
   rotateY(angs.x -= 0.05);
   rotateZ(angs.z);
 
-  shape(payerTexture);
+  shape(textureTest);
   popMatrix();
 }
