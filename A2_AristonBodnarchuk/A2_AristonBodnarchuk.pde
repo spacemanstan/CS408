@@ -1,42 +1,39 @@
-// just getting some stuff down to start
-// I need to think about the logic and animations I want to do for the animations 
-// I want to use xml and a better object based structure to create animations on an object level which would make animation much more human readable
+Button menuBtns[];
 
-// just a test to load an obj
-PShape marvin, payer, textureTest;
-
-PVector angs = new PVector(PI, 0, PI);
-  
 public void setup() {
-  size(1280, 720, P3D);
-    
-  marvin = loadShape("marvin.obj");
-  marvin.scale(100);
-  
-  textureTest = loadShape("C:/Users/arist/Documents/Blender/newscene/newscene.obj");
-  textureTest.scale(1);
-  
-  payer = loadShape("payer.obj");
-  payer.scale(100);
+  size(1280, 720, P3D); // "720p HD" window resolution 
+  colorMode(HSB, 360, 100, 100);
+  //fullScreen();
+
+  frameRate(60);
+
+  menuBtns = new Button[5];
+  // play button (top)
+  menuBtns[0] = new Button("Play", width*0.5, height*0.3, width*0.05, width*0.3, height*0.2, width*0.025, 120);
+  // toggle export + export location
+  menuBtns[1] = new Button("Export", width*0.5 + height*0.1, height*0.55, width*0.05, width*0.3 - height*0.2, height*0.2, width*0.025, 36);
+  menuBtns[2] = new Button("X", width*0.4, height*0.55, width*0.05, height*0.15, height*0.15, 0, -1);
+  menuBtns[3] = new Button("Load", width*0.5, height*0.8, width*0.05, width*0.3, height*0.2, width*0.025, 270);
+  // help button in corner
+  menuBtns[4] = new Button("[?]", width - height*0.1, height - height*0.1, width*0.05, height*0.15, height*0.15, width*0.01, -1);
 }
 
 public void draw() {
-  background(69);
-  lights();
-  
-  pushMatrix();
-  translate(width/3, height/2 + marvin.getHeight()/2, 100);
-  rotateY(angs.y += 0.05);
-  rotateZ(angs.z);
+  background(69); // nice
 
-  shape(marvin);
-  popMatrix();
-  
-  pushMatrix();
-  translate(width*2/3, height/2 + textureTest.getHeight()/2, 100);
-  rotateY(angs.x -= 0.05);
-  rotateZ(angs.z);
+  displayTitle();
 
-  shape(textureTest);
-  popMatrix();
+  for (int ii = 0; ii < menuBtns.length; ++ii)
+    if (menuBtns[ii] != null) menuBtns[ii].display();
+}
+
+void displayTitle() {
+  pushStyle(); // prevent styling collisions 
+  rectMode(CENTER); // make life easy 
+
+  // title text
+  textAlign(CENTER, CENTER);
+  textSize(height*0.06);
+  text("LIOM XML Animation System", width*0.5, height*0.075);
+  popStyle();
 }
