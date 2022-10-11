@@ -24,6 +24,7 @@ XML handler -> object handler -> animation
 
 ###### ToDo 
 - [x] Create readme files
+- [ ] Start menu 
 - [ ] Design XML animation syntax
 - [ ] Create test animations
 - [ ] Export simple OBJ files for animation use
