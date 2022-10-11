@@ -2,7 +2,7 @@
 
 ###### **Ariston Bodnarchuk**
 
-## Asignment Two - LIMO (Linear Interpolation and OBJ Models) Animation System
+## Asignment Two - LIOM (Linear Interpolation and OBJ Models) Animation System
 
 ###### Video Demonstration 
 to do...
