@@ -21,10 +21,14 @@ XML handler -> object handler -> animation
  - Frame export setting to export animations frame by frame
  - Sound?
  - More, gotta read what the requirements even are lol
+ - HSB colors
+ - Color interpolation
 
 ###### ToDo 
 - [x] Create readme files
 - [ ] Start menu 
+- [ ] HSB color support
+- [ ] Color interpolation
 - [ ] Design XML animation syntax
 - [ ] Create test animations
 - [ ] Export simple OBJ files for animation use
