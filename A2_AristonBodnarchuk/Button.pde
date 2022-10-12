@@ -59,7 +59,6 @@ class Button {
     strokeWeight(5);
     rect(btnPos.x, btnPos.y, btnDim.x, btnDim.y, btnDim.z);
 
-
     if (bottomText == null) {
       fill(0); // dark
       textAlign(CENTER, CENTER);
@@ -85,6 +84,7 @@ class Button {
     popStyle();
   }
 
+  // return true if mouse was withing rect dimensions 
   boolean clicked() {
     // disabled button can't be clicked
     if(disabled)

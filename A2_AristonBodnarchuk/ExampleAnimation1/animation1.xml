@@ -1,44 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object>
-    <id></id>
-    <!-- type can be obj or 2d texture -->
-    <model type="obj">
-        <src>./path/shit.obj</src>
-        <!-- optional mtl source? -->
-        <!-- 4 vertex elements for texture; maybe just have an obj or type element instead -->
-    </model>
-    <frame>
-        <start></start>
-        <end></end>
-    </frame>
-    <position_start>
-        <x></x>
-        <y></y>
-        <z></z>
-    </position_start>
-    <position_end>
-        <x></x>
-        <y></y>
-        <z></z>
-    </position_end>
-    <rotation_start>
-        <x></x>
-        <y></y>
-        <z></z>
-    </rotation_start>
-    <rotation_end>
-        <x></x>
-        <y></y>
-        <z></z>
-    </rotation_end>
-    <scaling_start>
-        <x></x>
-        <y></y>
-        <z></z>
-    </scaling_start>
-    <scaling_end>
-        <x></x>
-        <y></y>
-        <z></z>
-    </scaling_end>
-</object>
+
+<!-- 
+    animations rendered at 1280 x 720
+    rotation is in degrees
+ -->
+
+<animation>
+    <object>
+        <id></id>
+        <src type="cube"></src>
+        <keyframe>
+            <frame>0</frame>
+            <position>
+                <x>640</x>
+                <y>640</y>
+                <z>0</z>
+            </position>
+            <rotation>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+            </rotation>
+            <scaling>
+                <x>1</x>
+                <y>1</y>
+                <z>1</z>
+            </scaling>
+            <color>
+                <h>0</h>
+                <s>69</s>
+                <b>83</b>
+            </color>
+        </keyframe>
+    </object>
+</animation>
