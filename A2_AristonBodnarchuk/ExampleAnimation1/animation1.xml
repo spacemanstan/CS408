@@ -1,5 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <object>
-    <id>apple</id>
-    <model></model>
+    <id></id>
+    <!-- type can be obj or 2d texture -->
+    <model type="obj">
+        <src>./path/shit.obj</src>
+        <!-- optional mtl source? -->
+        <!-- 4 vertex elements for texture; maybe just have an obj or type element instead -->
+    </model>
+    <frame>
+        <start></start>
+        <end></end>
+    </frame>
+    <position_start>
+        <x></x>
+        <y></y>
+        <z></z>
+    </position_start>
+    <position_end>
+        <x></x>
+        <y></y>
+        <z></z>
+    </position_end>
+    <rotation_start>
+        <x></x>
+        <y></y>
+        <z></z>
+    </rotation_start>
+    <rotation_end>
+        <x></x>
+        <y></y>
+        <z></z>
+    </rotation_end>
+    <scaling_start>
+        <x></x>
+        <y></y>
+        <z></z>
+    </scaling_start>
+    <scaling_end>
+        <x></x>
+        <y></y>
+        <z></z>
+    </scaling_end>
 </object>
