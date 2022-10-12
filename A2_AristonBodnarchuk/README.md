@@ -26,12 +26,12 @@ XML handler -> object handler -> animation
 
 ###### ToDo 
 - [x] Create readme files
-- [ ] Start menu 
-- [ ] HSB color support
+- [x] Start menu 
+- [x] HSB color support
 - [ ] Color interpolation
-- [ ] Design XML animation syntax
+- [x] Design XML animation syntax
 - [ ] Create test animations
-- [ ] Export simple OBJ files for animation use
+- [ ] Import simple OBJ files for animation use
 - [ ] Design XML reader that can parse and error check
 - [ ] Design and create an object handler that can create timeline objects for the animation
 - [ ] Design and create a timeline object system to manage anything on screen and delete when not needed
