@@ -6,31 +6,10 @@
  -->
 
 <animation>
-    <object>
-        <id></id>
-        <src type="cube"></src>
-        <keyframe>
-            <frame>0</frame>
-            <position>
-                <x>640</x>
-                <y>640</y>
-                <z>0</z>
-            </position>
-            <rotation>
-                <x>0</x>
-                <y>0</y>
-                <z>0</z>
-            </rotation>
-            <scaling>
-                <x>1</x>
-                <y>1</y>
-                <z>1</z>
-            </scaling>
-            <color>
-                <h>0</h>
-                <s>69</s>
-                <b>83</b>
-            </color>
-        </keyframe>
-    </object>
+    <object id="rocket" type="obj">spaceShip/spaceShip.obj</object>
+    <keyframe id="rocket" frame="0">
+        <position x="0" y="0" z="0" />
+        <rotation x="0" y="0" z="0" />
+        <scale x="0" y="0" z="0" />
+    </keyframe>
 </animation>

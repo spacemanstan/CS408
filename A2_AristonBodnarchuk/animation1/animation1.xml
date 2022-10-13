@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+    animations rendered at 1280 x 720
+    rotation is in degrees
+    object types: obj, img, sphere, box
+
+    any field missing defaults to 0,
+ -->
+
+<animation>
+    <object type="sphere">
+        <id>globe</id>
+        <file></file>
+        <texture>shitEarth.png</texture>
+    </object>
+    <keyframe>
+        <id>globe</id>
+        <frame>0</frame>
+        <position>
+            <x>640</x>
+            <y>640</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <scaling>
+            <x>1</x>
+            <y>1</y>
+            <z>1</z>
+        </scaling>
+    </keyframe>
+    <keyframe>
+        <id>globe</id>
+        <frame>600</frame>
+        <position>
+            <x>640</x>
+            <y>640</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>7200</x>
+            <y>14400</y>
+            <z>0</z>
+        </rotation>
+        <scaling>
+            <x>1</x>
+            <y>1</y>
+            <z>1</z>
+        </scaling>
+    </keyframe>
+</animation>

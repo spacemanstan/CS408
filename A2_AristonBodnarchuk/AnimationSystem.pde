@@ -1,7 +1,18 @@
+/*
+  
+ abbafjbafaf
+ !!!!!!!!!!!!!!!!!!!!111
+ 
+ do not forget to set framecount to 0 when animation is starting
+ and textureWrap(REPEAT);
+ */
+
 class AnimationSystem {
   File startDir, startDirXML;
+  XML animation;
 
   String SYS_STATE = "MENU";
+  //String SYS_STATE = "TEST";
 
   int btnIndex = -1;
   String animationPath = null, exportPath = null;
@@ -9,6 +20,10 @@ class AnimationSystem {
   boolean showHelp = false;
 
   Button menuBtns[];
+
+  ArrayList<Object3D> objects = new ArrayList<Object3D>();
+
+  PShape rocket = loadShape("animation1/spaceShip/spaceShip.obj");
 
   AnimationSystem() {
     // load help screen image
@@ -20,6 +35,9 @@ class AnimationSystem {
 
     // initialize buttons
     initBtns();
+
+    // make textures repeat
+    textureWrap(REPEAT);
   }
 
   void run() {
@@ -27,6 +45,81 @@ class AnimationSystem {
 
     if (SYS_STATE == "MENU")
       run_menu();
+
+    if (SYS_STATE == "LOAD") {
+      animation = loadXML(animationPath);
+
+      XML[] objs = animation.getChildren("object");
+      XML[] kfs = animation.getChildren("keyframe");
+
+      for (int o = 0; o < objs.length; o++) {
+        String id = objs[o].getString("id");
+        String path = objs[o].getContent();
+
+        Object3D temp = new Object3D(id, path);
+        
+        boolean first = true;
+        
+        for (int k = 0; k < kfs.length; k++) {
+            String i_ = kfs[k].getString("id");
+            
+            if(i_ != temp.id)
+              break;
+ 
+            int f_ =  kfs[k].getInt("frame");
+            
+            if(first) {
+              temp.firstFrame = f_;
+              first = false;
+            }
+            
+            XML pos = kfs[k].getChild("position");
+            PVector p_ = new PVector(pos.getFloat("x"), pos.getFloat("y"), pos.getFloat("z"));
+            XML rot = kfs[k].getChild("rotation");
+            PVector r_ = new PVector(rot.getFloat("x"), rot.getFloat("y"), rot.getFloat("z"));
+            XML scl = kfs[k].getChild("scale");
+            PVector s_ = new PVector(scl.getFloat("x"), scl.getFloat("y"), scl.getFloat("z"));
+            
+            temp.addKeyframe(i_, f_, p_, r_, s_);
+        }
+        
+        objects.add(temp);
+      }
+
+      frameCount = 0;
+      SYS_STATE = "PLAY";
+    }
+
+    if (SYS_STATE == "PLAY") {
+      for (int i = 0; i < objects.size(); ++i)
+        println(objects.get(i).id);
+        
+      SYS_STATE = "END";
+    }
+
+    if (SYS_STATE == "END") {
+      // display "fin"; click to continue
+      pushStyle(); // prevent styling collisions 
+      rectMode(CENTER); // make life easy 
+
+      textAlign(CENTER, BOTTOM);
+      textSize(width*0.05);
+      text("fin", width*0.5, height*0.5);
+
+      textAlign(CENTER, TOP);
+      textSize(width*0.03);
+      text("click to continue", width*0.5, height*0.6);
+    }
+
+    if (SYS_STATE == "TEST") {
+      //pushMatrix();
+      //translate(width/2, height/2);
+      //rotateX( radians(frameCount%(360*420)) );
+      //rotateY( radians(frameCount%(360*10)) );
+      //scale(100);
+      //shape(rocket);
+      //popMatrix();
+    }
   }
 
   void run_menu() {
@@ -67,6 +160,9 @@ class AnimationSystem {
   }
 
   void mouseEvent() {
+    if (SYS_STATE == "END")
+      SYS_STATE = "MENU";
+
     if (showHelp) {
       showHelp = false;
       return;
@@ -93,6 +189,7 @@ class AnimationSystem {
     switch(btnIndex) {
     case 0:
       println("Building animation");
+      SYS_STATE = "LOAD";
       break;
     case 1:
       if (leftClick) {
