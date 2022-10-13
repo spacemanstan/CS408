@@ -3,53 +3,28 @@
 <!-- 
     animations rendered at 1280 x 720
     rotation is in degrees
-    object types: obj, img, sphere, box
-
-    any field missing defaults to 0,
  -->
 
 <animation>
-    <object type="sphere">
-        <id>globe</id>
-        <file></file>
-        <texture>shitEarth.png</texture>
-    </object>
-    <keyframe>
-        <id>globe</id>
-        <frame>0</frame>
-        <position>
-            <x>640</x>
-            <y>640</y>
-            <z>0</z>
-        </position>
-        <rotation>
-            <x>0</x>
-            <y>0</y>
-            <z>0</z>
-        </rotation>
-        <scaling>
-            <x>1</x>
-            <y>1</y>
-            <z>1</z>
-        </scaling>
+    <object id="rocket" type="obj">/spaceShip/spaceShip.obj</object>
+    <keyframe id="rocket" frame="0">
+        <position x="0" y="360" z="0" />
+        <rotation x="135" y="0" z="-90" />
+        <scale x="100" y="100" z="100" />
     </keyframe>
-    <keyframe>
-        <id>globe</id>
-        <frame>600</frame>
-        <position>
-            <x>640</x>
-            <y>640</y>
-            <z>0</z>
-        </position>
-        <rotation>
-            <x>7200</x>
-            <y>14400</y>
-            <z>0</z>
-        </rotation>
-        <scaling>
-            <x>1</x>
-            <y>1</y>
-            <z>1</z>
-        </scaling>
+    <keyframe id="rocket" frame="60">
+        <position x="1280" y="360" z="0" />
+        <rotation x="495" y="0" z="-90" />
+        <scale x="100" y="100" z="100" />
+    </keyframe>
+    <keyframe id="rocket" frame="90">
+        <position x="1280" y="360" z="0" />
+        <rotation x="495" y="0" z="90" />
+        <scale x="100" y="100" z="100" />
+    </keyframe>
+    <keyframe id="rocket" frame="150">
+        <position x="0" y="360" z="0" />
+        <rotation x="135" y="0" z="90" />
+        <scale x="100" y="100" z="100" />
     </keyframe>
 </animation>
