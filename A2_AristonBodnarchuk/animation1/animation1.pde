@@ -1,7 +1,7 @@
 final int FPS = 30;
 
 // store objs
-Object3D objs[];
+Object_ objs[];
 
 XML anim;
 int animationEndFrame = -1;
@@ -46,7 +46,7 @@ void playAnimation() {
 
   textureWrap(REPEAT); // make textures work
   for (int oIndex = 0; oIndex < objs.length; ++oIndex)
-    objs[oIndex].animate();
+    objs[oIndex].display();
 
   if (frameCount >= animationEndFrame)
     ANIMATION_START = false;
@@ -58,9 +58,13 @@ int loadAnimation(String animationFile) {
    -2 = no pos; 
    -3 = no rot; 
    -4 = no scale; 
+   -5 = missing width;
+   -6 = missing height;
+   -42 = type match error;
    -69 = keyframe timing error; 
-   -420 = failed to load something 
-   -666 = objectless keyframe error
+   -420 = failed to load path for object or image / texture;
+   -666 = objectless keyframe error;
+   -690 = missing texture error;
    */
   int ERR_CODE = 0; 
 
@@ -71,7 +75,7 @@ int loadAnimation(String animationFile) {
   XML[] XMLkeys = anim.getChildren("keyframe"); // get list of keyframes
 
   // prepare array for objs
-  objs = new Object3D[XMLobjs.length];
+  objs = new Object_[XMLobjs.length];
 
   // objectless keyframe error test
   for (int ii = 0; ii < XMLkeys.length; ++ii) {
@@ -88,14 +92,74 @@ int loadAnimation(String animationFile) {
   // iterate through each object, then retrieve and add all related keyframes
   // if errors are encountered exit with correct error
   for (int ii = 0; ii < XMLobjs.length; ++ii) {
+    // check type mismatch error
+    boolean typeCheck = XMLobjs[ii].getString("type").equals("obj") 
+      || XMLobjs[ii].getString("type").equals("box") 
+      || XMLobjs[ii].getString("type").equals("cube")
+      || XMLobjs[ii].getString("type").equals("sphere")
+      || XMLobjs[ii].getString("type").equals("img");
+    if (!typeCheck) return ERR_CODE = -42;
+
     String obj_id = XMLobjs[ii].getString("id");
-    String obj_path = XMLobjs[ii].getContent();
-    println("Creating object: id[" + obj_id + "], file[" + obj_path + "]");
 
-    // check if file is correct before loading
-    if ( new File(sketchPath() + obj_path).isFile() == false) return ERR_CODE = -420;
+    println("Creating object: id[" + obj_id + "]");
 
-    objs[ii] = new Object3D(loadShape(obj_path), obj_id);
+    // 3D obj (obj file + optional mtl file for textures)
+    if ( XMLobjs[ii].getString("type").equals("obj")) {
+      String obj_path = XMLobjs[ii].getContent();
+      // check if file is correct before loading
+      if ( new File(sketchPath() + obj_path).isFile() == false) return ERR_CODE = -420;
+
+      objs[ii] = new Object3D(loadShape(obj_path));
+    }
+    // img (image file)
+    if ( XMLobjs[ii].getString("type").equals("img") ) {
+      String obj_path = XMLobjs[ii].getContent();
+      // check if file is correct before loading
+      if ( new File(sketchPath() + obj_path).isFile() == false) return ERR_CODE = -420;
+      // attribute check 
+      if (!XMLobjs[ii].hasAttribute("width")) return ERR_CODE = -5;
+      if (!XMLobjs[ii].hasAttribute("height")) return ERR_CODE = -6;
+
+      int w_ = XMLobjs[ii].getInt("width");
+      int h_ = XMLobjs[ii].getInt("height");
+
+      objs[ii] = new Object2D(loadImage(obj_path), w_, h_);
+    }
+    // if primative, check content texture first then handle object creation 
+    if ( XMLobjs[ii].getString("type").equals("cube") 
+      || XMLobjs[ii].getString("type").equals("box") 
+      || XMLobjs[ii].getString("type").equals("sphere") ) 
+    {
+      // missing texture check
+      // content specifies texture 
+      if( XMLobjs[ii].getContent() == null 
+      || XMLobjs[ii].getContent().equals("") 
+      || XMLobjs[ii].getContent().equals(" ") ) return ERR_CODE = -690;
+      
+      String texture_path = XMLobjs[ii].getContent();
+      if ( new File(sketchPath() + texture_path).isFile() == false) return ERR_CODE = -690;
+
+      // box || cube (processing 3d primative cube shape)
+      if ( XMLobjs[ii].getString("type").equals("cube") || XMLobjs[ii].getString("type").equals("box") ) {    
+        // create a 1x1x1 cube, scale determines "Size"
+        PShape shape = createShape(BOX, 1);
+        shape.setTexture(loadImage(texture_path));
+        shape.setStroke(false);
+        
+        objs[ii] = new Object3D(shape);
+      }
+
+      // sphere (processing 3d primative sphere shape)
+      if ( XMLobjs[ii].getString("type").equals("sphere") ) {
+        // create a sphere with radius 1, scale for "size"
+        PShape shape = createShape(SPHERE, 1);
+        shape.setTexture(loadImage(texture_path));
+        shape.setStroke(false);
+        
+        objs[ii] = new Object3D(shape);
+      }
+    }
 
     // iterate and add keyframes for current object
     for (int jj = 0; jj < XMLkeys.length; ++jj) {
@@ -117,7 +181,6 @@ int loadAnimation(String animationFile) {
         }
 
         // grab keyframe info from xml
-
         // get frame
         int f_ = XMLkeys[jj].getInt("frame");
 
@@ -154,15 +217,10 @@ int loadAnimation(String animationFile) {
 
         println("Obj " + obj_id + " adding keyframe f: " + f_ + " p:" + p_ + " r:" + r_ + " s:" + s_ );
         objs[ii].addKeyframe(f_, p_, r_, s_);
-
-        // original first frame and last frame check 
-        // last step is to check if this is the firt or last frame and record it
-        //if (jj == 0 || jj == XMLkeys.length -1) 
-        //  if (jj == 0) objs[ii].firstFrame = f_;
-        //  else         objs[ii].lastFrame  = f_;
       }
     }
   }
 
-  return 0;
+  // if all code executed succesfully return success ERR_CODE
+  return ERR_CODE = 0;
 }

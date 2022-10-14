@@ -12,7 +12,6 @@ class AnimationSystem {
   XML animation;
 
   String SYS_STATE = "MENU";
-  //String SYS_STATE = "TEST";
 
   int btnIndex = -1;
   String animationPath = null, exportPath = null;
@@ -21,9 +20,6 @@ class AnimationSystem {
 
   Button menuBtns[];
 
-  ArrayList<Object3D> objects = new ArrayList<Object3D>();
-
-  PShape rocket = loadShape("animation1/spaceShip/spaceShip.obj");
 
   AnimationSystem() {
     // load help screen image
@@ -47,61 +43,19 @@ class AnimationSystem {
       run_menu();
 
     if (SYS_STATE == "LOAD") {
-      animation = loadXML(animationPath);
-
-      XML[] objs = animation.getChildren("object");
-      XML[] kfs = animation.getChildren("keyframe");
-
-      for (int o = 0; o < objs.length; o++) {
-        String id = objs[o].getString("id");
-        String path = objs[o].getContent();
-
-        Object3D temp = new Object3D(id, path);
-        
-        boolean first = true;
-        
-        for (int k = 0; k < kfs.length; k++) {
-            String i_ = kfs[k].getString("id");
-            
-            if(i_ != temp.id)
-              break;
- 
-            int f_ =  kfs[k].getInt("frame");
-            
-            if(first) {
-              temp.firstFrame = f_;
-              first = false;
-            }
-            
-            XML pos = kfs[k].getChild("position");
-            PVector p_ = new PVector(pos.getFloat("x"), pos.getFloat("y"), pos.getFloat("z"));
-            XML rot = kfs[k].getChild("rotation");
-            PVector r_ = new PVector(rot.getFloat("x"), rot.getFloat("y"), rot.getFloat("z"));
-            XML scl = kfs[k].getChild("scale");
-            PVector s_ = new PVector(scl.getFloat("x"), scl.getFloat("y"), scl.getFloat("z"));
-            
-            temp.addKeyframe(i_, f_, p_, r_, s_);
-        }
-        
-        objects.add(temp);
-      }
-
-      frameCount = 0;
-      SYS_STATE = "PLAY";
     }
 
     if (SYS_STATE == "PLAY") {
-      for (int i = 0; i < objects.size(); ++i)
-        println(objects.get(i).id);
-        
-      SYS_STATE = "END";
     }
 
     if (SYS_STATE == "END") {
+      background(0); // nice
+
       // display "fin"; click to continue
       pushStyle(); // prevent styling collisions 
       rectMode(CENTER); // make life easy 
 
+      fill(360);
       textAlign(CENTER, BOTTOM);
       textSize(width*0.05);
       text("fin", width*0.5, height*0.5);
@@ -109,16 +63,6 @@ class AnimationSystem {
       textAlign(CENTER, TOP);
       textSize(width*0.03);
       text("click to continue", width*0.5, height*0.6);
-    }
-
-    if (SYS_STATE == "TEST") {
-      //pushMatrix();
-      //translate(width/2, height/2);
-      //rotateX( radians(frameCount%(360*420)) );
-      //rotateY( radians(frameCount%(360*10)) );
-      //scale(100);
-      //shape(rocket);
-      //popMatrix();
     }
   }
 
@@ -131,32 +75,6 @@ class AnimationSystem {
       for (int ii = 0; ii < menuBtns.length; ++ii)
         if (menuBtns[ii] != null) menuBtns[ii].display();
     }
-  }
-
-  // functio to initialize buttons, less constructor clutter
-  void initBtns() {
-    // setup buttons array 
-    menuBtns = new Button[5];
-    /*
-    buttons are placed in a semi quarter system. By making all the buttons appear based on screen size percentages
-     the window is theortetically rezisable. The limitation with the current implementation is it is designed for 
-     typical 16x9 monitor layouts, or rather wide screen layouts and would display but be very ugly at unintended
-     no rectangle displays. 
-     
-     buttons use contrustors to initialize all parameters, see button class for more info 
-     */
-    // play button; index 0; location top middle
-    menuBtns[0] = new Button("Play", "", width*0.5, height*0.3, width*0.05, width*0.3, height*0.2, width*0.025, 120);
-    menuBtns[0].disabled = true; // can't play animation if nothing is loaded
-    // Load button; index 1; location screen center, below play 
-    menuBtns[1] = new Button("Load", "", width*0.5, height*0.55, width*0.05, width*0.3, height*0.2, width*0.025, 270);
-    // Export button; index 2; location bottom middle, below load 
-    menuBtns[2] = new Button("Export", "", width*0.5, height*0.8, width*0.05, width*0.3, height*0.2, width*0.025, 36);
-    // Export checkbox; index 3; left adjacent export 
-    menuBtns[3] = new Button("", width*0.3, height*0.8, width*0.05, height*0.1, height*0.1, 0, -1);
-    menuBtns[3].disabled = true; // disable export option if no export location
-    // help button; index 4; location bottom right corner
-    menuBtns[4] = new Button("[?]", width - height*0.1, height - height*0.1, width*0.05, height*0.15, height*0.15, width*0.01, -1);
   }
 
   void mouseEvent() {
@@ -187,11 +105,12 @@ class AnimationSystem {
       println("button index " + btnIndex + " clicked");
 
     switch(btnIndex) {
+
     case 0:
-      println("Building animation");
-      SYS_STATE = "LOAD";
+      // play button
       break;
     case 1:
+      // load button
       if (leftClick) {
         selectInput("Select an animation XML file:", "selectionHandler", startDirXML);
       } else {
@@ -201,6 +120,7 @@ class AnimationSystem {
       }
       break;
     case 2:
+      // export button
       if (leftClick) {
         selectFolder("Select export destination folder:", "selectionHandler", startDir);
       } else {
@@ -211,9 +131,11 @@ class AnimationSystem {
       }
       break;
     case 3:
+      // export checkbox
       menuBtns[3].topText = menuBtns[3].topText == "X" ? "" : "X";
       break;
     case 4:
+      // help button 
       showHelp = true;
       break;
     default:
@@ -251,5 +173,31 @@ class AnimationSystem {
       menuBtns[3].disabled = menuBtns[2].bottomText == null || menuBtns[2].bottomText == "" || exportPath == null;
       if (menuBtns[3].disabled) menuBtns[3].topText = "";
     }
+  }
+
+  // functio to initialize buttons, less constructor clutter
+  void initBtns() {
+    // setup buttons array 
+    menuBtns = new Button[5];
+    /*
+    buttons are placed in a semi quarter system. By making all the buttons appear based on screen size percentages
+     the window is theortetically rezisable. The limitation with the current implementation is it is designed for 
+     typical 16x9 monitor layouts, or rather wide screen layouts and would display but be very ugly at unintended
+     no rectangle displays. 
+     
+     buttons use contrustors to initialize all parameters, see button class for more info 
+     */
+    // play button; index 0; location top middle
+    menuBtns[0] = new Button("Play", "", width*0.5, height*0.3, width*0.05, width*0.3, height*0.2, width*0.025, 120);
+    menuBtns[0].disabled = true; // can't play animation if nothing is loaded
+    // Load button; index 1; location screen center, below play 
+    menuBtns[1] = new Button("Load", "", width*0.5, height*0.55, width*0.05, width*0.3, height*0.2, width*0.025, 270);
+    // Export button; index 2; location bottom middle, below load 
+    menuBtns[2] = new Button("Export", "", width*0.5, height*0.8, width*0.05, width*0.3, height*0.2, width*0.025, 36);
+    // Export checkbox; index 3; left adjacent export 
+    menuBtns[3] = new Button("", width*0.3, height*0.8, width*0.05, height*0.1, height*0.1, 0, -1);
+    menuBtns[3].disabled = true; // disable export option if no export location
+    // help button; index 4; location bottom right corner
+    menuBtns[4] = new Button("[?]", width - height*0.1, height - height*0.1, width*0.05, height*0.15, height*0.15, width*0.01, -1);
   }
 }
