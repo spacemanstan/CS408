@@ -20,13 +20,12 @@ class Object3D {
 // holds data
 class keyframe {
   int frame;
-  PVector pos_, rot_, scl_;
+  PVector pos, rot, scl;
 
   keyframe(int f, PVector p, PVector r, PVector s) {
-    //id = i;
     frame = f;
-    pos_ = p.copy();
-    rot_ = r.copy();
-    scl_ = s.copy();
+    pos = p.copy();
+    rot = r.copy();
+    scl = s.copy();
   }
 }

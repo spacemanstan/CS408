@@ -3,6 +3,9 @@
 <!-- 
     animations rendered at 1280 x 720
     rotation is in degrees
+
+    keyframes of same ID must be in ascending order
+    keyframes must have an associated object
  -->
 
 <animation>

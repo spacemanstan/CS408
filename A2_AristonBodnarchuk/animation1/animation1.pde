@@ -18,9 +18,9 @@ public void setup() {
   int loadResult = loadAnimation();
 
   if (loadResult == 0) {
-    println("succesfully loaded");
+    println("Animation creation successful; objects and keyframes loaded succesfully without error.");
   } else {
-    println("failed to load; error code: " + loadResult);
+    println("Animation creation failed; error code: " + loadResult);
   }
 }
 
@@ -45,14 +45,13 @@ int loadAnimation() {
   anim = loadXML("animation1.xml");
 
   // load xml objects
-  XML[] XMLobjs = anim.getChildren("object");
-  XML[] XMLkeys = anim.getChildren("keyframe");
+  XML[] XMLobjs = anim.getChildren("object"); // get list of objects
+  XML[] XMLkeys = anim.getChildren("keyframe"); // get list of keyframes
 
-  // prepare array for 
+  // prepare array for objs
   objs = new Object3D[XMLobjs.length];
 
   // objectless keyframe error test
-
   for (int ii = 0; ii < XMLkeys.length; ++ii) {
     boolean errorCheck = true;
     for (int jj = 0; jj < XMLobjs.length; ++jj) {
@@ -64,6 +63,8 @@ int loadAnimation() {
     if (errorCheck) return ERR_CODE = -666;
   }
 
+  // iterate through each object, then retrieve and add all related keyframes
+  // if errors are encountered exit with correct error
   for (int ii = 0; ii < XMLobjs.length; ++ii) {
     String obj_id = XMLobjs[ii].getString("id");
     String obj_path = XMLobjs[ii].getContent();
@@ -94,16 +95,16 @@ int loadAnimation() {
         }
 
         // grab keyframe info from xml
-        
+
         // get frame
         int f_ = XMLkeys[jj].getInt("frame");
 
         // keyframe timing error check
         // check remaining frames
         if (jj != XMLkeys.length - 1)
-        for (int kfc = jj; kfc < XMLkeys.length; ++kfc)
-        if ( XMLkeys[jj + 1].getString("id").equals(obj_id) && XMLkeys[jj + 1].getInt("frame") <= f_ )
-        return ERR_CODE = -69;
+          for (int kfc = jj; kfc < XMLkeys.length; ++kfc)
+            if ( XMLkeys[jj + 1].getString("id").equals(obj_id) && XMLkeys[jj + 1].getInt("frame") <= f_ )
+              return ERR_CODE = -69;
 
         // get pos
         PVector p_ = new PVector(
@@ -128,6 +129,11 @@ int loadAnimation() {
 
         println("Obj " + obj_id + " adding keyframe f: " + f_ + " p:" + p_ + " r:" + r_ + " s:" + s_ );
         objs[ii].addKeyframe(f_, p_, r_, s_);
+
+        // last step is to check if this is the firt or last frame and record it
+        if (jj == 0 || jj == XMLkeys.length -1) 
+          if (jj == 0) objs[ii].firstFrame = f_;
+          else         objs[ii].lastFrame  = f_;
       }
     }
   }
