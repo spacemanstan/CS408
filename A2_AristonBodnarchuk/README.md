@@ -25,6 +25,7 @@ XML handler -> object handler -> animation
  - Color interpolation
 
 ###### ToDo 
+- [ ] Documentation
 - [x] Create readme files
 - [x] Start menu  // CREATIVE FEATURE
     - [ ] Mouse Functionality 
