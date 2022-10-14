@@ -26,12 +26,29 @@ XML handler -> object handler -> animation
 
 ###### ToDo 
 - [x] Create readme files
-- [x] Start menu 
-- [x] HSB color support
-- [ ] Color interpolation
-- [x] Design XML animation syntax
+- [x] Start menu  // CREATIVE FEATURE
+    - [ ] Mouse Functionality 
+    - [ ] Keyboard controls (maybe)
+- [x] HSB color support // CREATIVE FEATURE
+- [x] basic lighting // CREATIVE FEATURE
+- [x] Convert animation file syntaxt to XML syntax // CREATIVE FEATURE
+- [x] Design XML reader that can parse and error check
+    - [x] no frame error // CREATIVE FEATURE
+    - [x] no pos error // CREATIVE FEATURE
+    - [x] no rot error // CREATIVE FEATURE
+    - [x] no scale error // CREATIVE FEATURE
+    - [x] object load error // CREATIVE FEATURE
+    - [x] key frame timing error
+    - [x] objectless keyframe error
+    - [ ] object type check // CREATIVE FEATURE
+    - [ ] image object checks // CREATIVE FEATURE
+    - [ ] sphere object checks // CREATIVE FEATURE
+    - [ ] cube / box object checks // CREATIVE FEATURE
+- [x] Create object class and keyframe class
+    - [x] 3d obj file support
+    - [ ] 2d image support 
+    - [ ] generate sphere 
+    - [ ] generate cube / box
 - [ ] Create test animations
-- [ ] Import simple OBJ files for animation use
-- [ ] Design XML reader that can parse and error check
-- [ ] Design and create an object handler that can create timeline objects for the animation
-- [ ] Design and create a timeline object system to manage anything on screen and delete when not needed
+- [ ] Integrate animation and object system with menu system
+- [ ] multi threading?
