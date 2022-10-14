@@ -4,6 +4,8 @@ final int FPS = 30;
 Object3D objs[];
 
 XML anim;
+int animationEndFrame = -1;
+boolean ANIMATION_START = false;
 
 public void setup() {
   size(1280, 720, P3D); // "720p HD" window resolution 
@@ -15,10 +17,10 @@ public void setup() {
   // set framerate
   frameRate(FPS);
 
-  int loadResult = loadAnimation();
+  int loadResult = loadAnimation("animation1.xml");
 
   if (loadResult == 0) {
-    println("Animation creation successful; objects and keyframes loaded succesfully without error.");
+    println("Animation creation successful; objects and keyframes loaded succesfully without error. ");
   } else {
     println("Animation creation failed; error code: " + loadResult);
   }
@@ -27,10 +29,30 @@ public void setup() {
 void draw() {
   background(69); // nice
 
-  //textureWrap(REPEAT);
+  playAnimation();
 }
 
-int loadAnimation() {
+void playAnimation() {
+  if (!ANIMATION_START && mousePressed && mouseButton == LEFT) {
+    frameCount = 0;
+    ANIMATION_START = true;
+  }
+
+  // don't play if not started
+  if (!ANIMATION_START) {
+    //println(frameCount);
+    return;
+  }
+
+  textureWrap(REPEAT); // make textures work
+  for (int oIndex = 0; oIndex < objs.length; ++oIndex)
+    objs[oIndex].animate();
+
+  if (frameCount >= animationEndFrame)
+    ANIMATION_START = false;
+}
+
+int loadAnimation(String animationFile) {
   /* 
    -1 = no frame; 
    -2 = no pos; 
@@ -42,7 +64,7 @@ int loadAnimation() {
    */
   int ERR_CODE = 0; 
 
-  anim = loadXML("animation1.xml");
+  anim = loadXML(animationFile);
 
   // load xml objects
   XML[] XMLobjs = anim.getChildren("object"); // get list of objects
@@ -81,7 +103,7 @@ int loadAnimation() {
 
       // make sure ids match
       if (kf_id.equals(obj_id)) {
-        // check for errors
+        // precheck for errors getting attributes and children
         // fat ternary operator to "one line" (broken up for readability) check for errors
         ERR_CODE = !XMLkeys[jj].hasAttribute("frame") ? -1 
           : (XMLkeys[jj].getChild("position") == null ? -2 
@@ -99,6 +121,9 @@ int loadAnimation() {
         // get frame
         int f_ = XMLkeys[jj].getInt("frame");
 
+        // update last frame of animation
+        if (f_ > animationEndFrame) animationEndFrame = f_;
+
         // keyframe timing error check
         // check remaining frames
         if (jj != XMLkeys.length - 1)
@@ -115,9 +140,9 @@ int loadAnimation() {
 
         // get rotation
         PVector r_ = new PVector(
-          XMLkeys[jj].getChild("rotation").getFloat("x"), 
-          XMLkeys[jj].getChild("rotation").getFloat("y"), 
-          XMLkeys[jj].getChild("rotation").getFloat("z")
+          radians( XMLkeys[jj].getChild("rotation").getFloat("x") ), 
+          radians( XMLkeys[jj].getChild("rotation").getFloat("y") ), 
+          radians( XMLkeys[jj].getChild("rotation").getFloat("z") )
           );
 
         // get scale
@@ -130,10 +155,11 @@ int loadAnimation() {
         println("Obj " + obj_id + " adding keyframe f: " + f_ + " p:" + p_ + " r:" + r_ + " s:" + s_ );
         objs[ii].addKeyframe(f_, p_, r_, s_);
 
+        // original first frame and last frame check 
         // last step is to check if this is the firt or last frame and record it
-        if (jj == 0 || jj == XMLkeys.length -1) 
-          if (jj == 0) objs[ii].firstFrame = f_;
-          else         objs[ii].lastFrame  = f_;
+        //if (jj == 0 || jj == XMLkeys.length -1) 
+        //  if (jj == 0) objs[ii].firstFrame = f_;
+        //  else         objs[ii].lastFrame  = f_;
       }
     }
   }
