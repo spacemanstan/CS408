@@ -6,6 +6,11 @@ class Object3D extends Object_ {
   }
   
   void display() {
+    int firstFrame = keyframes.get(0).frame;
+    int lastFrame = keyframes.get(keyframes.size() - 1).frame;
+    
+    if(frameCount < firstFrame || frameCount > lastFrame) return;
+    
     update();
 
     pushMatrix();

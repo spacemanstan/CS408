@@ -79,6 +79,11 @@ int loadAnimation(String animationFile) {
 
   // objectless keyframe error test
   for (int ii = 0; ii < XMLkeys.length; ++ii) {
+    // update last frame of animation
+    int f_ = XMLkeys[ii].getInt("frame");
+    if (f_ > animationEndFrame) animationEndFrame = f_;
+
+
     boolean errorCheck = true;
     for (int jj = 0; jj < XMLobjs.length; ++jj) {
       if ( XMLkeys[ii].getString("id").equals(XMLobjs[jj].getString("id")) ) {
@@ -133,10 +138,10 @@ int loadAnimation(String animationFile) {
     {
       // missing texture check
       // content specifies texture 
-      if( XMLobjs[ii].getContent() == null 
-      || XMLobjs[ii].getContent().equals("") 
-      || XMLobjs[ii].getContent().equals(" ") ) return ERR_CODE = -690;
-      
+      if ( XMLobjs[ii].getContent() == null 
+        || XMLobjs[ii].getContent().equals("") 
+        || XMLobjs[ii].getContent().equals(" ") ) return ERR_CODE = -690;
+
       String texture_path = XMLobjs[ii].getContent();
       if ( new File(sketchPath() + texture_path).isFile() == false) return ERR_CODE = -690;
 
@@ -146,7 +151,7 @@ int loadAnimation(String animationFile) {
         PShape shape = createShape(BOX, 1);
         shape.setTexture(loadImage(texture_path));
         shape.setStroke(false);
-        
+
         objs[ii] = new Object3D(shape);
       }
 
@@ -156,7 +161,7 @@ int loadAnimation(String animationFile) {
         PShape shape = createShape(SPHERE, 1);
         shape.setTexture(loadImage(texture_path));
         shape.setStroke(false);
-        
+
         objs[ii] = new Object3D(shape);
       }
     }

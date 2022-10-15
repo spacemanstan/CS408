@@ -11,47 +11,117 @@
 <animation>
     <object id="rocket" type="obj">/spaceShip/spaceShip.obj</object>
     <keyframe id="rocket" frame="0">
-        <position x="-300" y="360" z="0" />
-        <rotation x="135" y="0" z="-90" />
+        <position x="-640" y="360" z="0" />
+        <rotation x="0" y="0" z="-90" />
         <scale x="100" y="100" z="100" />
     </keyframe>
-    <keyframe id="rocket" frame="60">
-        <position x="1500" y="360" z="0" />
-        <rotation x="495" y="0" z="-90" />
-        <scale x="100" y="100" z="100" />
-    </keyframe>
-    <keyframe id="rocket" frame="90">
-        <position x="1500" y="360" z="-200" />
-        <rotation x="495" y="0" z="90" />
+    <keyframe id="rocket" frame="120">
+        <position x="1080" y="360" z="0" />
+        <rotation x="180" y="0" z="-90" />
         <scale x="100" y="100" z="100" />
     </keyframe>
     <keyframe id="rocket" frame="150">
-        <position x="-100" y="360" z="-200" />
-        <rotation x="135" y="0" z="90" />
-        <scale x="60" y="60" z="60" />
+        <position x="1280" y="360" z="-150" />
+        <rotation x="270" y="0" z="0" />
+        <scale x="75" y="75" z="75" />
+    </keyframe>
+    <keyframe id="rocket" frame="180">
+        <position x="1080" y="360" z="-300" />
+        <rotation x="270" y="0" z="90" />
+        <scale x="50" y="50" z="50" />
+    </keyframe>
+    <keyframe id="rocket" frame="360">
+        <position x="-640" y="360" z="-300" />
+        <rotation x="-180" y="0" z="90" />
+        <scale x="50" y="50" z="50" />
     </keyframe>
 
     <object id="space" type="img" width="1280" height="720">/textures/space.png</object>
     <keyframe id="space" frame="0">
-        <position x="960" y="360" z="-500" />
+        <position x="960" y="360" z="-550" />
         <rotation x="5" y="0" z="0" />
         <scale x="3.5" y="3.5" z="3.5" />
     </keyframe>
-    <keyframe id="space" frame="150">
-        <position x="320" y="360" z="-500" />
+    <keyframe id="space" frame="360">
+        <position x="320" y="360" z="-550" />
         <rotation x="0" y="-5" z="0" />
         <scale x="3" y="3" z="3" />
     </keyframe>
 
-    <object id="earf" type="sphere">/textures/earf.png</object>
-    <keyframe id="earf" frame="0">
-        <position x="-300" y="360" z="0" />
-        <rotation x="135" y="0" z="-90" />
+    <object id="woodbox" type="cube">/textures/basket.png</object>
+    <keyframe id="woodbox" frame="90">
+        <position x="640" y="360" z="0" />
+        <rotation x="180" y="180" z="0" />
         <scale x="100" y="100" z="100" />
     </keyframe>
-    <keyframe id="earf" frame="150">
-        <position x="1500" y="360" z="0" />
-        <rotation x="495" y="0" z="-90" />
+    <keyframe id="woodbox" frame="120">
+        <position x="640" y="360" z="0" />
+        <rotation x="180" y="180" z="0" />
         <scale x="100" y="100" z="100" />
+    </keyframe>
+
+    <object id="woodbox_broken1" type="cube">/textures/basket_broken.png</object>
+    <keyframe id="woodbox_broken1" frame="120">
+        <position x="635" y="355" z="0" />
+        <rotation x="0" y="0" z="0" />
+        <scale x="100" y="100" z="100" />
+    </keyframe>
+    <keyframe id="woodbox_broken1" frame="180">
+        <position x="410" y="300" z="0" />
+        <rotation x="45" y="45" z="45" />
+        <scale x="0" y="0" z="0" />
+    </keyframe>
+
+    <object id="woodbox_broken2" type="cube">/textures/basket_broken.png</object>
+    <keyframe id="woodbox_broken2" frame="120">
+        <position x="645" y="365" z="0" />
+        <rotation x="270" y="15" z="180" />
+        <scale x="100" y="100" z="100" />
+    </keyframe>
+    <keyframe id="woodbox_broken2" frame="180">
+        <position x="765" y="415" z="0" />
+        <rotation x="230" y="90" z="-15" />
+        <scale x="0" y="0" z="0" />
+    </keyframe>
+
+    <object id="alien" type="obj">/lilAlien/lilAlien.obj</object>
+    <keyframe id="alien" frame="120">
+        <position x="640" y="420" z="0" />
+        <rotation x="-180" y="-180" z="45" />
+        <scale x="25" y="25" z="25" />
+    </keyframe>
+    <keyframe id="alien" frame="180">
+        <position x="640" y="420" z="0" />
+        <rotation x="180" y="180" z="0" />
+        <scale x="100" y="100" z="100" />
+    </keyframe>
+    <keyframe id="alien" frame="360">
+        <position x="640" y="420" z="0" />
+        <rotation x="200" y="200" z="-15" />
+        <scale x="100" y="100" z="100" />
+    </keyframe>
+
+    <object id="earf" type="sphere">/textures/earf.png</object>
+    <keyframe id="earf" frame="0">
+        <position x="1024" y="604" z="-300" />
+        <rotation x="-15" y="0" z="0" />
+        <scale x="100" y="100" z="100" />
+    </keyframe>
+    <keyframe id="earf" frame="360">
+        <position x="1024" y="604" z="-300" />
+        <rotation x="15" y="360" z="0" />
+        <scale x="100" y="100" z="100" />
+    </keyframe>
+
+    <object id="moon" type="sphere">/textures/moon.png</object>
+    <keyframe id="moon" frame="0">
+        <position x="1150" y="450" z="-450" />
+        <rotation x="-150" y="-270" z="180" />
+        <scale x="32" y="32" z="32" />
+    </keyframe>
+    <keyframe id="moon" frame="360">
+        <position x="1200" y="450" z="-450" />
+        <rotation x="480" y="360" z="0" />
+        <scale x="32" y="32" z="32" />
     </keyframe>
 </animation>
