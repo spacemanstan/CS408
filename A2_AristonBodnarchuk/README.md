@@ -13,6 +13,20 @@ Just getting my readme setup, I have spent too much trying to get obj and mtl fi
 Very loose rough idea going into this is:
 XML handler -> object handler -> animation 
 
+###### Error Codes
+```
+     -1 = no frame; 
+     -2 = no pos; 
+     -3 = no rot; 
+     -4 = no scale; 
+     -5 = missing width;
+     -6 = missing height;
+    -42 = type match error;
+    -69 = keyframe timing error; 
+   -420 = failed to load path for object or image / texture;
+   -666 = objectless keyframe error;
+   -690 = missing texture error;
+```
 
 ###### Creative Features
  - Custom object based XML animation file syntax that promotes readability
@@ -28,8 +42,11 @@ XML handler -> object handler -> animation
 - [ ] Documentation
 - [x] Create readme files
 - [x] Start menu  // CREATIVE FEATURE
-    - [ ] Mouse Functionality 
-    - [ ] Keyboard controls (maybe)
+    - [x] Mouse Functionality 
+    - [ ] play + load button
+    - [ ] export button 
+    - [ ] help button
+    - [ ] display error messages
 - [x] HSB color support // CREATIVE FEATURE
 - [x] basic lighting // CREATIVE FEATURE
 - [x] Convert animation file syntaxt to XML syntax // CREATIVE FEATURE
@@ -41,15 +58,19 @@ XML handler -> object handler -> animation
     - [x] object load error // CREATIVE FEATURE
     - [x] key frame timing error
     - [x] objectless keyframe error
-    - [ ] object type check // CREATIVE FEATURE
-    - [ ] image object checks // CREATIVE FEATURE
-    - [ ] sphere object checks // CREATIVE FEATURE
-    - [ ] cube / box object checks // CREATIVE FEATURE
+    - [x] object type check // CREATIVE FEATURE
+    - [x] image object checks // CREATIVE FEATURE
+    - [x] sphere object checks // CREATIVE FEATURE
+    - [x] cube / box object checks // CREATIVE FEATURE
+    - [x] texture check // CREATIVE FEATURE
+    - [x] type match error // CREATIVE FEATURE
 - [x] Create object class and keyframe class
+- [ ] Abstract object class and create sub classes for:
     - [x] 3d obj file support
-    - [ ] 2d image support 
-    - [ ] generate sphere 
-    - [ ] generate cube / box
+    - [x] 2d image support // CREATIVE FEATURE
+    - [x] generate sphere + texture // CREATIVE FEATURE
+    - [x] generate cube / box + texture  // CREATIVE FEATURE
 - [ ] Create test animations
+- [x] Replay Feature
 - [ ] Integrate animation and object system with menu system
 - [ ] multi threading?
