@@ -6,10 +6,12 @@
 
     keyframes of same ID must be in ascending order
     keyframes must have an associated object
+
+    objects can be type obj, img, box, cube, sphere
  -->
 
 <animation>
-    <object id="rocket" type="obj">/spaceShip/spaceShip.obj</object>
+    <object id="rocket" type="obj">/animation1/spaceShip/spaceShip.obj</object>
     <keyframe id="rocket" frame="0">
         <position x="-640" y="360" z="0" />
         <rotation x="0" y="0" z="-90" />
@@ -36,7 +38,7 @@
         <scale x="50" y="50" z="50" />
     </keyframe>
 
-    <object id="space" type="img" width="1280" height="720">/textures/space.png</object>
+    <object id="space" type="img" width="1280" height="720">/animation1/textures/space.png</object>
     <keyframe id="space" frame="0">
         <position x="960" y="360" z="-550" />
         <rotation x="5" y="0" z="0" />
@@ -48,7 +50,7 @@
         <scale x="3" y="3" z="3" />
     </keyframe>
 
-    <object id="woodbox" type="cube">/textures/basket.png</object>
+    <object id="woodbox" type="cube">/animation1/textures/basket.png</object>
     <keyframe id="woodbox" frame="90">
         <position x="640" y="360" z="0" />
         <rotation x="180" y="180" z="0" />
@@ -60,7 +62,7 @@
         <scale x="100" y="100" z="100" />
     </keyframe>
 
-    <object id="woodbox_broken1" type="cube">/textures/basket_broken.png</object>
+    <object id="woodbox_broken1" type="cube">/animation1/textures/basket_broken.png</object>
     <keyframe id="woodbox_broken1" frame="120">
         <position x="635" y="355" z="0" />
         <rotation x="0" y="0" z="0" />
@@ -72,7 +74,7 @@
         <scale x="0" y="0" z="0" />
     </keyframe>
 
-    <object id="woodbox_broken2" type="cube">/textures/basket_broken.png</object>
+    <object id="woodbox_broken2" type="cube">/animation1/textures/basket_broken.png</object>
     <keyframe id="woodbox_broken2" frame="120">
         <position x="645" y="365" z="0" />
         <rotation x="270" y="15" z="180" />
@@ -84,7 +86,7 @@
         <scale x="0" y="0" z="0" />
     </keyframe>
 
-    <object id="alien" type="obj">/lilAlien/lilAlien.obj</object>
+    <object id="alien" type="obj">/animation1/lilAlien/lilAlien.obj</object>
     <keyframe id="alien" frame="120">
         <position x="640" y="420" z="0" />
         <rotation x="-180" y="-180" z="45" />
@@ -101,7 +103,7 @@
         <scale x="100" y="100" z="100" />
     </keyframe>
 
-    <object id="earf" type="sphere">/textures/earf.png</object>
+    <object id="earf" type="sphere">/animation1/textures/earf.png</object>
     <keyframe id="earf" frame="0">
         <position x="1024" y="604" z="-300" />
         <rotation x="-15" y="0" z="0" />
@@ -113,7 +115,7 @@
         <scale x="100" y="100" z="100" />
     </keyframe>
 
-    <object id="moon" type="sphere">/textures/moon.png</object>
+    <object id="moon" type="sphere">/animation1/textures/moon.png</object>
     <keyframe id="moon" frame="0">
         <position x="1150" y="450" z="-450" />
         <rotation x="-150" y="-270" z="180" />

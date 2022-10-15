@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<animation>
+    <object id="rocket" type="obj">/animation1/spaceShip/spaceShip.obj</object>
+    <keyframe id="rocket" frame="0">
+        <position x="-640" y="360" z="0" />
+        <rotation x="0" y="0" z="-90" />
+        <scale x="100" y="100" z="100" />
+    </keyframe>
+</animation>
