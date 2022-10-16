@@ -278,37 +278,37 @@ class AnimationSystem {
 
     switch(LOAD_STATUS) {
     case -1:
-      errmsg = "no frame"; 
+      errmsg = "No frame attribute found"; 
       break;
     case -2: 
-      errmsg = "no pos"; 
+      errmsg = "No position attribute found"; 
       break;
     case -3: 
-      errmsg = "no rot"; 
+      errmsg = "No rotation attribute found"; 
       break;
     case -4: 
-      errmsg = "no scale"; 
+      errmsg = "No scale attribute found"; 
       break;
     case -5: 
-      errmsg = "missing width";
+      errmsg = "Missing width attribute found";
       break;
     case -6: 
-      errmsg = "missing height";
+      errmsg = "Missing height attribute found";
       break;
     case -42: 
-      errmsg = "type match error";
+      errmsg = "Type match error";
       break;
     case -69: 
-      errmsg = "keyframe timing error"; 
+      errmsg = "Keyframe timing error"; 
       break;
     case -420: 
-      errmsg = "failed to load path for object or image / texture";
+      errmsg = "Failed to load path for object or image / texture";
       break;
     case -666: 
-      errmsg = "objectless keyframe error";
+      errmsg = "Objectless keyframe error";
       break;
     case -690: 
-      errmsg = "missing texture error";
+      errmsg = "Missing texture error";
       break;
     default:
       errmsg = "Unkown error occured"; 
