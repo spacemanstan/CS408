@@ -1,4 +1,4 @@
-// holds data
+// data class to hold information for animation objects
 class Keyframe {
   int frame;
   PVector pos, rot, scl;

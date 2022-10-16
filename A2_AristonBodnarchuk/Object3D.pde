@@ -1,5 +1,10 @@
+/*
+  This class handles object files and primative types with textures
+  
+  everything in this class is crazy straight forward
+*/
 class Object3D extends Object_ {
-  PShape obj;
+  PShape obj; // PShape allows storing both obj and custom generated textured primatives 
 
   Object3D(String oId, PShape o) {
     objId = oId;

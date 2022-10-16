@@ -1,3 +1,6 @@
+/*
+  abstract super class to allow all object types to be stored in a single array 
+*/
 abstract class Object_ {
   String objId;
   PVector pos, rot, scl;

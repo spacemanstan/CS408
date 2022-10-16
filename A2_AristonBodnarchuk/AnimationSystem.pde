@@ -1,8 +1,24 @@
 /*
   Primary class for the entire program
-  
-  handles everything to deal with the animation system 
-*/
+ 
+ controls everything from menu and buttons, to loading and rendering animations
+ 
+ exporting will slow animations down greatly
+ 
+ if an error is generated the following table provides error code translation
+ however main menu error screen will also provide the same translation
+ -1 = no frame; 
+ -2 = no pos; 
+ -3 = no rot; 
+ -4 = no scale; 
+ -5 = missing width;
+ -6 = missing height;
+ -42 = type match error;
+ -69 = keyframe timing error; 
+ -420 = failed to load path for object or image / texture;
+ -666 = objectless keyframe error;
+ -690 = missing texture error;
+ */
 class AnimationSystem {
   File startDir, startDirXML;
   XML anim;

@@ -1,3 +1,8 @@
+/*
+  This class handles image files and their dimensions 
+  
+  everything in this class is crazy straight forward
+*/
 class Object2D extends Object_ {
   PImage img;
   PVector dimensions;
