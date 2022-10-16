@@ -1,18 +1,13 @@
 /*
+  Primary class for the entire program
   
- abbafjbafaf
- !!!!!!!!!!!!!!!!!!!!111
- 
- do not forget to set framecount to 0 when animation is starting
- and textureWrap(REPEAT);
- */
-
+  handles everything to deal with the animation system 
+*/
 class AnimationSystem {
   File startDir, startDirXML;
   XML anim;
   int btnIndex = -1, animationEndFrame = -1, LOAD_STATUS, ERR_TIMER = -1;
   String animationPath = null, exportPath = null, SYS_STATE = "MENU";
-  ;
   PImage helpScreen;
   boolean showHelp = false, ANIMATION_START = false;
 
@@ -20,9 +15,12 @@ class AnimationSystem {
   // animation objects (stored with abstract super type)
   Object_ objs[];
 
+  // lines to make background interesting
+  RandLine backgroundStuff[];
+
   AnimationSystem() {
     // load help screen image
-    helpScreen = loadImage("./resources/placeHolder.png");
+    helpScreen = loadImage("./resources/helpScreen.png");
 
     // very important but very difficult to figure out
     startDir = new File(sketchPath()); 
@@ -33,6 +31,12 @@ class AnimationSystem {
 
     // make textures repeat
     textureWrap(REPEAT);
+
+    // random number of lines
+    backgroundStuff = new RandLine[(int)random(3, 8)];
+    // init
+    for (int r = 0; r < backgroundStuff.length; ++r)
+      backgroundStuff[r] = new RandLine();
   }
 
   void run() {
@@ -73,6 +77,10 @@ class AnimationSystem {
     if (showHelp) {
       image(helpScreen, 0, 0, width, height);
     } else {
+      // background effect 
+      for (int r = 0; r < backgroundStuff.length; ++r)
+        backgroundStuff[r].display();
+
       // display title at top
       pushStyle(); // prevent styling collisions 
       rectMode(CENTER); // make life easy 
@@ -103,15 +111,15 @@ class AnimationSystem {
 
         // white text
         fill(360);
-        
+
         textAlign(CENTER, BOTTOM);
         textSize(height*0.06);
         text("ERROR CODE: " + LOAD_STATUS, width*0.5, height*0.5);
-        
+
         textAlign(CENTER, TOP);
         textSize(height*0.03);
         text(getErrorMessage(), width*0.5, height*0.5);
-        
+
         popStyle();
         popMatrix();
 
@@ -248,50 +256,50 @@ class AnimationSystem {
     // help button; index 4; location bottom right corner
     menuBtns[4] = new Button("[?]", width - height*0.1, height - height*0.1, width*0.05, height*0.15, height*0.15, width*0.01, -1);
   }
-  
+
   String getErrorMessage() {
     String errmsg;
-    
+
     switch(LOAD_STATUS) {
-        case -1:
-          errmsg = "no frame"; 
-          break;
-        case -2: 
-          errmsg = "no pos"; 
-          break;
-        case -3: 
-          errmsg = "no rot"; 
-          break;
-        case -4: 
-          errmsg = "no scale"; 
-          break;
-        case -5: 
-          errmsg = "missing width";
-          break;
-        case -6: 
-          errmsg = "missing height";
-          break;
-        case -42: 
-          errmsg = "type match error";
-          break;
-        case -69: 
-          errmsg = "keyframe timing error"; 
-          break;
-        case -420: 
-          errmsg = "failed to load path for object or image / texture";
-          break;
-        case -666: 
-          errmsg = "objectless keyframe error";
-          break;
-        case -690: 
-          errmsg = "missing texture error";
-          break;
-        default:
-          errmsg = "Unkown error occured"; 
-          break;
-        }
-        
-        return errmsg;
+    case -1:
+      errmsg = "no frame"; 
+      break;
+    case -2: 
+      errmsg = "no pos"; 
+      break;
+    case -3: 
+      errmsg = "no rot"; 
+      break;
+    case -4: 
+      errmsg = "no scale"; 
+      break;
+    case -5: 
+      errmsg = "missing width";
+      break;
+    case -6: 
+      errmsg = "missing height";
+      break;
+    case -42: 
+      errmsg = "type match error";
+      break;
+    case -69: 
+      errmsg = "keyframe timing error"; 
+      break;
+    case -420: 
+      errmsg = "failed to load path for object or image / texture";
+      break;
+    case -666: 
+      errmsg = "objectless keyframe error";
+      break;
+    case -690: 
+      errmsg = "missing texture error";
+      break;
+    default:
+      errmsg = "Unkown error occured"; 
+      break;
+    }
+
+    return errmsg;
   }
 
   int loadAnimation(String animationFile) {
@@ -357,7 +365,7 @@ class AnimationSystem {
         // check if file is correct before loading
         if ( new File(sketchPath() + obj_path).isFile() == false) return ERR_CODE = -420;
 
-        objs[ii] = new Object3D(loadShape(obj_path));
+        objs[ii] = new Object3D(obj_id, loadShape(obj_path));
       }
       // img (image file)
       if ( XMLobjs[ii].getString("type").equals("img") ) {
@@ -372,7 +380,7 @@ class AnimationSystem {
         int w_ = XMLobjs[ii].getInt("width");
         int h_ = XMLobjs[ii].getInt("height");
 
-        objs[ii] = new Object2D(loadImage(obj_path), w_, h_);
+        objs[ii] = new Object2D(obj_id, loadImage(obj_path), w_, h_);
       }
       // if primative, check content texture first then handle object creation 
       if ( XMLobjs[ii].getString("type").equals("cube") 
@@ -395,7 +403,7 @@ class AnimationSystem {
           shape.setTexture(loadImage(texture_path));
           shape.setStroke(false);
 
-          objs[ii] = new Object3D(shape);
+          objs[ii] = new Object3D(obj_id, shape);
         }
 
         // sphere (processing 3d primative sphere shape)
@@ -405,7 +413,7 @@ class AnimationSystem {
           shape.setTexture(loadImage(texture_path));
           shape.setStroke(false);
 
-          objs[ii] = new Object3D(shape);
+          objs[ii] = new Object3D(obj_id, shape);
         }
       }
 
@@ -484,16 +492,17 @@ class AnimationSystem {
     if (!ANIMATION_START) return;
 
     textureWrap(REPEAT); // make textures work
-    for (int oIndex = 0; oIndex < objs.length; ++oIndex)
+    for (int oIndex = 0; oIndex < objs.length; ++oIndex) {
       objs[oIndex].display();
-      
+    }
+
     /*
       if the animation is running check if export is enabled
-      if enabled save screenshots in ascending order to export directory 
-    */
-    if(menuBtns[3].topText.equals("X")) {
+     if enabled save screenshots in ascending order to export directory 
+     */
+    if (menuBtns[3].topText.equals("X")) {
       String exportName = menuBtns[1].bottomText.substring(0, menuBtns[1].bottomText.length() - 4);
-      
+
       saveFrame(exportPath + "\\" + exportName + "-######.png");
     }
 

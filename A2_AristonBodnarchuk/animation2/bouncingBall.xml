@@ -1,10 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <animation>
-    <object id="rocket" type="obj">/animation1/spaceShip/spaceShip.obj</object>
-    <keyframe id="rocket" frame="0">
-        <position x="-640" y="360" z="0" />
-        <rotation x="0" y="0" z="-90" />
-        <scale x="100" y="100" z="100" />
+    <object id="ball" type="sphere">/animation2/redweave.jpg</object>
+    <keyframe id="ball" frame="30">
+        <position x="-200" y="0" z="0" />
+        <rotation x="90" y="90" z="90" />
+        <scale x="60" y="60" z="60" />
+    </keyframe>
+    <keyframe id="ball" frame="60">
+        <position x="320" y="200" z="0" />
+        <rotation x="45" y="45" z="45" />
+        <scale x="60" y="60" z="60" />
+    </keyframe>
+    <keyframe id="ball" frame="75">
+        <position x="520" y="400" z="0" />
+        <rotation x="15" y="15" z="15" />
+        <scale x="60" y="60" z="60" />
+    </keyframe>
+    <keyframe id="ball" frame="90">
+        <position x="640" y="675" z="0" />
+        <rotation x="0" y="0" z="0" />
+        <scale x="90" y="30" z="90" />
+    </keyframe>
+    <keyframe id="ball" frame="105">
+        <position x="800" y="500" z="0" />
+        <rotation x="15" y="-15" z="-15" />
+        <scale x="60" y="60" z="60" />
+    </keyframe>
+    <keyframe id="ball" frame="130">
+        <position x="1100" y="289" z="0" />
+        <rotation x="35" y="-35" z="-35" />
+        <scale x="60" y="60" z="60" />
+    </keyframe>
+    <keyframe id="ball" frame="150">
+        <position x="1480" y="345" z="0" />
+        <rotation x="90" y="-90" z="-90" />
+        <scale x="60" y="60" z="60" />
+    </keyframe>
+    <keyframe id="ball" frame="210">
+        <position x="1480" y="345" z="0" />
+        <rotation x="90" y="-90" z="-90" />
+        <scale x="60" y="60" z="60" />
+    </keyframe>
+
+    <object id="meadow" type="img" width="1280" height="720">/animation2/meadow.png</object>
+    <keyframe id="meadow" frame="0">
+        <position x="640" y="240" z="-600" />
+        <rotation x="0" y="0" z="0" />
+        <scale x="1.35" y="1.35" z="1" />
+    </keyframe>
+    <keyframe id="meadow" frame="230">
+        <position x="640" y="240" z="-600" />
+        <rotation x="0" y="0" z="0" />
+        <scale x="1.35" y="1.35" z="1" />
+    </keyframe>
+
+    <object id="grass" type="img" width="1280" height="720">/animation2/grass.png</object>
+    <keyframe id="grass" frame="0">
+        <position x="640" y="700" z="-550" />
+        <rotation x="90" y="0" z="0" />
+        <scale x="1.25" y="1.25" z="1" />
+    </keyframe>
+    <keyframe id="grass" frame="230">
+        <position x="640" y="700" z="-550" />
+        <rotation x="90" y="0" z="0" />
+        <scale x="1.25" y="1.25" z="1" />
     </keyframe>
 </animation>

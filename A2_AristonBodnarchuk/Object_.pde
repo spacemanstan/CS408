@@ -1,4 +1,5 @@
 abstract class Object_ {
+  String objId;
   PVector pos, rot, scl;
   int keyFrameIndex;
   ArrayList<Keyframe> keyframes = new ArrayList<Keyframe>();

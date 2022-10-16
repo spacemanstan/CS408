@@ -9,7 +9,7 @@ public void setup() {
 
   // set framerate
   frameRate(FPS);
-  
+
   // setup animation system
   liom = new AnimationSystem();
 }
@@ -18,7 +18,7 @@ public void draw() {
   liom.run();
 }
 
-void mouseReleased() {
+void mouseReleased() { 
   liom.mouseEvent();
 }
 

@@ -1,7 +1,8 @@
 class Object3D extends Object_ {
   PShape obj;
 
-  Object3D(PShape o) {
+  Object3D(String oId, PShape o) {
+    objId = oId;
     obj = o; // pass pshape
   }
   
@@ -11,7 +12,13 @@ class Object3D extends Object_ {
     int lastFrame = keyframes.get(keyframes.size() - 1).frame;
     
     // don't do anything if not displaying
-    if(frameCount < firstFrame || frameCount > lastFrame) return;
+    if(frameCount < firstFrame || frameCount > lastFrame) {
+      println("Object does not exist");
+      return;
+    } else {
+      // worthless console spam for assignment requirement 
+      println("Object: id[" + objId + "], time(frame): [" + frameCount + "], pos:  " + pos + ", rot: " + rot + ", scale: " + scl + "");
+    }
     
     update();
 
