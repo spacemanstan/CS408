@@ -321,7 +321,7 @@ class AnimationSystem {
   int loadAnimation(String animationFile) {
     // reset end frame
     animationEndFrame = -1;
-    
+
     /* 
      -1 = no frame; 
      -2 = no pos; 

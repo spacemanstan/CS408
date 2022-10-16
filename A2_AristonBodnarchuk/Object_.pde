@@ -1,6 +1,6 @@
 /*
   abstract super class to allow all object types to be stored in a single array 
-*/
+ */
 abstract class Object_ {
   String objId;
   PVector pos, rot, scl;
@@ -45,6 +45,6 @@ abstract class Object_ {
       scl.z += (nextFrame.scl.z - thisFrame.scl.z) / frameDiff;
     }
   }
-  
+
   abstract void display();
 }

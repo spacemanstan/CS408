@@ -1,10 +1,10 @@
 /*
   this class just creates 2 random points to move around outside of the window 
-  lines are drawn and it just adds something to look at on the menu screen
-  
-  the code here is not the best written, I probably should have just drawn lines
-  randomly then rotated the screen or something lol
-*/
+ lines are drawn and it just adds something to look at on the menu screen
+ 
+ the code here is not the best written, I probably should have just drawn lines
+ randomly then rotated the screen or something lol
+ */
 class RandLine {
   boolean p1_d, p2_d; // true = vertical, false = horizontale
   PVector p1, p2;

@@ -6,12 +6,12 @@
  the animation system. Button class still calculates click detection. 
  
  Buttons have two types, single text and multi text
-   bottomText == null       -> single text
-   bottomText == "" || " "  -> multi text displaying single text
-   bottomText == STRING     -> sdisplay both texts on seperate lines
-   
+ bottomText == null       -> single text
+ bottomText == "" || " "  -> multi text displaying single text
+ bottomText == STRING     -> sdisplay both texts on seperate lines
+ 
  Buttons will show a pastel color unles hue is set to -1 to trigger gray scale mode
-   
+ 
  Vectors to store position and dimensions use their 3rd vector dimension to hold extra data to
  make smarter use of space, rather than create extra variables.
  */
@@ -27,7 +27,7 @@ class Button {
     btnPos = new PVector(px, py, textSize); /* use 3d PVector to store rect x, y, and roundness */
     btnDim = new PVector(dimx, dimy, roundness); /* use 3d PVector to store rect dimensions + text size */
     hue = HUE;
-    
+
     // buttons enabled by default
     disabled = false;
   }
@@ -49,9 +49,9 @@ class Button {
       fill(hue, 20, 70);
       stroke(hue, 15, 50);
     }
-    
+
     // disabled buttons should be dark gray to indicate
-    if(disabled) {
+    if (disabled) {
       fill(hue, 15, 20);
       stroke(hue, 15, 15);
     }
@@ -87,9 +87,9 @@ class Button {
   // return true if mouse was withing rect dimensions 
   boolean clicked() {
     // disabled button can't be clicked
-    if(disabled)
+    if (disabled)
       return false;
-    
+
     if (mouseY > btnPos.y - btnDim.y*.5 && mouseY < btnPos.y + btnDim.y*.5)
       if (mouseX > btnPos.x - btnDim.x*.5 && mouseX < btnPos.x + btnDim.x*.5)
         return true;
