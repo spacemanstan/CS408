@@ -319,6 +319,9 @@ class AnimationSystem {
   }
 
   int loadAnimation(String animationFile) {
+    // reset end frame
+    animationEndFrame = -1;
+    
     /* 
      -1 = no frame; 
      -2 = no pos; 
@@ -525,6 +528,7 @@ class AnimationSystem {
     if (frameCount >= animationEndFrame) {
       ANIMATION_START = false;
       SYS_STATE = "END";
+      println("end frame " + animationEndFrame);
     }
   }
 }
