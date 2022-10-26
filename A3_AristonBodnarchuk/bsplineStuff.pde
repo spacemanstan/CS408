@@ -1,65 +1,77 @@
-PVector BSplinePoint(float t, PVector[] points) {
-  final int degree = 3;
+/*
+  take a value referencing a point on the curve (as a percentage float value from 0 to 1)
+ returns a PVector with corresponding uniform cubic B-spline point
+ allows for curve precision to be defined
+ 
+ This function is based on and adapted from: 
+ https://en.wikipedia.org/wiki/De_Boor%27s_algorithm
+ https://github.com/thibauts/b-spline
+ */
+PVector BSplinePoint(float curvePos, PVector[] points) {
+  // this is what makes it cubic, 1 = linear, 2 = quadratic, etc
+  final int degree = 3; // curve degree
 
-  int i, j, s, l;              // function-scoped iteration variables
-  int n = points.length;    // points count
-  int d = 3; // point dimensionality
+  int i;                      // for loop iterator 
+  int splineSeg;              // spline segment 
+  int pCount = points.length; // points count
+  int pDim = 3;               // point dimensionality
 
-  // build weight vector of length [n]
-  float[] weights = new float[n];
-  for (i=0; i<n; i++) {
-    weights[i] = 1;
-  }
+  // arrays for weights and knots 
+  float[] weights = new float[pCount]; // declare weight array of length [pCount]
+  float[] knots = new float[pCount + degree + 1]; // declare knot array of length [pCount + degree + 1]
 
-  // build knot vector of length [n + degree + 1]
-  float[] knots = new float[n + degree + 1];
-  for (i=0; i<n+degree+1; i++) {
+  // build weight and knot arrays together
+  for (i = 0; i < (pCount + degree + 1); ++i) {
     knots[i] = i;
+
+    if (i < pCount)
+      weights[i] = 1;
   }
 
+  int dom_a = degree;
+  int dom_b = knots.length - 1 - degree;
 
-  int[] domain = {
-    degree, 
-    knots.length-1 - degree
-  };
+  // remap curvePos to the domain where the spline is defined
+  float low  = knots[dom_a];
+  float high = knots[dom_b];
+  curvePos = curvePos * (high - low) + low;
 
-  // remap t to the domain where the spline is defined
-  float low  = knots[domain[0]];
-  float high = knots[domain[1]];
-  t = t * (high - low) + low;
-
-  // find s (the spline segment) for the [t] value provided
-  for (s=domain[0]; s<domain[1]; s++) {
-    if (t >= knots[s] && t <= knots[s+1]) {
-      break;
+  // find spline segment for given curvePos
+  for (splineSeg = dom_a; splineSeg < dom_b; ++splineSeg) {
+    if (curvePos >= knots[splineSeg] && curvePos <= knots[splineSeg + 1]) {
+      break; // stop when found
     }
   }
 
-  // convert points to homogeneous coordinates
-  float[][] v = new float[n][d + 1];
-  for (i=0; i<n; i++) {
-    v[i][0] = points[i].x * weights[i];
-    v[i][1] = points[i].y * weights[i];
-    v[i][2] = points[i].z * weights[i];
+  /*
+    convert points to homogeneous coordinates
+   stored in a 2d array to hold 4 values for each point
+   */
+  float[][] homoCoords = new float[pCount][pDim + 1];
+  for (i = 0; i < pCount; ++i) {
+    homoCoords[i][0] = points[i].x * weights[i];
+    homoCoords[i][1] = points[i].y * weights[i];
+    homoCoords[i][2] = points[i].z * weights[i];
 
-    v[i][3] = weights[i];
+    homoCoords[i][3] = weights[i];
   }
 
-  // l (level) goes from 1 to the curve degree + 1
+  // level goes from 1 to the curve degree + 1
   float alpha;
-  for (l=1; l<=degree+1; l++) {
-    // build level l of the pyramid
-    for (i=s; i>s-degree-1+l; i--) {
-      alpha = (t - knots[i]) / (knots[i+degree+1-l] - knots[i]);
+  for (int level = 1; level <= degree + 1; ++level) {
+    // build level of the pyramid
+    for (i = splineSeg; i > (splineSeg - degree - 1 + level); --i) {
+      alpha = (curvePos - knots[i]) / (knots[i + degree + 1 - level] - knots[i]);
 
       // interpolate each component
-      for (j=0; j<d+1; j++) {
-        v[i][j] = (1 - alpha) * v[i-1][j] + alpha * v[i][j];
+      for (int j = 0; j < (pDim + 1); ++j) {
+        homoCoords[i][j] = (1 - alpha) * homoCoords[i - 1][j] + alpha * homoCoords[i][j];
       }
     }
   }
 
-  PVector result = new PVector(v[s][0] / v[s][d], v[s][1] / v[s][d], v[s][2] / v[s][d]);
+  int s = splineSeg; // better readability for splinepoint vector
+  PVector splinePoint = new PVector(homoCoords[s][0] / homoCoords[s][pDim], homoCoords[s][1] / homoCoords[s][pDim], homoCoords[s][2] / homoCoords[s][pDim]);
 
-  return result;
+  return splinePoint;
 }

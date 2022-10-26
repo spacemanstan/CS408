@@ -1,4 +1,5 @@
 PVector[] controlPoints;
+final int scaleFactor = 15;
 
 void setup() {
   size(1280, 720, P3D); // 720p 3d render
@@ -19,29 +20,33 @@ void setup() {
 
   // scale points so it doesn't look terrible
   for (int i = 0; i < controlPoints.length; ++i)
-    controlPoints[i] = controlPoints[i].mult(10);
+    controlPoints[i] = controlPoints[i].mult(scaleFactor);
 }
 
 void draw() {
-  // center
-  translate(width/2 - 20.75*10, height/2);
+  // center the curve
+  // can do this with last point because it is the farthest from our start (0,0)
+  PVector lastPoint = controlPoints[controlPoints.length - 1];
+  PVector centerAdjust = new PVector(lastPoint.x / 2, lastPoint.y / 2);
+  translate(width / 2 - centerAdjust.x, height / 2 - centerAdjust.y);
 
   // draw control points
   fill(0);
   noStroke();
-  //for (PVector cp : controlPoints) {
-  //  pushMatrix();
-  //  translate(cp.x, cp.y, 0);
-  //  box(3);
-  //  popMatrix();
-  //}
-
-  for (float t=0; t<1; t+=0.001) {
-    PVector fuck = BSplinePoint(t, controlPoints);
-    
+  for (PVector cp : controlPoints) {
     pushMatrix();
-    translate(fuck.x, fuck.y, 0);
+    translate(cp.x, cp.y, 0);
     box(3);
     popMatrix();
   }
+
+  noFill();
+  strokeWeight(1.5);
+  stroke(69, 13, 255);
+  beginShape();
+  for (float curvePosition = 0; curvePosition < 1; curvePosition += 0.01) {
+    PVector uniformBSP = BSplinePoint(curvePosition, controlPoints);
+    vertex(uniformBSP.x, uniformBSP.y);
+  }
+  endShape();
 }
