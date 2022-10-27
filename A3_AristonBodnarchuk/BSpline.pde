@@ -1,5 +1,7 @@
 /*
-  take a value referencing a point on the curve (as a percentage float value from 0 to 1)
+ Assignment Part (a): Uniform Cubic B-Spline
+ ===============================================
+ take a value referencing a point on the curve (as a percentage float value from 0 to 1)
  returns a PVector with corresponding uniform cubic B-spline point
  allows for curve precision to be defined
  
@@ -19,13 +21,21 @@ PVector BSplinePoint(float curvePos, PVector[] points) {
   // arrays for weights and knots 
   float[] weights = new float[pCount]; // declare weight array of length [pCount]
   float[] knots = new float[pCount + degree + 1]; // declare knot array of length [pCount + degree + 1]
+  float[][] homoCoords = new float[pCount][pDim + 1]; // 2D array to hold conversion to homogeneous coordinates
 
   // build weight and knot arrays together
   for (i = 0; i < (pCount + degree + 1); ++i) {
     knots[i] = i;
 
-    if (i < pCount)
+    if (i < pCount) {
       weights[i] = 1;
+
+      // convert points to homogeneous coordinates
+      homoCoords[i][0] = points[i].x * weights[i];
+      homoCoords[i][1] = points[i].y * weights[i];
+      homoCoords[i][2] = points[i].z * weights[i];
+      homoCoords[i][3] = weights[i];
+    }
   }
 
   int dom_a = degree;
@@ -41,19 +51,6 @@ PVector BSplinePoint(float curvePos, PVector[] points) {
     if (curvePos >= knots[splineSeg] && curvePos <= knots[splineSeg + 1]) {
       break; // stop when found
     }
-  }
-
-  /*
-    convert points to homogeneous coordinates
-   stored in a 2d array to hold 4 values for each point
-   */
-  float[][] homoCoords = new float[pCount][pDim + 1];
-  for (i = 0; i < pCount; ++i) {
-    homoCoords[i][0] = points[i].x * weights[i];
-    homoCoords[i][1] = points[i].y * weights[i];
-    homoCoords[i][2] = points[i].z * weights[i];
-
-    homoCoords[i][3] = weights[i];
   }
 
   // level goes from 1 to the curve degree + 1
