@@ -4,10 +4,7 @@
  take a value referencing a point on the curve (as a percentage float value from 0 to 1)
  returns a PVector with corresponding uniform cubic B-spline point
  allows for curve precision to be defined
- 
- This function is based on and adapted from: 
- https://en.wikipedia.org/wiki/De_Boor%27s_algorithm
- https://github.com/thibauts/b-spline
+ assumes all weights and knots to be 1
  */
 PVector BSplinePoint(float curvePos, PVector[] points) {
   // this is what makes it cubic, 1 = linear, 2 = quadratic, etc
