@@ -2,7 +2,7 @@
 
 ### Video Demo ###
 ![alt text](CurveAnimationDemo.gif)
-[Video Showcase of Animation]()
+[Video Showcase of Animation](https://youtu.be/Wgf-llQAZMY)
 
 ## Description ##
 My function for calculating a point on a B-Spline is adopted from a javascript library that handles B-Spline calculations given a vector of control points, knots, and weights. I completed this before the assignment due date was extended and before we were given the B-Spline function lecture notes. I have included the citations down below. I modified and refactored the library's function heavily, reducing its size and increasing the efficiency slightly. The new algorithm  is specifically tailored to cubic B-Splines as it is intended just for this assignment. My work for sinusoidal easing and parabolic easing was based on the class's textbook which covers how to implement such easing. My answer to question 1, the animation algorithm, can be found in the same zip folder this source code is in, named "a3_q1.pdf". The curve is displayed 3 times at an offset and each of the different easing methods are shown at once, one a loop is completed the aniations reset and the camera angle changes by 45 degrees showcasing the 3d effect. Since we were forced to do this in 3d I found it a shame not to use it in any way, even if a creative feature is not a requirement. This assignment was probably the hardest so far because of the math. My  new B-Spline function also drastically improves the readability of the source code it was based upon when looking into De Boor's algorithm.
