@@ -1,6 +1,7 @@
 # CS408 - Prof. Alain Maubert Crotte #
 
 ### Video Demo ###
+![alt text](CurveAnimationDemo.gif)
 [Video Showcase of Animation]()
 
 ## Description ##
