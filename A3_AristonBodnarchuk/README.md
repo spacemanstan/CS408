@@ -25,7 +25,8 @@ On each loop of the animation the camera rotates slightly to show off the 3d env
 - [x] Camera Rotation // CREATIVE FEATURE
 
 ## Citations ##
-(APA - 7th edition)
+###### (using APA - 7th edition)
+
 BSpline library referenced:
 https://github.com/thibauts/b-spline 
  
