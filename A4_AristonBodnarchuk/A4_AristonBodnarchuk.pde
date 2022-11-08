@@ -1,91 +1,109 @@
-final int FPS = 30;
+final int FPS = 60;
 
-int count = 0;
-float noiseInc = 0.02;
-PVector ang = new PVector(0, 0, 0), bgNoise = new PVector(0, 0);
+PVector xyrNoise = new PVector(0, 0, 0);
+final float incNoise = 0.03;
 
-PGraphics test;
+PShape body, head, arm1, arm2, leg1, leg2;
 
 void setup() {
   size(1280, 720, P3D);
-  colorMode(360, 100, 100, 100, HSB);
+  colorMode(HSB, 360, 100, 100, 100);
   frameRate(FPS);
+  surface.setTitle("a4"); // name the window better
 
-  //test = createGraphics(width * 2, height * 2, P2D);
-  //test.colorMode(360, 100, 100, 100, HSB);
-  //test.beginDraw();
-  //test.loadPixels();
-  //for (int px = 0; px < test.width; ++px) {
-  //bgNoise.x += noiseInc;
-  
-  //  for (int py = 0; py < test.height; ++py) {
-  //    bgNoise.y += noiseInc;
-      
-  //    pixels[px + py * test.width] = color(noise(bgNoise.x, bgNoise.y) * 255);
-  //  }
-  //}
-  //test.updatePixels();
-  //test.endDraw();
+  noiseDetail(1, 0.5);
+
+  body = cylinder(20, 30, 10, 100);
+  head = createShape(SPHERE, 25);
+  arm1 = cylinder(12, 6, 4, 80);
+  arm2 = cylinder(12, 6, 4, 80);
+  leg1 = cylinder(12, 5, 7, 80);
+  leg2 = cylinder(12, 5, 7, 80);
 }
-
-float fml = 0;
 
 void draw() {
-  background(fml); // nice
+  background_colourful();
+
+  pushMatrix();
+  pushStyle();
 
   translate(width/2, height/2);
-  rotateX(ang.x);
-  rotateY(ang.y);
-  rotateZ(ang.z);
 
-  drawCylinder( 12, 75, 100, 200);
+  rotateY( radians(frameCount % 360) );
+  rotateZ( radians(frameCount % 720) );
 
-  if (frameCount > FPS) {
-    count = count > 2 ? 0 : count + 1;
+  shape(body);
 
-    if (count == 0) {
-      ang.x += degrees(frameCount % 360);
-      fml = random(0, 360);
-    }
-    if (count == 1)
-      ang.y += degrees(frameCount % 360);
-    if (count == 2)
-      rotateY( degrees(frameCount % 360) );
-    ang.z += degrees(frameCount % 360);
-  }
-  
-  frameCount = 0;
+  pushMatrix();
+  translate(0, -75);
+  shape(head);
+  popMatrix();
+
+  pushMatrix();
+  translate(-30, 0);
+  rotateZ( radians(10) );
+  shape(arm1);
+  popMatrix();
+
+  pushMatrix();
+  translate(30, 0);
+  rotateZ( radians(-10) );
+  shape(arm2);
+  popMatrix();
+
+  pushMatrix();
+  translate(-18, 85);
+  rotateZ( radians(10) );
+  shape(leg1);
+  popMatrix();
+
+  pushMatrix();
+  translate(18, 85);
+  rotateZ( radians(-10) );
+  shape(leg2);
+  popMatrix();
+
+  popStyle();
+  popMatrix();
 }
 
-void drawCylinder( int sides, float r1, float r2, float h)
-{
-  float angle = 360 / sides;
-  float halfHeight = h / 2;
-  // top
-  beginShape();
-  for (int i = 0; i < sides; i++) {
-    float x = cos( radians( i * angle ) ) * r1;
-    float y = sin( radians( i * angle ) ) * r1;
-    vertex( x, y, -halfHeight);
+void displayShape(PShape shape, float xpos, float ypos) {
+  pushMatrix();
+  pushStyle();
+
+  translate(xpos, ypos);
+
+  rotateY( radians(frameCount % 360) );
+  rotateZ( radians(frameCount % 720) );
+
+  shape(shape);
+
+  popStyle();
+  popMatrix();
+}
+
+// this is sweet as fuck
+void background_colourful() {
+  pushMatrix();
+  pushStyle();
+
+  translate(width/2, height/2, -width/2);
+
+  float smolVal = frameCount * 0.01;
+  xyrNoise.x = smolVal;
+  xyrNoise.y = smolVal;
+
+  int degVar = 20;
+  rotateZ(radians(degVar) * noise(xyrNoise.z += 0.005) + radians(365 - degVar/2));
+
+  for (int h = (int)(height * -1.5); h < height * 1.5; ++h) {
+    xyrNoise.y -= (incNoise * noise(xyrNoise.z));
+
+    stroke(noise(xyrNoise.x, xyrNoise.y) * 360, 42, 90);
+    strokeWeight(1);
+    line(width * -1.5, h, width * 1.5, h);
   }
-  endShape(CLOSE);
-  // bottom
-  beginShape();
-  for (int i = 0; i < sides; i++) {
-    float x = cos( radians( i * angle ) ) * r2;
-    float y = sin( radians( i * angle ) ) * r2;
-    vertex( x, y, halfHeight);
-  }
-  endShape(CLOSE);
-  // draw body
-  beginShape(TRIANGLE_STRIP);
-  for (int i = 0; i < sides + 1; i++) {
-    float x1 = cos( radians( i * angle ) ) * r1;
-    float y1 = sin( radians( i * angle ) ) * r1;
-    float x2 = cos( radians( i * angle ) ) * r2;
-    float y2 = sin( radians( i * angle ) ) * r2;
-    vertex( x1, y1, -halfHeight);
-    vertex( x2, y2, halfHeight);
-  }
-  endShape(CLOSE);
+
+  popStyle();
+  popMatrix();
 }
