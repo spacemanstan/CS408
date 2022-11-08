@@ -38,30 +38,29 @@ PShape cylinder(int sides, float radius_top, float radius_bottom, float extent) 
     float cosX = cos(side * angle);
     float sinY = sin(side * angle);
     
-    // calc measurements 
-    float topX = cosX * radius_top;
-    float topY = sinY * radius_top;
-    float botX = cosX * radius_bottom;
-    float botY = sinY * radius_bottom;
+    // create + intialize coordinates for top + bottom circles
+    PVector top = new PVector(cosX * radius_top, sinY * radius_top);
+    PVector bot = new PVector(cosX * radius_bottom, sinY * radius_bottom);
     
-    // uv shit
-    PVector tn = new PVector(topX, topY);
-    tn.normalize();
-    float tu = atan2(tn.x, tn.z) / TWO_PI + 0.5;
-    float tv = tn.y * 0.5 + 0.5;
-    
-    PVector bn = new PVector(botX, botY);
-    bn.normalize();
-    float bu = atan2(bn.x, bn.z) / TWO_PI + 0.5;
-    float bv = bn.y * 0.5 + 0.5;
+    // calc uv coordinates
+    // top uv calculations
+    PVector top_n = top.copy(); // copy top values
+    top_n.normalize(); // normalize the vector (this is why we need a copy)
+    float u_t = atan2(top_n.x, top_n.z) / TWO_PI + 0.5; // map value between -0.5 & 0.5
+    float v_t = top_n.y * 0.5 + 0.5;// shift range
+    // bottom uv calculations
+    PVector bn = new PVector(bot.x, bot.y); // copy bottom values
+    bn.normalize(); // normalize the copy of vector
+    float u_b = atan2(bn.x, bn.z) / TWO_PI + 0.5; // map value between -0.5 & 0.5
+    float v_b = bn.y * 0.5 + 0.5; // shift range
 
-    // top
-    cylinder_top.vertex(topX, -half, topY, tu, tv);
-    // bottom
-    cylinder_bottom.vertex(botX, half, botY, bu, bv);
-    // middle
-    cylinder_body.vertex(topX, -half, topY, tu, tv);
-    cylinder_body.vertex(botX, half, botY, bu, bv);
+    // top ==> vertex ==> (x, y, z, u, v)
+    cylinder_top.vertex(top.x, -half, top.y, u_t, v_t);
+    // bottom ==> vertex ==> (x, y, z, u, v)
+    cylinder_bottom.vertex(bot.x, half, bot.y, u_b, v_b);
+    // middle ==> vertex ==> (x, y, z, u, v)
+    cylinder_body.vertex(top.x, -half, top.y, u_t, v_t);
+    cylinder_body.vertex(bot.x, half, bot.y, u_b, v_b);
   }
 
   // end the shapes
@@ -74,6 +73,7 @@ PShape cylinder(int sides, float radius_top, float radius_bottom, float extent) 
   tempShapeGroup.addChild(cylinder_bottom);
   tempShapeGroup.addChild(cylinder_body);
 
+  // after all that math return the shape me made + UV map
   return tempShapeGroup;
 }
 

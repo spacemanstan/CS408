@@ -53,9 +53,9 @@ void draw() {
 
   translate(width/2, height/2);
 
-  rotateX( radians(frameCount*2 % 360) );
+  rotateX( radians(frameCount % 360) );
   rotateY( radians(frameCount % 1080) );
-  rotateZ( radians(frameCount*3 % 720) );
+  rotateZ( radians(frameCount % 720) );
 
   shape(body);
 
