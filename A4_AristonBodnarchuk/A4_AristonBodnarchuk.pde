@@ -3,6 +3,7 @@ final int FPS = 60;
 PVector xyrNoise = new PVector(0, 0, 0);
 final float incNoise = 0.03;
 
+PImage woodTexture;
 PShape body, head, arm1, arm2, leg1, leg2;
 
 void setup() {
@@ -13,15 +14,38 @@ void setup() {
 
   noiseDetail(1, 0.5);
 
-  body = cylinder(20, 30, 10, 100);
+  woodTexture = loadImage("./wood15.jpg");
+
+  body = cylinder(30, 30, 10, 100);
+  body.setTextureMode(REPEAT);
+  body.setTexture(woodTexture);
+  body.setStroke(false);
+
   head = createShape(SPHERE, 25);
-  arm1 = cylinder(12, 6, 4, 80);
-  arm2 = cylinder(12, 6, 4, 80);
-  leg1 = cylinder(12, 5, 7, 80);
-  leg2 = cylinder(12, 5, 7, 80);
+  head.setTexture(woodTexture);
+  head.setStroke(false);
+
+  arm1 = cylinder(20, 6, 4, 80);
+  arm1.setTextureMode(REPEAT);
+  arm1.setTexture(woodTexture);
+  arm1.setStroke(false);
+  arm2 = cylinder(20, 6, 4, 80);
+  arm2.setTextureMode(REPEAT);
+  arm2.setTexture(woodTexture);
+  arm2.setStroke(false);
+
+  leg1 = cylinder(20, 5, 7, 80);
+  leg1.setTextureMode(REPEAT);
+  leg1.setTexture(woodTexture);
+  leg1.setStroke(false);
+  leg2 = cylinder(20, 5, 7, 80);
+  leg2.setTextureMode(REPEAT);
+  leg2.setTexture(woodTexture);
+  leg2.setStroke(false);
 }
 
 void draw() {
+  lights();
   background_colourful();
 
   pushMatrix();
@@ -29,8 +53,9 @@ void draw() {
 
   translate(width/2, height/2);
 
-  rotateY( radians(frameCount % 360) );
-  rotateZ( radians(frameCount % 720) );
+  rotateX( radians(frameCount*2 % 360) );
+  rotateY( radians(frameCount % 1080) );
+  rotateZ( radians(frameCount*3 % 720) );
 
   shape(body);
 

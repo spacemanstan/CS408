@@ -31,24 +31,37 @@ PShape cylinder(int sides, float radius_top, float radius_bottom, float extent) 
   cylinder_bottom.beginShape();
   cylinder_body.beginShape(TRIANGLE_STRIP);
 
+
   // build each shape by iterating through sides
   for (int side = 0; side < sides; ++side) {
     // calc trig
     float cosX = cos(side * angle);
     float sinY = sin(side * angle);
+    
     // calc measurements 
     float topX = cosX * radius_top;
     float topY = sinY * radius_top;
     float botX = cosX * radius_bottom;
     float botY = sinY * radius_bottom;
+    
+    // uv shit
+    PVector tn = new PVector(topX, topY);
+    tn.normalize();
+    float tu = atan2(tn.x, tn.z) / TWO_PI + 0.5;
+    float tv = tn.y * 0.5 + 0.5;
+    
+    PVector bn = new PVector(botX, botY);
+    bn.normalize();
+    float bu = atan2(bn.x, bn.z) / TWO_PI + 0.5;
+    float bv = bn.y * 0.5 + 0.5;
 
     // top
-    cylinder_top.vertex(topX, -half, topY);
+    cylinder_top.vertex(topX, -half, topY, tu, tv);
     // bottom
-    cylinder_bottom.vertex(botX, -half, botY);
+    cylinder_bottom.vertex(botX, half, botY, bu, bv);
     // middle
-    cylinder_body.vertex(topX, -half, topY);
-    cylinder_body.vertex(botX, half, botY);
+    cylinder_body.vertex(topX, -half, topY, tu, tv);
+    cylinder_body.vertex(botX, half, botY, bu, bv);
   }
 
   // end the shapes
