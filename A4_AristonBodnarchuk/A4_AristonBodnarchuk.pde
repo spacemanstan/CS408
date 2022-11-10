@@ -6,7 +6,9 @@ final float incNoise = 0.03;
 PImage woodTexture;
 PShape body, head, arm1, arm2, leg1, leg2;
 
-CompositeObject testBoi;
+Boi doug;
+
+boolean swap = true;
 
 void setup() {
   size(1280, 720, P3D);
@@ -20,30 +22,16 @@ void setup() {
 
   createTwigBoi();
 
-  // (String id_, PShape shape_, PImage texture_, PVector pos_, PVector ang_, PVector ang_min_, PVector ang_max_)
-  testBoi = new CompositeObject("torso", // id
-    cylinder(30, 30, 100), //////////////// shape
-    randomTexture(), ////////////////////// texture
-    new PVector(width/3, height/2, 0), //// pos
-    new PVector(0, 0, 0), ///////////////// ang
-    new PVector(-30, -30, -30), /////////// ang_min
-    new PVector(30, 30, 30)  ////////////// ang_max
-    );
+  doug = new Boi();
 }
 
 void draw() {
   lights();
   background_colourful();
 
-  drawTwigBoi();
+  //drawTwigBoi();
 
-  pushMatrix();
-  rotateY( radians(frameCount % 360) );
-  rotateZ( radians(frameCount % 720) );
-  
-  testBoi.display();
-  
-  popMatrix();
+  doug.display();
 }
 
 void displayShape(PShape shape, float xpos, float ypos) {
@@ -169,4 +157,17 @@ void drawTwigBoi() {
 
   popStyle();
   popMatrix();
+}
+
+void mousePressed() {
+  if (swap) {
+    doug.right_arm_upper.setAng(new PVector(0, 0, -90));
+    doug.right_arm_lower.setAng(new PVector(15, 0, -15));
+  }
+  else {
+    doug.right_arm_upper.setAng(new PVector(0, 0, 0));
+    doug.right_arm_lower.setAng(new PVector(0, 0, 0));
+  }
+    
+  swap = !swap;
 }

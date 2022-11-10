@@ -37,11 +37,11 @@ PShape cylinder(int sides, float radius_top, float radius_bottom, float extent) 
     // calc trig
     float cosX = cos(side * angle);
     float sinY = sin(side * angle);
-    
+
     // create + intialize coordinates for top + bottom circles
     PVector top = new PVector(cosX * radius_top, sinY * radius_top);
     PVector bot = new PVector(cosX * radius_bottom, sinY * radius_bottom);
-    
+
     // calc uv coordinates
     // top uv calculations
     PVector top_n = top.copy(); // copy top values
