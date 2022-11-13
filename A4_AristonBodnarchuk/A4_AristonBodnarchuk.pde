@@ -8,7 +8,9 @@ PShape body, head, arm1, arm2, leg1, leg2;
 
 Boi doug;
 
-boolean swap = true;
+boolean swap = false;
+
+PGraphics blackTexture, whiteTexture, gwape;
 
 void setup() {
   size(1280, 720, P3D);
@@ -20,6 +22,21 @@ void setup() {
 
   woodTexture = loadImage("./Textures/wood (" + (int)random(0, 16) + ").jpg");
 
+  blackTexture = createGraphics(256, 256);
+  blackTexture.beginDraw();
+  blackTexture.background(0);
+  blackTexture.endDraw();
+
+  whiteTexture = createGraphics(256, 256);
+  whiteTexture.beginDraw();
+  whiteTexture.background(255);
+  whiteTexture.endDraw();
+  
+  gwape = createGraphics(256, 256);
+  gwape.beginDraw();
+  gwape.background(200, 0, 255);
+  gwape.endDraw();
+
   createTwigBoi();
 
   doug = new Boi();
@@ -29,25 +46,44 @@ void draw() {
   lights();
   background_colourful();
 
-  //drawTwigBoi();
+  drawTwigBoi();
 
   doug.display();
+
+  if (swap) {
+    doug.left_eye.setAngDeg(new PVector(-frameCount*2 % 180, frameCount*2 % 180, 0) );
+    doug.right_eye.setAngDeg(new PVector(frameCount*2 % 180, -frameCount*2 % 180, 0) );
+
+    float bounce10 = frameCount%80 < 40 ? map(frameCount%80, 0, 39, -10, 10) : map(frameCount%80, 40, 79, 10, -10);
+    float bounce30 = frameCount%80 < 40 ? map(frameCount%80, 0, 39, -30, 30) : map(frameCount%80, 40, 79, 30, -30);
+    doug.torso_top.setAngDeg( new PVector(bounce10, 0, 0) );
+    doug.neck.setAngDeg( new PVector(bounce30, 0, 0) );
+
+    doug.left_arm_upper.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, 180, 90) : map(frameCount%80, 40, 79, 90, 180) ) );
+    doug.right_arm_upper.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, 180, 270) : map(frameCount%80, 40, 79, 270, 180) ) );
+
+    doug.torso_mid.setAngDeg(new PVector(0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, -5, 5) : map(frameCount%80, 40, 79, 5, -5), 0) );
+    doug.torso_bot.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, -5, 5) : map(frameCount%80, 40, 79, 5, -5)) );
+
+    doug.left_leg_upper.setAngDeg(new PVector(frameCount%80 < 40 ? map(frameCount%80, 0, 39, -30, 30) : map(frameCount%80, 40, 79, 30, -30), 0, 0 ) );
+    doug.right_leg_upper.setAngDeg(new PVector(frameCount%80 < 40 ? map(frameCount%80, 0, 39, 30, -30) : map(frameCount%80, 40, 79, -30, 30), 0, 0 ) );
+  }
 }
 
-void displayShape(PShape shape, float xpos, float ypos) {
-  pushMatrix();
-  pushStyle();
+//void displayShape(PShape shape, float xpos, float ypos) {
+//  pushMatrix();
+//  pushStyle();
 
-  translate(xpos, ypos);
+//  translate(xpos, ypos);
 
-  rotateY( radians(frameCount % 360) );
-  rotateZ( radians(frameCount % 720) );
+//  //rotateY( radians(frameCount % 360) );
+//  //rotateZ( radians(frameCount % 720) );
 
-  shape(shape);
+//  shape(shape);
 
-  popStyle();
-  popMatrix();
-}
+//  popStyle();
+//  popMatrix();
+//}
 
 // this is tight as fuck
 void background_colourful() {
@@ -77,6 +113,7 @@ void background_colourful() {
 
 PImage randomTexture() {
   return loadImage("./Textures/wood (" + (int)random(0, 15) + ").jpg");
+  //return gwape;
 }
 
 void createTwigBoi() {
@@ -160,14 +197,17 @@ void drawTwigBoi() {
 }
 
 void mousePressed() {
-  if (swap) {
-    doug.right_arm_upper.setAng(new PVector(0, 0, -90));
-    doug.right_arm_lower.setAng(new PVector(15, 0, -15));
-  }
-  else {
-    doug.right_arm_upper.setAng(new PVector(0, 0, 0));
-    doug.right_arm_lower.setAng(new PVector(0, 0, 0));
-  }
-    
   swap = !swap;
+
+  PVector zero = new PVector(0, 0, 0);
+  doug.left_eye.setAngDeg(zero);
+  doug.right_eye.setAngDeg(zero);
+  doug.torso_top.setAngDeg(zero);
+  doug.neck.setAngDeg(zero);
+  doug.left_arm_upper.setAngDeg(new PVector(0, 0, 180));
+  doug.right_arm_upper.setAngDeg(zero);
+  doug.torso_mid.setAngDeg(zero);
+  doug.torso_bot.setAngDeg(zero);
+  doug.left_leg_upper.setAngDeg(zero);
+  doug.right_leg_upper.setAngDeg(zero);
 }

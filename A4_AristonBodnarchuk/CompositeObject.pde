@@ -6,16 +6,12 @@
  or I need a second cylinder function that 
  */
 class CompositeObject {
-  public final String id;
   private PShape shape;
-  //private PImage texture;
-  // reltive position to parent(if exists), position offset (for rotate)
   private PVector posRel, posOff, angDeg, ang_min, ang_max; // angles are in degrees
 
   private ArrayList<CompositeObject> children;
 
-  CompositeObject(String id_, PShape shape_, PImage texture_, PVector posRel_, PVector posOff_, PVector ang_, PVector ang_min_, PVector ang_max_) {  
-    this.id = id_;
+  CompositeObject(PShape shape_, PImage texture_, PVector posRel_, PVector posOff_, PVector ang_, PVector ang_min_, PVector ang_max_) {  
     this.shape = shape_;
     this.shape.setTextureMode(REPEAT);
     this.shape.setTexture(texture_);
@@ -27,17 +23,17 @@ class CompositeObject {
     this.ang_min = ang_min_.copy();
     this.ang_max = ang_max_.copy();
 
-    this.setAng(ang_);
-    
+    this.setAngDeg(ang_);
+
     children = new ArrayList<CompositeObject>();
-    
+
     shape.translate(posOff_.x, posOff_.y, posOff_.z);
   }
 
   void display() {
     pushMatrix();
     translate(this.posRel.x, this.posRel.y, this.posRel.z);
-    
+
     rotateX( radians(this.angDeg.x) );
     rotateY( radians(this.angDeg.y) );
     rotateZ( radians(this.angDeg.z) );
@@ -57,7 +53,7 @@ class CompositeObject {
     children.add(child);
   }
 
-  void setAng(PVector provided) {
+  void setAngDeg(PVector provided) {
     PVector ang_target = provided.copy();
     this.angDeg.x = constrain(ang_target.x, ang_min.x, ang_max.x);
     this.angDeg.y = constrain(ang_target.y, ang_min.y, ang_max.y);
