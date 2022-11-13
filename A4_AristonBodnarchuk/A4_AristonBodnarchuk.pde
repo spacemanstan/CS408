@@ -10,7 +10,10 @@ Boi doug;
 
 boolean swap = false;
 
-PGraphics blackTexture, whiteTexture, gwape;
+PGraphics blackTexture, whiteTexture;
+
+int poseIndex = 0;
+PoseVector[] poses;
 
 void setup() {
   size(1280, 720, P3D);
@@ -31,15 +34,14 @@ void setup() {
   whiteTexture.beginDraw();
   whiteTexture.background(255);
   whiteTexture.endDraw();
-  
-  gwape = createGraphics(256, 256);
-  gwape.beginDraw();
-  gwape.background(200, 0, 255);
-  gwape.endDraw();
 
   createTwigBoi();
 
   doug = new Boi();
+
+  createPoses();
+
+  doug.setAngles(poses[poses.length - 1]);
 }
 
 void draw() {
@@ -50,40 +52,25 @@ void draw() {
 
   doug.display();
 
-  if (swap) {
-    doug.left_eye.setAngDeg(new PVector(-frameCount*2 % 180, frameCount*2 % 180, 0) );
-    doug.right_eye.setAngDeg(new PVector(frameCount*2 % 180, -frameCount*2 % 180, 0) );
+  //if (swap) {
+  //  doug.left_eye.setAngDeg(new PVector(-frameCount*2 % 180, frameCount*2 % 180, 0) );
+  //  doug.right_eye.setAngDeg(new PVector(frameCount*2 % 180, -frameCount*2 % 180, 0) );
 
-    float bounce10 = frameCount%80 < 40 ? map(frameCount%80, 0, 39, -10, 10) : map(frameCount%80, 40, 79, 10, -10);
-    float bounce30 = frameCount%80 < 40 ? map(frameCount%80, 0, 39, -30, 30) : map(frameCount%80, 40, 79, 30, -30);
-    doug.torso_top.setAngDeg( new PVector(bounce10, 0, 0) );
-    doug.neck.setAngDeg( new PVector(bounce30, 0, 0) );
+  //  float bounce10 = frameCount%80 < 40 ? map(frameCount%80, 0, 39, -10, 10) : map(frameCount%80, 40, 79, 10, -10);
+  //  float bounce30 = frameCount%80 < 40 ? map(frameCount%80, 0, 39, -30, 30) : map(frameCount%80, 40, 79, 30, -30);
+  //  doug.torso_top.setAngDeg( new PVector(bounce10, 0, 0) );
+  //  doug.neck.setAngDeg( new PVector(bounce30, 0, 0) );
 
-    doug.left_arm_upper.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, 180, 90) : map(frameCount%80, 40, 79, 90, 180) ) );
-    doug.right_arm_upper.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, 180, 270) : map(frameCount%80, 40, 79, 270, 180) ) );
+  //  doug.left_arm_upper.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, 180, 90) : map(frameCount%80, 40, 79, 90, 180) ) );
+  //  doug.right_arm_upper.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, 180, 270) : map(frameCount%80, 40, 79, 270, 180) ) );
 
-    doug.torso_mid.setAngDeg(new PVector(0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, -5, 5) : map(frameCount%80, 40, 79, 5, -5), 0) );
-    doug.torso_bot.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, -5, 5) : map(frameCount%80, 40, 79, 5, -5)) );
+  //  doug.torso_mid.setAngDeg(new PVector(0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, -5, 5) : map(frameCount%80, 40, 79, 5, -5), 0) );
+  //  doug.torso_bot.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, -5, 5) : map(frameCount%80, 40, 79, 5, -5)) );
 
-    doug.left_leg_upper.setAngDeg(new PVector(frameCount%80 < 40 ? map(frameCount%80, 0, 39, -30, 30) : map(frameCount%80, 40, 79, 30, -30), 0, 0 ) );
-    doug.right_leg_upper.setAngDeg(new PVector(frameCount%80 < 40 ? map(frameCount%80, 0, 39, 30, -30) : map(frameCount%80, 40, 79, -30, 30), 0, 0 ) );
-  }
+  //  doug.left_leg_upper.setAngDeg(new PVector(frameCount%80 < 40 ? map(frameCount%80, 0, 39, -30, 30) : map(frameCount%80, 40, 79, 30, -30), 0, 0 ) );
+  //  doug.right_leg_upper.setAngDeg(new PVector(frameCount%80 < 40 ? map(frameCount%80, 0, 39, 30, -30) : map(frameCount%80, 40, 79, -30, 30), 0, 0 ) );
+  //}
 }
-
-//void displayShape(PShape shape, float xpos, float ypos) {
-//  pushMatrix();
-//  pushStyle();
-
-//  translate(xpos, ypos);
-
-//  //rotateY( radians(frameCount % 360) );
-//  //rotateZ( radians(frameCount % 720) );
-
-//  shape(shape);
-
-//  popStyle();
-//  popMatrix();
-//}
 
 // this is tight as fuck
 void background_colourful() {
@@ -113,7 +100,6 @@ void background_colourful() {
 
 PImage randomTexture() {
   return loadImage("./Textures/wood (" + (int)random(0, 15) + ").jpg");
-  //return gwape;
 }
 
 void createTwigBoi() {
@@ -196,18 +182,84 @@ void drawTwigBoi() {
   popMatrix();
 }
 
-void mousePressed() {
-  swap = !swap;
+void createPoses() {
+  poses = new PoseVector[4];
 
-  PVector zero = new PVector(0, 0, 0);
-  doug.left_eye.setAngDeg(zero);
-  doug.right_eye.setAngDeg(zero);
-  doug.torso_top.setAngDeg(zero);
-  doug.neck.setAngDeg(zero);
-  doug.left_arm_upper.setAngDeg(new PVector(0, 0, 180));
-  doug.right_arm_upper.setAngDeg(zero);
-  doug.torso_mid.setAngDeg(zero);
-  doug.torso_bot.setAngDeg(zero);
-  doug.left_leg_upper.setAngDeg(zero);
-  doug.right_leg_upper.setAngDeg(zero);
+  poses[0] = new PoseVector(
+    //___________________________top___________________mid___________________bot__________________________
+  /* torso */    new PVector(0, 0, 0), new PVector(0, 0, 0), new PVector(0, 0, 0), 
+
+    //___________________________neck__________________head_________________r_eye_________________l_eye___
+  /* head  */    new PVector(0, 0, 0), new PVector(0, 0, 0), new PVector(0, 0, 0), new PVector(0, 0, 0), 
+
+    //_________________right_arm_upper_______right_arm_lower_______left_arm_upper________left_arm_lower___
+  /* arms  */    new PVector(0, 0, 270), new PVector(0, 0, 0), new PVector(0, 0, 90), new PVector(0, 0, 0), 
+
+    //_________________right_leg_upper_______right_leg_lower_______left_leg_upper________left_leg_lower___
+  /* leg   */    new PVector(0, 0, 0), new PVector(0, 0, 0), new PVector(0, 0, 0), new PVector(0, 0, 0)
+    );
+
+  poses[1] = new PoseVector(
+    //___________________________top___________________mid___________________bot__________________________
+  /* torso */    new PVector(0, 0, 0), new PVector(0, 0, 0), new PVector(0, 0, 0), 
+
+    //___________________________neck__________________head_________________r_eye_________________l_eye___
+  /* head  */    new PVector(15, 0, 15), new PVector(0, 0, 0), new PVector(0, 0, 0), new PVector(0, 0, 0), 
+
+    //_________________right_arm_upper_______right_arm_lower_______left_arm_upper________left_arm_lower___
+  /* arms  */    new PVector(0, -45, 270), new PVector(0, 0, -60), new PVector(0, -90, 90), new PVector(0, 0, -90), 
+
+    //_________________right_leg_upper_______right_leg_lower_______left_leg_upper________left_leg_lower___
+  /* leg   */    new PVector(-45, 0, 0), new PVector(-115, 0, 0), new PVector(15, 0, -15), new PVector(0, 0, 0)
+    );
+
+  poses[2] = new PoseVector(
+    //___________________________top___________________mid___________________bot__________________________
+  /* torso */    new PVector(0, 60, 0), new PVector(0, -30, 0), new PVector(15, 30, 0), 
+
+    //___________________________neck__________________head_________________r_eye_________________l_eye___
+  /* head  */    new PVector(-15, 0, -15), new PVector(0, 0, 0), new PVector(-30, -30, 0), new PVector(30, 30, 0), 
+
+    //_________________right_arm_upper_______right_arm_lower_______left_arm_upper________left_arm_lower___
+  /* arms  */    new PVector(0, 0, 270), new PVector(0, 0, 90), new PVector(0, 0, 100), new PVector(0, 30, 45), 
+
+    //_________________right_leg_upper_______right_leg_lower_______left_leg_upper________left_leg_lower___
+  /* leg   */    new PVector(100, 0, 0), new PVector(-10, 0, 0), new PVector(-15, 0, -15), new PVector(-15, 0, 0)
+    );
+
+  poses[3] = new PoseVector(
+    //___________________________top___________________mid___________________bot__________________________
+  /* torso */    new PVector(0, 60, 0), new PVector(0, -30, 0), new PVector(15, 30, 0), 
+
+    //___________________________neck__________________head_________________r_eye_________________l_eye___
+  /* head  */    new PVector(30, 0, -15), new PVector(0, 0, 0), new PVector(45, 0, 0), new PVector(-45, 0, 0), 
+
+    //_________________right_arm_upper_______right_arm_lower_______left_arm_upper________left_arm_lower___
+  /* arms  */    new PVector(30, 0, 245), new PVector(0, 0, 15), new PVector(10, 0, 10), new PVector(0, -10, 10), 
+
+    //_________________right_leg_upper_______right_leg_lower_______left_leg_upper________left_leg_lower___
+  /* leg   */    new PVector(15, 0, 0), new PVector(-10, 0, 0), new PVector(-15, 0, -15), new PVector(-15, 0, 0)
+    );
+}
+
+void mousePressed() {
+  poseIndex = poseIndex < poses.length - 1 ? poseIndex + 1 : 0;
+
+  doug.setAngles(poses[poseIndex]);
+
+  //swap = !swap;
+
+  //doug.zeroAngs(doug.root);
+
+  //PVector zero = new PVector(0, 0, 0);
+  //doug.left_eye.setAngDeg(zero);
+  //doug.right_eye.setAngDeg(zero);
+  //doug.torso_top.setAngDeg(zero);
+  //doug.neck.setAngDeg(zero);
+  //doug.left_arm_upper.setAngDeg(new PVector(0, 0, 180));
+  //doug.right_arm_upper.setAngDeg(zero);
+  //doug.torso_mid.setAngDeg(zero);
+  //doug.torso_bot.setAngDeg(zero);
+  //doug.left_leg_upper.setAngDeg(zero);
+  //doug.right_leg_upper.setAngDeg(new PVector(0, 180, 0));
 }

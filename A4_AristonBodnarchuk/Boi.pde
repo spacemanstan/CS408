@@ -19,14 +19,51 @@ class Boi {
 
     root = torso_mid;
   }
+  
+  void interpPoes(PoseVector pose1) {
+      torso_top.setAngDeg(pose1.torso_top);
+    torso_mid.setAngDeg(pose1.torso_mid);
+    torso_bot.setAngDeg(pose1.torso_bot);
+    neck.setAngDeg(pose1.neck);
+    head.setAngDeg(pose1.head);
+    right_eye.setAngDeg(pose1.right_eye);
+    left_eye.setAngDeg(pose1.left_eye);
+    right_arm_upper.setAngDeg(pose1.right_arm_upper);
+    right_arm_lower.setAngDeg(pose1.right_arm_lower);
+    left_arm_upper.setAngDeg(pose1.left_arm_upper);
+    left_arm_lower.setAngDeg(pose1.left_arm_lower);
+    right_leg_upper.setAngDeg(pose1.right_leg_upper);
+    right_leg_lower.setAngDeg(pose1.right_leg_lower);
+    left_leg_upper.setAngDeg(pose1.left_leg_upper);
+    left_leg_lower.setAngDeg(pose1.left_leg_lower);
+  }
+
+  void setAngles(PoseVector angles) {
+    torso_top.setAngDeg(angles.torso_top);
+    torso_mid.setAngDeg(angles.torso_mid);
+    torso_bot.setAngDeg(angles.torso_bot);
+    neck.setAngDeg(angles.neck);
+    head.setAngDeg(angles.head);
+    right_eye.setAngDeg(angles.right_eye);
+    left_eye.setAngDeg(angles.left_eye);
+    right_arm_upper.setAngDeg(angles.right_arm_upper);
+    right_arm_lower.setAngDeg(angles.right_arm_lower);
+    left_arm_upper.setAngDeg(angles.left_arm_upper);
+    left_arm_lower.setAngDeg(angles.left_arm_lower);
+    right_leg_upper.setAngDeg(angles.right_leg_upper);
+    right_leg_lower.setAngDeg(angles.right_leg_lower);
+    left_leg_upper.setAngDeg(angles.left_leg_upper);
+    left_leg_lower.setAngDeg(angles.left_leg_lower);
+  }
 
   void display() {
     pushMatrix();
 
     translate(pos.x, pos.y, pos.z);
+    rotateY(radians(frameCount/2 % 360));
 
-    rotateY( radians(frameCount % 360) );
-    rotateZ( radians(frameCount % 720) );
+    //rotateY( radians(frameCount % 360) );
+    //rotateZ( radians(frameCount % 720) );
 
     root.display();
 
@@ -52,8 +89,17 @@ class Boi {
     this(width/3, height/2, 0);
   }
 
-  void setRoot(CompositeObject part) {
-    this.root = part;
+  void zeroAngs(CompositeObject part) {
+    PVector zero = new PVector((part.ang_max.x + part.ang_min.x)/2, (part.ang_max.y + part.ang_min.y)/2, (part.ang_max.y + part.ang_min.y)/2);
+
+    part.setAngDeg(zero);
+
+    if (!part.isLeaf())
+      for (int i = 0; i < part.children.size(); ++i) {
+        CompositeObject child = part.children.get(i);
+        child.setAngDeg(zero);
+        zeroAngs(child);
+      }
   }
 
   void buildTorso() {
@@ -63,8 +109,8 @@ class Boi {
       new PVector(0, 0, 0), // relative position to parent, affected by parent rotation
       new PVector(0, -50, 0), // position offset for rotate, affected by self rotation
       new PVector(0, 0, 0), // ang
-      new PVector(-360, -360, -360), // ang_min
-      new PVector(360, 360, 360)  // ang_max
+      new PVector(-180, -180, -180), // ang_min
+      new PVector(180, 180, 180)  // ang_max
       );
 
     torso_mid = new CompositeObject(
@@ -73,8 +119,8 @@ class Boi {
       new PVector(0, 0, 0), // relative position to parent, affected by parent rotation
       new PVector(0, 0, 0), // position offset for rotate, affected by self rotation
       new PVector(0, 0, 0), // ang
-      new PVector(-360, -360, -360), // ang_min
-      new PVector(360, 360, 360)  // ang_max
+      new PVector(-180, -180, -180), // ang_min
+      new PVector(180, 180, 180)  // ang_max
       );
 
     torso_bot = new CompositeObject(
@@ -83,8 +129,8 @@ class Boi {
       new PVector(0, 0, 0), // relative position to parent, affected by parent rotation
       new PVector(0, 50, 0), // position offset for rotate, affected by self rotation
       new PVector(0, 0, 0), // ang
-      new PVector(-360, -360, -360), // ang_min
-      new PVector(360, 360, 360)  // ang_max
+      new PVector(-180, -180, -180), // ang_min
+      new PVector(180, 180, 180)  // ang_max
       );
 
     torso_mid.addChildObj(torso_top);
@@ -98,8 +144,8 @@ class Boi {
       new PVector(0, -50, 0), // relative position to parent, affected by parent rotation
       new PVector(0, -40, 0), // position offset for rotate, affected by self rotation
       new PVector(0, 0, 0), // ang
-      new PVector(-360, -360, -360), // ang_min
-      new PVector(360, 360, 360)  // ang_max
+      new PVector(-30, -75, -30), // ang_min
+      new PVector(30, 75, 30)  // ang_max
       );
 
     head = new CompositeObject(
@@ -108,8 +154,8 @@ class Boi {
       new PVector(0, -80, 0), // relative position to parent, affected by parent rotation
       new PVector(0, 0, 0), // position offset for rotate, affected by self rotation
       new PVector(0, 0, 0), // ang
-      new PVector(-360, -360, -360), // ang_min
-      new PVector(360, 360, 360)  // ang_max
+      new PVector(0, 0, 0), // ang_min
+      new PVector(0, 0, 0)  // ang_max
       );
 
     right_eye = new CompositeObject(
@@ -117,9 +163,9 @@ class Boi {
       whiteTexture, // texture
       new PVector(-20, -7.5, 25), // relative position to parent, affected by parent rotation
       new PVector(0, 0, 0), // position offset for rotate, affected by self rotation
-      new PVector(-30, -30, -30), // ang
-      new PVector(-360, -360, -360), // ang_min
-      new PVector(360, 360, 360)  // ang_max
+      new PVector(0, 0, 0), // ang
+      new PVector(-180, -180, -180), // ang_min
+      new PVector(180, 180, 180)  // ang_max
       );
 
     left_eye = new CompositeObject(
@@ -127,9 +173,9 @@ class Boi {
       whiteTexture, // texture
       new PVector(20, -7.5, 25), // relative position to parent, affected by parent rotation
       new PVector(0, 0, 0), // position offset for rotate, affected by self rotation
-      new PVector(30, 30, 30), // ang
-      new PVector(-360, -360, -360), // ang_min
-      new PVector(360, 360, 360)  // ang_max
+      new PVector(0, 0, 0), // ang
+      new PVector(-180, -180, -180), // ang_min
+      new PVector(180, 180, 180)  // ang_max
       );
 
     pupil = new CompositeObject(
@@ -186,45 +232,47 @@ class Boi {
     head.addChildObj(nose);
   }
 
-  // 180 z angle = arm down, 90 = right, 0 = up
-
   void buildArms() {
+    // 180 z angle = up, 90 = straigh out, 0 = down
     right_arm_upper = new CompositeObject(
       cylinder(30, 8, 60), // shape
       randomTexture(), // texture
       new PVector(-50, -50, 0), // relative position to parent, affected by parent rotation
-      new PVector(4, -30, 0), // position offset for rotate, affected by self rotation
-      new PVector(0, 0, 180), // ang
-      new PVector(-360, -360, 180), // ang_min
-      new PVector(360, 360, 360)  // ang_max
+      new PVector(0, -30, 0), // position offset for rotate, affected by self rotation
+      // 360 z angle = up, 270 = straigh out, 180 = down
+      new PVector(0, 0, 270), // ang
+      new PVector(0, -90, 180), // ang_min
+      new PVector(0, 90, 360)  // ang_max
       );
 
     right_arm_lower = new CompositeObject(
       cylinder(30, 8, 60), // shape
       randomTexture(), // texture
       new PVector(0, -60, 0), // relative position to parent, affected by parent rotation
-      new PVector(4, -30, 0), // position offset for rotate, affected by self rotation
-      new PVector(-50, 0, -30), // ang
+      new PVector(0, -30, 0), // position offset for rotate, affected by self rotation
+      new PVector(0, 0, 0), // ang
       new PVector(-360, -360, -360), // ang_min
       new PVector(360, 360, 360)  // ang_max
       );
 
+    // 180 z angle = down, 90 = straigh out, 0 = up
     left_arm_upper = new CompositeObject(
       cylinder(30, 8, 60), // shape
       randomTexture(), // texture
       new PVector(50, -50, 0), // relative position to parent, affected by parent rotation
-      new PVector(-4, -30, 0), // position offset for rotate, affected by self rotation
-      new PVector(0, 0, 180), // ang
-      new PVector(-360, -360, 0), // ang_min
-      new PVector(360, 360, 180)  // ang_max
+      new PVector(0, -30, 0), // position offset for rotate, affected by self rotation
+      // 180 z angle = down, 90 = straigh out, 0 = up
+      new PVector(0, 0, 90), // ang
+      new PVector(0, -90, 0), // ang_min
+      new PVector(0, 90, 180)  // ang_max
       );
 
     left_arm_lower = new CompositeObject(
       cylinder(30, 8, 60), // shape
       randomTexture(), // texture
       new PVector(0, -60, 0), // relative position to parent, affected by parent rotation
-      new PVector(-4, -30, 0), // position offset for rotate, affected by self rotation
-      new PVector(-50, 0, 30), // ang
+      new PVector(0, -30, 0), // position offset for rotate, affected by self rotation
+      new PVector(0, 0, 0), // ang
       new PVector(-360, -360, -360), // ang_min
       new PVector(360, 360, 360)  // ang_max
       );
@@ -263,7 +311,7 @@ class Boi {
       randomTexture(), // texture
       new PVector(0, 60, 0), // relative position to parent, affected by parent rotation
       new PVector(4, 30, 0), // position offset for rotate, affected by self rotation
-      new PVector(-30, 0, 0), // ang
+      new PVector(0, 0, 0), // ang
       new PVector(-360, -360, -360), // ang_min
       new PVector(360, 360, 360)  // ang_max
       );
@@ -274,12 +322,13 @@ class Boi {
       new PVector(0, 69, 0), // relative position to parent, affected by parent rotation
       new PVector(4, 7, 0), // position offset for rotate, affected by self rotation
       new PVector(90, 0, 0), // ang
-      new PVector(80, 0, 0), // ang_min
-      new PVector(100, 0, 0)  // ang_max
+      new PVector(90, 0, 0), // ang_min
+      new PVector(90, 0, 0)  // ang_max
       );
 
+
     left_leg_upper = new CompositeObject(
-      cylinder(30, 8, 60), // shape
+      cylinder(30, 11, 8, 60), // shape
       randomTexture(), // texture
       new PVector(25, 70, 0), // relative position to parent, affected by parent rotation
       new PVector(-4, 30, 0), // position offset for rotate, affected by self rotation
@@ -289,11 +338,11 @@ class Boi {
       );
 
     left_leg_lower = new CompositeObject(
-      cylinder(30, 8, 60), // shape
+      cylinder(30, 8, 10, 60), // shape
       randomTexture(), // texture
       new PVector(0, 60, 0), // relative position to parent, affected by parent rotation
       new PVector(-4, 30, 0), // position offset for rotate, affected by self rotation
-      new PVector(-30, 0, 0), // ang
+      new PVector(0, 0, 0), // ang
       new PVector(-360, -360, -360), // ang_min
       new PVector(360, 360, 360)  // ang_max
       );
@@ -304,8 +353,8 @@ class Boi {
       new PVector(0, 69, 0), // relative position to parent, affected by parent rotation
       new PVector(-4, 7, 0), // position offset for rotate, affected by self rotation
       new PVector(90, 0, 0), // ang
-      new PVector(80, 0, 0), // ang_min
-      new PVector(100, 0, 0)  // ang_max
+      new PVector(90, 0, 0), // ang_min
+      new PVector(90, 0, 0)  // ang_max
       );
 
     torso_bot.addChildObj(right_leg_upper);

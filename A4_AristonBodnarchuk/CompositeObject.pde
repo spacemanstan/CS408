@@ -6,10 +6,10 @@
  or I need a second cylinder function that 
  */
 class CompositeObject {
-  private PShape shape;
-  private PVector posRel, posOff, angDeg, ang_min, ang_max; // angles are in degrees
+  PShape shape;
+  PVector posRel, posOff, angDeg, ang_min, ang_max; // angles are in degrees
 
-  private ArrayList<CompositeObject> children;
+  ArrayList<CompositeObject> children;
 
   CompositeObject(PShape shape_, PImage texture_, PVector posRel_, PVector posOff_, PVector ang_, PVector ang_min_, PVector ang_max_) {  
     this.shape = shape_;
