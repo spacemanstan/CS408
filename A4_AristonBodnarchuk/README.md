@@ -16,36 +16,36 @@ Rather than use keybindings I used mouse input instead as there are few controls
 
 
 ###### User Instructions
-Left Mouse Click	= 	Change Pose
-Right Mouse Click	= 	Change Pose Mode (interpolate, set, vibe)
-Interpolate ⇒ linearly interpolate to next pose on mouse click 
-Set ⇒ assign to next pose on mouse click
-Vibe ⇒ do a walk arm wave dance thing with dynamic animation
-Middle Mouse Click	= 	Change Rotation Mode (face forward, circle spin, crazy spin)
-Face Forward ⇒ No rotation, look straight / forward
-Circle Spin ⇒ Spin in a circle slowly 
-Crazy Spin ⇒ Spin in all directions simultaneously
-Creative Features
+ - Left Mouse Click	= 	Change Pose
+ - Right Mouse Click	= 	Change Pose Mode (interpolate, set, vibe)
+ - Interpolate ⇒ linearly interpolate to next pose on mouse click 
+ - Set ⇒ assign to next pose on mouse click
+ - Vibe ⇒ do a walk arm wave dance thing with dynamic animation
+ - Middle Mouse Click	= 	Change Rotation Mode (face forward, circle spin, crazy spin)
+ - Face Forward ⇒ No rotation, look straight / forward
+ - Circle Spin ⇒ Spin in a circle slowly 
+ - Crazy Spin ⇒ Spin in all directions simultaneously
 
-Replaced crappy keybind with simple mouse button system
-Rotation Modes
-Pose modes
-See User Instructions for more info 
-Sweet color shifting background 
-Is is very cool 
-Individual random part texturing
-Texture generation (for eyes)
-Dance walk dynamic animation mode
-Functionality to change root
-Cone shapes
-Additional limbs
-Hands
-Eyes
-Feet
-Pupils
-Segmented torso
-Sweet custom pshape cylinder generation function
-Generates uv map at same time as cylinder
-Main figure is named Doug
-Extra lil wood buddy guy beside main figure (Doug)
-He is also very cool 
+###### Creative Features
+ - Replaced crappy keybind with simple mouse button system
+      - Rotation Modes
+      - Pose modes
+      - See User Instructions for more info 
+ - Sweet color shifting background 
+      - Is is very cool 
+ - Individual random part texturing
+ - Texture generation (for eyes)
+ - Dance walk dynamic animation mode
+ - Functionality to change root
+ - Cone shapes
+ - Additional limbs
+      - Hands
+      - Eyes
+      - Feet
+      - Pupils
+ - Segmented torso
+ - Sweet custom pshape cylinder generation function
+ - Generates uv map at same time as cylinder
+ - Main figure is named Doug
+ - Extra lil wood buddy guy beside main figure (Doug)
+      - He is also very cool 
