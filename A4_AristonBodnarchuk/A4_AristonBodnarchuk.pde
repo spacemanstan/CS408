@@ -1,3 +1,43 @@
+/*##############################################################################################################
+ ##############################################################################################################
+ ##############################################################################################################
+ 
+ Name: Ariston Bodnarchuk
+ Id:   200285478
+ Prof: Alain Crotte
+ 
+ ##############################################################################################################
+ 
+ video demo: http://paulbourke.net/texturelibrary/
+ 
+ Controls
+ ##################
+ Left Mouse Button   =   Change Pose
+ Right Mouse Button   =   Change Pose Mode (interpolate, set, vibe)
+ Middle Mouse Button   =   Change Rotation Mode (face forward, circle spin, crazy spin)
+ 
+ Description
+ ##################
+ My model is built out of composite objects used to form a tree structure that holds a model, and all relevant 
+ positioning information as well as an array of children consisting of further composite objects. The model is 
+ displayed using the tree structure. By performing a depth first search I am able to stack transformations to 
+ play objects relevant to one another rather than relevant to the world. This model is then stored in a class 
+ called Boi as root, and global position on the screen as well as rotation are stored. This Boi class also 
+ handles setting positions, interpolating, or calculating dynamic dance animations as well as handling 
+ different global rotation modes. The main draw function acts as a driver for the boi class, which handles 
+ everything for the model. The mouse is used to interact with the instance of the boi class named Doug. 
+
+An array of pose vector data types holds the data for the different poses used by the Boi class.
+
+Rather than use keybindings I used mouse input instead as there are few controls needed and keyboard controls 
+are annoying in my opinion. The mouse controls allow a quicker and easier way of checking all functionality works. 
+
+all textures are cited from:
+http://paulbourke.net/texturelibrary/
+ 
+ ##############################################################################################################
+ ##############################################################################################################
+ ##############################################################################################################*/
 final int FPS = 60;
 
 PVector xyrNoise = new PVector(0, 0, 0);
@@ -8,8 +48,7 @@ PShape body, head, arm1, arm2, leg1, leg2;
 
 Boi doug;
 
-boolean swap = false;
-
+int poseMode = 0;
 PGraphics blackTexture, whiteTexture;
 
 int poseIndex = 0;
@@ -19,7 +58,7 @@ void setup() {
   size(1280, 720, P3D);
   colorMode(HSB, 360, 100, 100, 100);
   frameRate(FPS);
-  surface.setTitle("a4"); // name the window better
+  surface.setTitle("A4 -  Hierarchical Kinematic Animation"); // name the window better
 
   noiseDetail(1, 0.5);
 
@@ -41,7 +80,8 @@ void setup() {
 
   createPoses();
 
-  doug.setAngles(poses[poses.length - 1]);
+  poseIndex = poses.length - 1;
+  doug.setAngles(poses[poseIndex]);
 }
 
 void draw() {
@@ -52,24 +92,31 @@ void draw() {
 
   doug.display();
 
-  //if (swap) {
-  //  doug.left_eye.setAngDeg(new PVector(-frameCount*2 % 180, frameCount*2 % 180, 0) );
-  //  doug.right_eye.setAngDeg(new PVector(frameCount*2 % 180, -frameCount*2 % 180, 0) );
+  if (poseIndex == poses.length || poseMode == 2) {
+    doug.zeroAngs(doug.root);
 
-  //  float bounce10 = frameCount%80 < 40 ? map(frameCount%80, 0, 39, -10, 10) : map(frameCount%80, 40, 79, 10, -10);
-  //  float bounce30 = frameCount%80 < 40 ? map(frameCount%80, 0, 39, -30, 30) : map(frameCount%80, 40, 79, 30, -30);
-  //  doug.torso_top.setAngDeg( new PVector(bounce10, 0, 0) );
-  //  doug.neck.setAngDeg( new PVector(bounce30, 0, 0) );
+    doug.left_eye.setAngDeg(new PVector(-frameCount*2 % 180, frameCount*2 % 180, 0) );
+    doug.right_eye.setAngDeg(new PVector(frameCount*2 % 180, -frameCount*2 % 180, 0) );
 
-  //  doug.left_arm_upper.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, 180, 90) : map(frameCount%80, 40, 79, 90, 180) ) );
-  //  doug.right_arm_upper.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, 180, 270) : map(frameCount%80, 40, 79, 270, 180) ) );
+    float bounce10 = frameCount%80 < 40 ? map(frameCount%80, 0, 39, -10, 10) : map(frameCount%80, 40, 79, 10, -10);
+    float bounce30 = frameCount%80 < 40 ? map(frameCount%80, 0, 39, -30, 30) : map(frameCount%80, 40, 79, 30, -30);
+    doug.torso_top.setAngDeg( new PVector(bounce10, 0, 0) );
+    doug.neck.setAngDeg( new PVector(bounce30, 0, 0) );
 
-  //  doug.torso_mid.setAngDeg(new PVector(0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, -5, 5) : map(frameCount%80, 40, 79, 5, -5), 0) );
-  //  doug.torso_bot.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, -5, 5) : map(frameCount%80, 40, 79, 5, -5)) );
+    doug.left_arm_upper.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, 180, 90) : map(frameCount%80, 40, 79, 90, 180) ) );
+    doug.right_arm_upper.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, 180, 270) : map(frameCount%80, 40, 79, 270, 180) ) );
 
-  //  doug.left_leg_upper.setAngDeg(new PVector(frameCount%80 < 40 ? map(frameCount%80, 0, 39, -30, 30) : map(frameCount%80, 40, 79, 30, -30), 0, 0 ) );
-  //  doug.right_leg_upper.setAngDeg(new PVector(frameCount%80 < 40 ? map(frameCount%80, 0, 39, 30, -30) : map(frameCount%80, 40, 79, -30, 30), 0, 0 ) );
-  //}
+    doug.torso_mid.setAngDeg(new PVector(0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, -5, 5) : map(frameCount%80, 40, 79, 5, -5), 0) );
+    doug.torso_bot.setAngDeg(new PVector(0, 0, frameCount%80 < 40 ? map(frameCount%80, 0, 39, -5, 5) : map(frameCount%80, 40, 79, 5, -5)) );
+
+    doug.left_leg_upper.setAngDeg(new PVector(frameCount%80 < 40 ? map(frameCount%80, 0, 39, -30, 30) : map(frameCount%80, 40, 79, 30, -30), 0, 0 ) );
+    doug.right_leg_upper.setAngDeg(new PVector(frameCount%80 < 40 ? map(frameCount%80, 0, 39, 30, -30) : map(frameCount%80, 40, 79, -30, 30), 0, 0 ) );
+  } else {
+    if (poseMode == 0)
+      doug.interpPoses(poses[(poseIndex + 1) % poses.length], 0.05);
+    if (poseMode == 1)
+      doug.setAngles(poses[(poseIndex + 1) % poses.length]);
+  }
 }
 
 // this is tight as fuck
@@ -243,23 +290,18 @@ void createPoses() {
 }
 
 void mousePressed() {
-  poseIndex = poseIndex < poses.length - 1 ? poseIndex + 1 : 0;
+  if (mouseButton == CENTER)
+    doug.incRotateMode();
 
-  doug.setAngles(poses[poseIndex]);
+  if (mouseButton == RIGHT) {
+    ++poseMode;
+    poseMode %= 3;
+  }
 
-  //swap = !swap;
-
-  //doug.zeroAngs(doug.root);
-
-  //PVector zero = new PVector(0, 0, 0);
-  //doug.left_eye.setAngDeg(zero);
-  //doug.right_eye.setAngDeg(zero);
-  //doug.torso_top.setAngDeg(zero);
-  //doug.neck.setAngDeg(zero);
-  //doug.left_arm_upper.setAngDeg(new PVector(0, 0, 180));
-  //doug.right_arm_upper.setAngDeg(zero);
-  //doug.torso_mid.setAngDeg(zero);
-  //doug.torso_bot.setAngDeg(zero);
-  //doug.left_leg_upper.setAngDeg(zero);
-  //doug.right_leg_upper.setAngDeg(new PVector(0, 180, 0));
+  if (mouseButton == LEFT) {
+    if (poseMode == 2)
+      poseIndex = poses.length;
+    else
+      poseIndex = (poseIndex + 1) % poses.length;
+  }
 }

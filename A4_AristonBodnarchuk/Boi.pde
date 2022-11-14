@@ -11,6 +11,8 @@ class Boi {
   // root
   CompositeObject root;
 
+  int rotateMode = 0;
+
   Boi (float x_, float y_, float z_) {
     pos = new PVector(x_, y_, z_);
 
@@ -18,24 +20,6 @@ class Boi {
     //someAssemblyRequired();
 
     root = torso_mid;
-  }
-  
-  void interpPoes(PoseVector pose1) {
-      torso_top.setAngDeg(pose1.torso_top);
-    torso_mid.setAngDeg(pose1.torso_mid);
-    torso_bot.setAngDeg(pose1.torso_bot);
-    neck.setAngDeg(pose1.neck);
-    head.setAngDeg(pose1.head);
-    right_eye.setAngDeg(pose1.right_eye);
-    left_eye.setAngDeg(pose1.left_eye);
-    right_arm_upper.setAngDeg(pose1.right_arm_upper);
-    right_arm_lower.setAngDeg(pose1.right_arm_lower);
-    left_arm_upper.setAngDeg(pose1.left_arm_upper);
-    left_arm_lower.setAngDeg(pose1.left_arm_lower);
-    right_leg_upper.setAngDeg(pose1.right_leg_upper);
-    right_leg_lower.setAngDeg(pose1.right_leg_lower);
-    left_leg_upper.setAngDeg(pose1.left_leg_upper);
-    left_leg_lower.setAngDeg(pose1.left_leg_lower);
   }
 
   void setAngles(PoseVector angles) {
@@ -55,15 +39,25 @@ class Boi {
     left_leg_upper.setAngDeg(angles.left_leg_upper);
     left_leg_lower.setAngDeg(angles.left_leg_lower);
   }
+  
+  void incRotateMode() {
+    rotateMode += 1;
+    rotateMode %= 3;
+  }
 
   void display() {
     pushMatrix();
 
     translate(pos.x, pos.y, pos.z);
-    rotateY(radians(frameCount/2 % 360));
-
-    //rotateY( radians(frameCount % 360) );
-    //rotateZ( radians(frameCount % 720) );
+    if (rotateMode == 1 || rotateMode == 2) {
+      if (rotateMode == 1) {
+        rotateY(radians(frameCount/2 % 360));
+      }
+      if (rotateMode == 2) {
+        rotateY( radians(frameCount % 360) );
+        rotateZ( radians(frameCount % 720) );
+      }
+    }
 
     root.display();
 
@@ -90,7 +84,7 @@ class Boi {
   }
 
   void zeroAngs(CompositeObject part) {
-    PVector zero = new PVector((part.ang_max.x + part.ang_min.x)/2, (part.ang_max.y + part.ang_min.y)/2, (part.ang_max.y + part.ang_min.y)/2);
+    PVector zero = new PVector(0, 0, 0);
 
     part.setAngDeg(zero);
 
@@ -363,5 +357,53 @@ class Boi {
     torso_bot.addChildObj(left_leg_upper);
     left_leg_upper.addChildObj(left_leg_lower);
     left_leg_lower.addChildObj(left_leg_foot);
+  }
+
+  void interpPoses(PoseVector targetPosition, float speed) {
+    torso_top.angDeg.x = lerp(torso_top.angDeg.x, targetPosition.torso_top.x, speed);
+    torso_top.angDeg.y = lerp(torso_top.angDeg.y, targetPosition.torso_top.y, speed);
+    torso_top.angDeg.z = lerp(torso_top.angDeg.z, targetPosition.torso_top.z, speed);
+    torso_mid.angDeg.x = lerp(torso_mid.angDeg.x, targetPosition.torso_mid.x, speed);
+    torso_mid.angDeg.y = lerp(torso_mid.angDeg.y, targetPosition.torso_mid.y, speed);
+    torso_mid.angDeg.z = lerp(torso_mid.angDeg.z, targetPosition.torso_mid.z, speed);
+    torso_bot.angDeg.x = lerp(torso_bot.angDeg.x, targetPosition.torso_bot.x, speed);
+    torso_bot.angDeg.y = lerp(torso_bot.angDeg.y, targetPosition.torso_bot.y, speed);
+    torso_bot.angDeg.z = lerp(torso_bot.angDeg.z, targetPosition.torso_bot.z, speed);
+    neck.angDeg.x = lerp(neck.angDeg.x, targetPosition.neck.x, speed);
+    neck.angDeg.y = lerp(neck.angDeg.y, targetPosition.neck.y, speed);
+    neck.angDeg.z = lerp(neck.angDeg.z, targetPosition.neck.z, speed);
+    head.angDeg.x = lerp(head.angDeg.x, targetPosition.head.x, speed);
+    head.angDeg.y = lerp(head.angDeg.y, targetPosition.head.y, speed);
+    head.angDeg.z = lerp(head.angDeg.z, targetPosition.head.z, speed);
+    right_eye.angDeg.x = lerp(right_eye.angDeg.x, targetPosition.right_eye.x, speed);
+    right_eye.angDeg.y = lerp(right_eye.angDeg.y, targetPosition.right_eye.y, speed);
+    right_eye.angDeg.z = lerp(right_eye.angDeg.z, targetPosition.right_eye.z, speed);
+    left_eye.angDeg.x = lerp(left_eye.angDeg.x, targetPosition.left_eye.x, speed);
+    left_eye.angDeg.y = lerp(left_eye.angDeg.y, targetPosition.left_eye.y, speed);
+    left_eye.angDeg.z = lerp(left_eye.angDeg.z, targetPosition.left_eye.z, speed);
+    right_arm_upper.angDeg.x = lerp(right_arm_upper.angDeg.x, targetPosition.right_arm_upper.x, speed);
+    right_arm_upper.angDeg.y = lerp(right_arm_upper.angDeg.y, targetPosition.right_arm_upper.y, speed);
+    right_arm_upper.angDeg.z = lerp(right_arm_upper.angDeg.z, targetPosition.right_arm_upper.z, speed);
+    right_arm_lower.angDeg.x = lerp(right_arm_lower.angDeg.x, targetPosition.right_arm_lower.x, speed);
+    right_arm_lower.angDeg.y = lerp(right_arm_lower.angDeg.y, targetPosition.right_arm_lower.y, speed);
+    right_arm_lower.angDeg.z = lerp(right_arm_lower.angDeg.z, targetPosition.right_arm_lower.z, speed);
+    left_arm_upper.angDeg.x = lerp(left_arm_upper.angDeg.x, targetPosition.left_arm_upper.x, speed);
+    left_arm_upper.angDeg.y = lerp(left_arm_upper.angDeg.y, targetPosition.left_arm_upper.y, speed);
+    left_arm_upper.angDeg.z = lerp(left_arm_upper.angDeg.z, targetPosition.left_arm_upper.z, speed);
+    left_arm_lower.angDeg.x = lerp(left_arm_lower.angDeg.x, targetPosition.left_arm_lower.x, speed);
+    left_arm_lower.angDeg.y = lerp(left_arm_lower.angDeg.y, targetPosition.left_arm_lower.y, speed);
+    left_arm_lower.angDeg.z = lerp(left_arm_lower.angDeg.z, targetPosition.left_arm_lower.z, speed);
+    right_leg_upper.angDeg.x = lerp(right_leg_upper.angDeg.x, targetPosition.right_leg_upper.x, speed);
+    right_leg_upper.angDeg.y = lerp(right_leg_upper.angDeg.y, targetPosition.right_leg_upper.y, speed);
+    right_leg_upper.angDeg.z = lerp(right_leg_upper.angDeg.z, targetPosition.right_leg_upper.z, speed);
+    right_leg_lower.angDeg.x = lerp(right_leg_lower.angDeg.x, targetPosition.right_leg_lower.x, speed);
+    right_leg_lower.angDeg.y = lerp(right_leg_lower.angDeg.y, targetPosition.right_leg_lower.y, speed);
+    right_leg_lower.angDeg.z = lerp(right_leg_lower.angDeg.z, targetPosition.right_leg_lower.z, speed);
+    left_leg_upper.angDeg.x = lerp(left_leg_upper.angDeg.x, targetPosition.left_leg_upper.x, speed);
+    left_leg_upper.angDeg.y = lerp(left_leg_upper.angDeg.y, targetPosition.left_leg_upper.y, speed);
+    left_leg_upper.angDeg.z = lerp(left_leg_upper.angDeg.z, targetPosition.left_leg_upper.z, speed);
+    left_leg_lower.angDeg.x = lerp(left_leg_lower.angDeg.x, targetPosition.left_leg_lower.x, speed);
+    left_leg_lower.angDeg.y = lerp(left_leg_lower.angDeg.y, targetPosition.left_leg_lower.y, speed);
+    left_leg_lower.angDeg.z = lerp(left_leg_lower.angDeg.z, targetPosition.left_leg_lower.z, speed);
   }
 }
