@@ -5,7 +5,7 @@
 ## Asignment Four - Hierarchical Kinematic Models & Animation System
 
 ###### Video Demonstration 
-[Video example of all a4 functional requirements](https://youtu.be/CdCNN5qxw3Y](https://youtu.be/dbLGH2d-nWs)
+[Video example of all a4 functional requirements](https://youtu.be/dbLGH2d-nWs)
 
 ###### Program Overview
 My model is built out of composite objects used to form a tree structure that holds a model, and all relevant positioning information as well as an array of children consisting of further composite objects. The model is displayed using the tree structure. By performing a depth first search I am able to stack transformations to play objects relevant to one another rather than relevant to the world. This model is then stored in a class called Boi as root, and global position on the screen as well as rotation are stored. This Boi class also handles setting positions, interpolating, or calculating dynamic dance animations as well as handling different global rotation modes. The main draw function acts as a driver for the boi class, which handles everything for the model. The mouse is used to interact with the instance of the boi class named Doug. 
