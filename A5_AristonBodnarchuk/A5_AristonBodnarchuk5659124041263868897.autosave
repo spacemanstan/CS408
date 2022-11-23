@@ -1,0 +1,142 @@
+final int FPS = 30;
+
+Gas[][] gasGrid, calcGrid;
+int offset = 0;
+
+float totalMass = 0;
+
+void setup() {
+  size(420, 420);
+  frameRate(FPS);
+
+  gasGrid = new Gas[width][height];
+  calcGrid = new Gas[width][height];
+
+  // init gas to 0 vals to start
+  for (int y_ = 0; y_ < height; ++y_)
+    for (int x_ = 0; x_ < width; ++x_) 
+      gasGrid[x_][y_] = new Gas();
+
+  // get some random gas (1/20 chance per cell)
+
+  for (int y_ = 0; y_ < height; ++y_)
+    for (int x_ = 0; x_ < width; ++x_) {
+      int d20 = (int)random(1, 21);
+
+      if ( d20 == 1 ) {
+        int randMass = constrain( (int)random(-5, 10010), 1, 10000);
+        int randVelX = constrain( (int)random(-310, 310), -300, 300);
+        int randVelY = constrain( (int)random(-310, 310), -300, 300);
+
+        calcGrid[x_][y_] = new Gas(randMass, randVelX, randVelY);
+
+        totalMass += calcGrid[x_][y_].getMass();
+      } else {
+        calcGrid[x_][y_] = new Gas();
+      }
+    }
+}
+
+void draw() {
+  background(0);
+
+  for (int y_ = 0; y_ < height; ++y_)
+    for (int x_ = 0; x_ < width; ++x_) 
+      gasGrid[x_][y_].zero();
+
+  for (int y_ = 0; y_ < height; ++y_)
+    for (int x_ = 0; x_ < width; ++x_) {
+      //gasGrid[x_][y_].cop_e( calcGrid[x_][y_] );
+
+      if (calcGrid[x_][y_].getMass_int() == 0)
+        continue;
+
+      Gas calcCell = calcGrid[x_][y_];
+
+      println("\n\n");
+      println(x_ + ", " + y_);
+      println((x_) + ", " + (y_));
+    }
+
+  // prepare to display gas
+  loadPixels();
+
+  // display gas + update calc gas and reset display gas grid
+  for (int y_ = 0; y_ < height; ++y_)
+    for (int x_ = 0; x_ < width; ++x_) {
+      pixels[x_ + (y_ * width)] = gasGrid[x_][y_].calcColor();
+    }
+
+  updatePixels();
+}
+
+class Gas {
+  // use ints and convert to floats for better control of precision with quick performance
+  int mass; // 0 to 100 with 2 decimals means 0 to 10000 / 100.0 
+  int xVel, yVel; // -3 to 3 with 2 decimals means -300 to 300 / 100.0 
+
+  Gas() {
+    mass = 0;
+    xVel = 0;
+    yVel = 0;
+  }
+
+  Gas(int mass_, int xVel_, int yVel_) {
+    mass = constrain(mass_, 0, 10000);
+    xVel = constrain(xVel_, -300, 300);
+    yVel = constrain(yVel_, -300, 300);
+  }
+
+  // copy is reserved so cop_e lol
+  void cop_e(Gas tar) {
+    this.mass = tar.mass;
+    this.xVel = tar.xVel;
+    this.yVel = tar.yVel;
+  }
+
+  color calcColor() {
+    return color( map(mass, 0, 10000, 0, 255) );
+  }
+
+  float getMass() {
+    return constrain(mass, 0, 10000) / 100.0;
+  }
+
+  int getMass_int() {
+    return (int)this.getMass();
+  }
+
+  float getMass_dec() {
+    return (mass - getMass_int() * 100) / 100.0;
+  }
+
+  float getVelX() {
+    return constrain(xVel, -300, 300) / 100.0;
+  }
+
+  int getVelX_int() {
+    return (int)this.getVelX();
+  }
+
+  float getVelX_dec() {
+    return (xVel - getVelX_int() * 100) / 100.0;
+  }
+
+  float getVelY() {
+    return constrain(yVel, -300, 300) / 100.0;
+  }
+
+  int getVelY_int() {
+    return (int)this.getVelY();
+  }
+
+  float getVelY_dec() {
+    return (yVel - getVelY_int() * 100) / 100.0;
+  }
+
+  void zero() {
+    mass = 0;
+    xVel = 0;
+    yVel = 0;
+  }
+}

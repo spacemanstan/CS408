@@ -1,13 +1,11 @@
-final int FPS = 1;
+final int FPS = 30;
 int len = 0;
 
 Gas[] gasGrid, calcGrid;
-int offset = 0;
-
 float totalMass = 0;
 
 void setup() {
-  size(420, 420);
+  size(10, 10);
   frameRate(FPS);
 
   // calc length of all arrys once
@@ -37,74 +35,57 @@ void setup() {
         int randVelX = constrain( (int)random(-310, 310), -300, 300);
         int randVelY = constrain( (int)random(-310, 310), -300, 300);
         calcGrid[x_ + (y_ * width)] = new Gas(randMass, randVelX, randVelY);
-        
+
         totalMass += calcGrid[x_ + (y_ * width)].getMass();
       } else {
         calcGrid[x_ + (y_ * width)] = new Gas();
       }
+
+  //println( 11 % 10);
 }
 
 void draw() {
   background(0);
-  
-  println(totalMass);
 
-  //int randMass = constrain( (int)random(-5, 10010), 1, 10000);
-  //int randVelX = constrain( (int)random(-310, 310), -300, 300);
-  //int randVelY = constrain( (int)random(-310, 310), -300, 300);
-  //Gas temp = new Gas(randMass, randVelX, randVelY);
-
-  //println("\n\n\n" + temp.getVelX());
-  //println(Math.floor( temp.getVelX() ));
-  //println(Math.ceil( temp.getVelX() ));
+  for (int i_ = 0; i_ < len; ++i_)
+    gasGrid[i_].zero();
 
   // calculate uniform distribution
-  //for (int x_ = 0; x_ < width; ++x_)
-  //  for (int y_ = 0; y_ < height; ++y_) {
-  //    Gas cCell = calcGrid[x_ + (y_ * width)];
+  for (int x_ = 0; x_ < width; ++x_)
+    for (int y_ = 0; y_ < height; ++y_) {
+      int startIndex = x_ + (y_ * width);
+      Gas startCell = calcGrid[startIndex];
 
-  //    if (cCell.mass == 0)
-  //      break;
+      if (startCell.mass == 0)
+        continue;
 
-  //    // index modifiers for uniform distribuition
-  //    int xf = (int)(Math.floor( cCell.getVelX() ));
-  //    int xc = (int)(Math.ceil( cCell.getVelX() ));
-  //    int yf = (int)(Math.floor( cCell.getVelY() ));
-  //    int yc = (int)(Math.ceil( cCell.getVelY() ));
+      // index modifiers for uniform distribuition
+      int fx = startCell.getVelX_int();
+      int fy = startCell.getVelY_int();
+      int cx = startCell.getVelX_int() + 1;
+      int cy = startCell.getVelY_int() + 1;
 
-  //    int indexFC = len + (x_ + xf) + ((y_ + yc) * width);
-  //    indexFC %= len;
-  //    int massFC = (int)( cCell.mass * (1 - cCell.getVelX_dec()) * cCell.getVelY_dec() );
-  //    gasGrid[indexFC].mass =  constrain(massFC, 0, 10000);
+      //int indexCC = ((width + x_ + cx) % width) + (((height + y_ + cy) % height) * width);
+      //int indexFC = ((width + x_ + fx) % width) + (((height + y_ + cy) % height) * width);
+      //int indexCF = ((width + x_ + cx) % width) + (((height + y_ + fy) % height) * width);
+      //int indexFF = ((width + x_ + fx) % width) + (((height + y_ + fy) % height) * width);
 
-  //    int indexCC = len + (x_ + xc) + ((y_ + yc) * width);
-  //    indexCC %= len;
-  //    int massCC = (int)( cCell.mass * cCell.getVelX_dec() * cCell.getVelY_dec() );
-  //    gasGrid[indexCC].mass =  constrain(massCC, 0, 10000);
-
-  //    int indexFF = len + (x_ + xf) + ((y_ + yf) * width);
-  //    indexFF %= len;
-  //    int massFF = (int)( cCell.mass * (1 - cCell.getVelX_dec()) * (1 - cCell.getVelY_dec()) );
-  //    gasGrid[indexFF].mass =  constrain(massFF, 0, 10000);
-
-  //    int indexCF = len + (x_ + xc) + ((y_ + yf) * width);
-  //    indexCF %= len;
-  //    int massCF = (int)( cCell.mass * cCell.getVelX_dec() * (1 - cCell.getVelY_dec()) );
-  //    gasGrid[indexCF].mass =  constrain(massCF, 0, 10000);
-  //  }
+      println(startIndex + " [" + startCell.getVelX() + ", " + startCell.getVelY() + " ]" + " [" + startCell.getVelX_int() + ", " + startCell.getVelY_int() + " ]" );
+      //println(indexFC + " | " + indexCC);
+      //println(indexFF + " | " + indexCF);
+      //println(x_ + " | " + y_);
+      //println(cx + " | " + cy);
+      //println(fx + " | " + fy);
+    }
 
   // prepare to display gas
   loadPixels();
 
   // display gas + update calc gas and reset display gas grid
   for (int x_ = 0; x_ < width; ++x_)
-    for (int y_ = 0; y_ < height; ++y_) {
+    for (int y_ = 0; y_ < height; ++y_) 
       pixels[x_ + (y_ * width)] = gasGrid[x_ + (y_ * width)].calcColor();
-      // update calculation grid
-      //calcGrid[x_ + (y_ * width)].cop_e( gasGrid[x_ + (y_ * width)] );
-      //// reset display gas grid
-      //gasGrid[x_ + (y_ * width)].zero();
-    }
+
 
   updatePixels();
 }
