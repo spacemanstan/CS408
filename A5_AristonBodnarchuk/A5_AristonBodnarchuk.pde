@@ -1,11 +1,11 @@
-final int FPS = 30;
+final int FPS = 1;
 int len = 0;
 
 Gas[] gasGrid, calcGrid;
 float totalMass = 0;
 
 void setup() {
-  size(10, 10);
+  size(420, 420);
   frameRate(FPS);
 
   // calc length of all arrys once
@@ -65,18 +65,39 @@ void draw() {
       int cx = startCell.getVelX_int() + 1;
       int cy = startCell.getVelY_int() - 1;
 
-      int indexCC = ((width + x_ + cx) % width) + (((height + y_ + cy) % height) * width);
-      int indexFC = ((width + x_ + fx) % width) + (((height + y_ + cy) % height) * width);
-      int indexCF = ((width + x_ + cx) % width) + (((height + y_ + fy) % height) * width);
+      // all this math is for edge wrapping the indices 
       int indexFF = ((width + x_ + fx) % width) + (((height + y_ + fy) % height) * width);
+      int indexCF = ((width + x_ + cx) % width) + (((height + y_ + fy) % height) * width);
+      int indexFC = ((width + x_ + fx) % width) + (((height + y_ + cy) % height) * width);
+      int indexCC = ((width + x_ + cx) % width) + (((height + y_ + cy) % height) * width);
+
+      // set velocites
+      gasGrid[indexFF].xVel += ((1 - startCell.getVelX_dec()) * (1 - startCell.getVelY_dec())) * 300;
+      gasGrid[indexFF].yVel += ((1 - startCell.getVelX_dec()) * (1 - startCell.getVelY_dec())) * 300;
+      gasGrid[indexCF].xVel += ((1 - startCell.getVelX_dec()) * (startCell.getVelY_dec())) * 300;
+      gasGrid[indexCF].yVel += ((1 - startCell.getVelX_dec()) * (startCell.getVelY_dec())) * 300;
+      gasGrid[indexFC].xVel += ((startCell.getVelX_dec()) * (1 - startCell.getVelY_dec())) * 300;
+      gasGrid[indexFC].yVel += ((startCell.getVelX_dec()) * (1 - startCell.getVelY_dec())) * 300;
+      gasGrid[indexCC].xVel += ((startCell.getVelX_dec()) * (startCell.getVelY_dec())) * 300;
+      gasGrid[indexCC].yVel += ((startCell.getVelX_dec()) * (startCell.getVelY_dec())) * 300;
+
+      // add mass into the calculated indices  
+      gasGrid[indexFF].mass += (int)(calcGrid[indexFF].mass * (1 - startCell.getVelX_dec()) * (1 - startCell.getVelY_dec()) );
+      gasGrid[indexCF].mass += (int)(calcGrid[indexCF].mass * (startCell.getVelX_dec()) * (1 - startCell.getVelY_dec()) );
+      gasGrid[indexFC].mass += (int)(calcGrid[indexFC].mass * (1 - startCell.getVelX_dec()) * (startCell.getVelY_dec()) );
+      gasGrid[indexCC].mass += (int)(calcGrid[indexCC].mass * (startCell.getVelX_dec()) * (startCell.getVelY_dec()) );
 
       //println(startIndex + " [" + startCell.getVelX() + ", " + startCell.getVelY() + " ]" + " [" + startCell.getVelX_int() + ", " + startCell.getVelY_int() + " ]" );
       //println(indexFC + " | " + indexCC);
       //println(indexFF + " | " + indexCF);
-      //println(x_ + " | " + y_);
-      //println(cx + " | " + cy);
-      //println(fx + " | " + fy);
+      //println(startCell.getVelX_dec() + " | " + startCell.getVelY_dec());
+      //println(((1 - startCell.getVelX_dec()) * (startCell.getVelY_dec())) + " | " + ((startCell.getVelX_dec()) * (startCell.getVelY_dec())));
+      //println(((1 - startCell.getVelX_dec()) * (1 - startCell.getVelY_dec())) + " | " + ((startCell.getVelX_dec()) * (1 - startCell.getVelY_dec())));
     }
+
+  // constrain values
+  for (int i_ = 0; i_ < len; ++i_)
+    gasGrid[i_].cnstrn();
 
   // prepare to display gas
   loadPixels();
@@ -88,6 +109,9 @@ void draw() {
 
 
   updatePixels();
+
+  for (int i_ = 0; i_ < len; ++i_)
+    calcGrid[i_].cop_e(gasGrid[i_]);
 }
 
 class Gas {
@@ -105,6 +129,12 @@ class Gas {
     mass = constrain(mass_, 0, 10000);
     xVel = constrain(xVel_, -300, 300);
     yVel = constrain(yVel_, -300, 300);
+  }
+
+  void cnstrn() {
+    mass = constrain(mass, 0, 10000);
+    xVel = constrain(xVel, -300, 300);
+    yVel = constrain(yVel, -300, 300);
   }
 
   // copy is reserved so cop_e lol
