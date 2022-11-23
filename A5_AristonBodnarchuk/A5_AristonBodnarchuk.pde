@@ -63,14 +63,14 @@ void draw() {
       int fx = startCell.getVelX_int();
       int fy = startCell.getVelY_int();
       int cx = startCell.getVelX_int() + 1;
-      int cy = startCell.getVelY_int() + 1;
+      int cy = startCell.getVelY_int() - 1;
 
-      //int indexCC = ((width + x_ + cx) % width) + (((height + y_ + cy) % height) * width);
-      //int indexFC = ((width + x_ + fx) % width) + (((height + y_ + cy) % height) * width);
-      //int indexCF = ((width + x_ + cx) % width) + (((height + y_ + fy) % height) * width);
-      //int indexFF = ((width + x_ + fx) % width) + (((height + y_ + fy) % height) * width);
+      int indexCC = ((width + x_ + cx) % width) + (((height + y_ + cy) % height) * width);
+      int indexFC = ((width + x_ + fx) % width) + (((height + y_ + cy) % height) * width);
+      int indexCF = ((width + x_ + cx) % width) + (((height + y_ + fy) % height) * width);
+      int indexFF = ((width + x_ + fx) % width) + (((height + y_ + fy) % height) * width);
 
-      println(startIndex + " [" + startCell.getVelX() + ", " + startCell.getVelY() + " ]" + " [" + startCell.getVelX_int() + ", " + startCell.getVelY_int() + " ]" );
+      //println(startIndex + " [" + startCell.getVelX() + ", " + startCell.getVelY() + " ]" + " [" + startCell.getVelX_int() + ", " + startCell.getVelY_int() + " ]" );
       //println(indexFC + " | " + indexCC);
       //println(indexFF + " | " + indexCF);
       //println(x_ + " | " + y_);
