@@ -5,6 +5,7 @@ three main functions:
 
 class Simulation {
   boolean colorToggle = false;
+  boolean fadeToggle = false;
 
   int size;
   float dt;
@@ -37,8 +38,22 @@ class Simulation {
     this.Vy0 = new float[N*N];
   }
 
+  // main update / run function called in draw
+  // named draw_ because it is called in main draw() function and drives the simulation
+  void draw_() {
+    this.step();
+    this.renderD();
+
+    if (fadeToggle) 
+      this.fadeD();
+  }
+
   void toggleColorMode() {
     this.colorToggle = !this.colorToggle;
+  }
+
+  void toggleColorFadeMode() {
+    this.fadeToggle = !this.fadeToggle;
   }
 
   int getIndex(int x, int y) {

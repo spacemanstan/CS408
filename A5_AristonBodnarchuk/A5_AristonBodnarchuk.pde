@@ -27,12 +27,10 @@ final int N = 128;
 final int iter = 8; // # of iterations
 final int SCALE = 5;
 
-boolean fadeToggle = false;
-
 Simulation gasSim;
 
 void settings() {
-  size(N*SCALE, N*SCALE);
+  size(N * SCALE, N * SCALE);
 }
 
 void setup() {
@@ -43,8 +41,5 @@ void setup() {
 void draw() {
   background(0);
 
-  gasSim.step();
-  gasSim.renderD();
-
-  if (fadeToggle) gasSim.fadeD();
+  gasSim.draw_();
 }
