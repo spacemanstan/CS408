@@ -12,6 +12,11 @@
  I struggled super hard with the initial intent of this assignemnt following the given instructions
  I'm not sure why, I just couldn't get it to work properly with mass and velocity so I took a different approach.
  
+ I found this work on fluid simulations by Jos Stam, who is way smarter than me and figured out a lot of complex math.
+ That led me to finding Mike Ash and his work based on what Jos Stam did. The math going on here is extremely complex
+ and I can't image the dedication it took Jos Stam to figure all this out. I found following the work of Stam and Ash
+ easier than going with the assignment simulation code and am happier with the final results
+ 
  https://www.dgp.toronto.edu/public_user/stam/reality/Research/pdf/GDC03.pdf
  https://mikeash.com/pyblog/fluid-simulation-for-dummies.html
  
@@ -23,14 +28,14 @@
  
  */
 
-final int N = 128;
-final int iter = 8; // # of iterations
-final int SCALE = 5;
+final int DIM = 128; // dimenstions of sqaure grid (2 power works best)
+final int iterations = 8; // # of iterations
+final int SCALE = 5; // how big you want to scale up the simulation 
 
 Simulation gasSim;
 
 void settings() {
-  size(N * SCALE, N * SCALE);
+  size(DIM * SCALE, DIM * SCALE);
 }
 
 void setup() {

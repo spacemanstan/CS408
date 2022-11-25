@@ -28,20 +28,20 @@ void mouseReleased() {
     gasSim.toggleColorMode();
 
   if (pressedNotDragged && mouseButton == RIGHT)
-    gasSim.toggleColorFadeMode();
+    gasSim.toggleFade();
 }
 
 void mouseDragged() {
   pressedNotDragged = false;
 
   if (mouseButton == LEFT) {
-    gasSim.addDensity(mouseX / SCALE, mouseY / SCALE, 100);
+    gasSim.addDyeDensity(mouseX / SCALE, mouseY / SCALE, 100);
     float amtx = mouseX - pmouseX;
     float amty = mouseY - pmouseY;
     gasSim.addVelocity(mouseX / SCALE, mouseY / SCALE, amtx, amty);
   } 
 
   if (mouseButton == RIGHT) {
-    gasSim.removeDensity(mouseX / SCALE, mouseY / SCALE, 100);
+    gasSim.removeDyeDensity(mouseX / SCALE, mouseY / SCALE, 100);
   }
 }
