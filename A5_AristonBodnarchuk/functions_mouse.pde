@@ -36,8 +36,9 @@ void mouseDragged() {
 
   if (mouseButton == LEFT) {
     gasSim.addDyeDensity(mouseX / SCALE, mouseY / SCALE, 100);
-    float amtx = mouseX - pmouseX;
-    float amty = mouseY - pmouseY;
+    float amtx = (mouseX - pmouseX) * 2;
+    float amty = (mouseY - pmouseY) * 2;
+    //println("\n   wtf am I adding? x: " + amtx + " y: " + amty + "\n");
     gasSim.addVelocity(mouseX / SCALE, mouseY / SCALE, amtx, amty);
   } 
 

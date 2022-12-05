@@ -24,7 +24,7 @@ void keyPressed() {
   if ( Character.toLowerCase(key) == 's')
     gasSim.toggleStroke();
 
-   // makes it feel like sand
+  // makes it feel like sand
   if ( Character.toLowerCase(key) == ' ')
     gasSim.thicc = gasSim.thicc == 0 ? 0.00001 : 0;
 }

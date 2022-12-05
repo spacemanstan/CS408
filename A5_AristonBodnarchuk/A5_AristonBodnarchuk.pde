@@ -30,7 +30,7 @@
 
 final int DIM = 128; // dimenstions of sqaure grid (2 power works best)
 final int iterations = 8; // # of iterations
-final int SCALE = 5; // how big you want to scale up the simulation 
+final int SCALE = 5; // how big you want to scale up the simulation
 
 Simulation gasSim;
 
@@ -38,13 +38,36 @@ void settings() {
   size(DIM * SCALE, DIM * SCALE);
 }
 
-void setup() {
+void setup() {  
   gasSim = new Simulation(0.3, 0, 0);
   surface.setTitle("Assignment 5: Gas Simulation Program");
+
+  noCursor();
 }
 
 void draw() {
   background(0);
 
   gasSim.draw_();
+
+  pushStyle();
+  rectMode(CENTER);
+  noStroke();
+  
+  fill(255);
+  circle(width*2/3, height*2/3, width*0.2);
+  rect(width*2/3, height, width*0.05, height*2/3);
+
+  if (mouseButton == LEFT) {
+    // mouth
+    fill(0);
+    circle(width*2/3, height*2/3 + width*0.05, width*0.05);
+  } else {
+    // mouth
+    fill(0);
+    rect(width*2/3, height*2/3 + width*0.05, width*0.05, width*0.01);
+  }
+
+
+  popStyle();
 }
