@@ -1,3 +1,0 @@
-class SandGrid {
-  Sand[][] grid;
-}
