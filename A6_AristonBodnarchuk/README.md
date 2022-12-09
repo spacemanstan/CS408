@@ -29,8 +29,6 @@
 ###### User Instructions
 Just click around and have fun!
 
-The entire simulation is controlled with mouse input with keyboard input support as well. Keyboard input has a secret (not really secret if I just told you) feature I call sand mode that changes the viscosity of the simulation mid simulation allowing the user to speed up or slow down the movement of diffusion and how much friction it experiences.
-
 **Mouse Controls**
 - Click: 
      - Add 50 random bits of sand in a random radius in the center that distributes its way out from the center
