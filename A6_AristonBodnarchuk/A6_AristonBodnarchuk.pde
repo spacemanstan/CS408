@@ -9,7 +9,7 @@
  
  Descrition:
  
- i hate my life
+ i have an exam tomorrow, this is the best I can do
  
  */
 
@@ -19,6 +19,7 @@ final int LENGTH = DIM * DIM;
 
 float unit;
 PVector[] points;
+ArrayList<Particle> particles;
 
 PImage sandTexture;
 
@@ -46,6 +47,9 @@ void setup() {
 
   println(DIM);
   println(LENGTH);
+
+  sandTexture = loadImage("./textures/sand.png");
+  particles = new ArrayList<Particle>();
 }
 
 void draw() {
@@ -53,8 +57,6 @@ void draw() {
 
   pushMatrix();
   translate(width/2, height*3/4, -width);
-
-
 
   // always tilt the sand grid a bit towards the camera for better visibility
   float rotAng =  map(mouseX, 0, width, -TWO_PI, TWO_PI);
@@ -74,6 +76,15 @@ void draw() {
     popMatrix();
   }
 
+  for (int i = particles.size()-1; i >= 0; i--) {
+    Particle p = particles.get(i);
+    p.show();
+    p.update();
+    if (p.lifespan <= 0) {
+      particles.remove(i);
+    }
+  }
+
   popMatrix();
   lights();
 }
@@ -90,7 +101,7 @@ void distribute(int x_, int z_) {
   //z_ = DIM;
 
   int index = getIndex(x_, z_);
-  float thres = 4*unit;
+  float thres = 1*unit;
 
   IntList dirs = new IntList();
 
@@ -111,29 +122,67 @@ void distribute(int x_, int z_) {
   dirs.shuffle();
 
   println("index: " + index + " [" + x_ + "," + z_ + "]");
+
   for (int dir = 0; dir < dirs.size(); ++dir) {
     if (points[ dirs.get(dir) ].y + thres < points[index].y) {
-      float diff = points[index].y + thres - points[ dirs.get(dir) ].y;
-      float amt =  diff > unit/2 ? random(unit/2, diff) : unit/2; 
-      
+      float diff = points[ dirs.get(dir) ].y + thres - points[index].y;
+      float amt = diff > unit ? diff / 4.0 : unit;
       points[ dirs.get(dir) ].y += amt;
       points[index].y -= amt;
-      
-      //if (up == dirs.get(dir))
-      //  distribute(x_, z_ - 1); 
-      //if (down == dirs.get(dir))
-      //  distribute(x_, z_ + 1); 
-      //if (left == dirs.get(dir))
-      //  distribute(x_ - 1, z_);
-      //if (right == dirs.get(dir))
-      //  distribute(x_ + 1, z_);
+
+      if (up == dirs.get(dir))
+        distribute(x_, z_ - 1); 
+      if (down == dirs.get(dir))
+        distribute(x_, z_ + 1); 
+      if (left == dirs.get(dir))
+        distribute(x_ - 1, z_);
+      if (right == dirs.get(dir))
+        distribute(x_ + 1, z_);
     }
   }
 }
 
 void mousePressed() {
-  int index_x = (int)random(0, DIM);
-  int index_z = (int)random(0, DIM);
-  points[ getIndex(index_x, index_z) ].y += unit*8;
-  distribute( index_x, index_z );
+  for (int i = 0; i < 50; ++i) {
+    int index_x = (int)random(0, DIM);
+    int index_z = (int)random(0, DIM);
+
+    index_x = (int)random(DIM/2 - 3, DIM/2 + 3);
+    index_z = (int)random(DIM/2 - 3, DIM/2 + 3);
+
+    points[ getIndex(index_x, index_z) ].y += unit;
+    distribute( index_x, index_z );
+    
+    particles.add(new Particle());
+  }
+}
+
+class Particle {
+  PVector pos = new PVector(random(-width/6, width/6), -height, random(-width/6, width/6));
+  PVector vel = new PVector( random(-1, 1), random(1, 3), random(-1, 1) );
+  float thicc = 10*random(1, 4);
+  float grav = 0.8;
+  int lifespan = FPS/2 * 3;
+  PShape sand = createShape(SPHERE, thicc);
+
+  Particle() {
+    sand.setStroke(false);
+    sand.setFill(color(46, 20 + 20 + random(-11, 15), 97));
+  }
+
+  void update() {
+    pos.add(vel);
+    vel.y += grav;
+
+    --lifespan;
+  }
+
+  void show() {
+    pushStyle();
+    pushMatrix();
+    translate(pos.x, pos.y, pos.z);
+    shape(sand);
+    popMatrix();
+    popStyle();
+  }
 }
