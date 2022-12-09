@@ -4,13 +4,28 @@
  Prof:  Alain Maubert Crotte
  Class: CS 408-001: Animation Software Design
  
- Assignment 5: Gas Simulation Program
+ Assignment 6: Falling Sand Sim
  ############################################################
  
  Descrition:
  
- i have an exam tomorrow, this is the best I can do
+ i have an exam tomorrow, this is the best I can do lol
+ the particles are just for show and do not interact with the grid lol
  
+ the distribute function is a shell of what I wanted
+ 
+ basically if I didnt have an exam tomorrow I would make distribution be random to give more organic structure to the sand piles
+ I also would have done a random emitter for particles that did check for grid interaction to add to the grid
+ the grid has two functions, add sand, and distribute 
+ distribution would be random 
+ 
+ the particle class doesn't need much more, basically it should just map its value to an index with the getIndex function
+ then it can use that result to check the sand in that cell, the amount of sand reflecting height
+ that way it can see if it has touched the ground with a simple distance check
+ it would simply just do what the mouse pressed function is doing
+ 
+ particles always scatter from the center
+ sand piles up in a cube radius from the center, pretty simple
  */
 
 final int FPS = 30;
@@ -89,6 +104,7 @@ void draw() {
   lights();
 }
 
+// x,y coords into array index
 int getIndex(int x_, int z_) {
   int xVal = constrain(x_, 0, DIM);
   int zVal = constrain(z_, 0, DIM);
@@ -157,12 +173,16 @@ void mousePressed() {
   }
 }
 
+/*
+  this is the most basic shell particle class ever lol
+  I actually wrote all the particle code in about 3 mins haha
+*/
 class Particle {
   PVector pos = new PVector(random(-width/6, width/6), -height, random(-width/6, width/6));
   PVector vel = new PVector( random(-1, 1), random(1, 3), random(-1, 1) );
   float thicc = 10*random(1, 4);
   float grav = 0.8;
-  int lifespan = FPS/2 * 3;
+  int lifespan = FPS/2 * 3; // the time it takes to hit the bottom lol
   PShape sand = createShape(SPHERE, thicc);
 
   Particle() {
